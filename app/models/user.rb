@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
-  def check_for_new_user
-    
+  def get_user_list
+
   end
 
 end
