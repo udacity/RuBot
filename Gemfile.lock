@@ -51,9 +51,21 @@ GEM
     concurrent-ruby (1.0.0)
     debug_inspector (0.0.2)
     erubis (2.7.0)
+    eventmachine (1.0.9.1)
     execjs (2.6.0)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.10.0)
+      faraday (>= 0.7.4, < 0.10)
+    faye-websocket (0.10.2)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
+    figaro (1.1.1)
+      thor (~> 0.14)
+    gli (2.13.4)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    hashie (3.4.3)
     i18n (0.7.0)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -71,6 +83,7 @@ GEM
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     multi_json (1.11.2)
+    multipart-post (2.0.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     rack (1.6.4)
@@ -113,6 +126,13 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    slack-ruby-client (0.6.0)
+      faraday
+      faraday_middleware
+      gli
+      hashie
+      json
+      websocket-driver
     spring (1.6.3)
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
@@ -137,6 +157,9 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    websocket-driver (0.6.3)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
 
 PLATFORMS
   ruby
@@ -144,11 +167,15 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
+  eventmachine
+  faye-websocket
+  figaro
   jbuilder (~> 2.0)
   jquery-rails
   rails (= 4.2.5.1)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  slack-ruby-client
   spring
   sqlite3
   turbolinks
