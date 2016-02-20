@@ -17,13 +17,25 @@ class Client < ActiveRecord::Base
   end
 
   def get_users
-    @rubot.on :user_change do |data|
-      @rubot.users.each do |user| 
-        p user[1].name
-        p user[1].real_name
-        p user[0]
-        p user[1].profile.email
+    @rubot.on :team_join do |data|
+      @users = User.all
+      @rubot.users.each do |member| 
+        unless @users.any? { |user| user.slack_id == member[0] }
+          @user = User.new(
+            user_name: member[1].name,
+            real_name: member[1].real_name,
+            slack_id:  member[0],
+            email:     member[1].profile.email
+          )
+          @user.save
+        end
       end
+    end
+  end
+
+  def update_user
+    #Needs to be completed
+    @rubot.on :user_change do |data|
     end
   end
 
