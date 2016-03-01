@@ -21,6 +21,16 @@ set :output, {:error => "log/cron_error_log.log", :standard => "log/cron_log.log
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day, :at => '4:32 pm' do
+# whenever --update-crontab rubotTasks
+# create cronjob
+
+# crontab -r
+# clear existing cronjobs
+
+# crontab -l
+# lists cronjobs
+
+every 1.day, :at => '10:10 am' do
   runner "User.user_age"
+  # runner "Message.send_messages"
 end

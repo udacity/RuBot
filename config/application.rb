@@ -25,8 +25,8 @@ module Rubot
 
     config.after_initialize do
       # User.user_age
-      @client = Client.new
-      @client.bot_behavior
+      # @client = Client.new
+      # @client.bot_behavior
     end
     
   end

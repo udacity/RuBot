@@ -8,8 +8,9 @@ class Message < ActiveRecord::Base
     #number of days to wait to send the message
     message_age = 2
     @users.each do |user|
-      #if Time.now - user.created_at < 2 days
-      #end
+      if user.age < 2 && user.age > 1
+        
+      end
     end
   end
 

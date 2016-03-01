@@ -43,10 +43,25 @@ class Client < ActiveRecord::Base
     end
   end
 
+  def set_user(data)
+    #will work with responses from :team_join and :user_change events
+    @user = @users.select { |person| person.slack_id == data.user.id }.first
+    puts @user
+  end
+
+  def set_user_rubot_channel_id(data)
+    #will work with responses from :team_join and :user_change events
+    # @rubot.on :user_change do |data|
+      set_user(data)
+      @user.channel_id = @rubot.web_client.im_open(user: data.user.id).channel.id
+      @user.save
+    # end
+  end
+
   def send_welcome_message
-    @rubot.on :team_join do |data|
-      channel_id = @rubot.web_client.im_open(user: data.user.id).channel.id
-      @rubot.web_client.chat_postMessage(channel: channel_id, text: @messages[0].text, username: "RuBot")
+    @rubot.on :user_change do |data|
+      set_user_rubot_channel_id(data)
+      @rubot.web_client.chat_postMessage(channel: @user.channel_id, text: @messages[0].text, username: "RuBot")
     end
   end
 
