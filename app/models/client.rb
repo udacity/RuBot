@@ -28,14 +28,15 @@ class Client < ActiveRecord::Base
 
 
   def add_new_user
+    #Need to fix this to work with "data" instead of "member"
     #Needs to be tested using :team_join instead of :user_change
     @rubot.on :team_join do |data|
-      unless @users.any? { |user| user.slack_id == data.user.id }
+      unless @users.any? { |person| person.slack_id == data.user.id }
         @user = User.new(
-          user_name: member[1].name,
-          real_name: member[1].real_name,
-          slack_id:  member[0],
-          email:     member[1].profile.email
+          user_name: data.user.name,
+          real_name: data.user.profile.real_name,
+          slack_id:  data.user.id,
+          email:     data.user.profile.email
         )
         @user.save
       end
@@ -43,7 +44,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_welcome_message
-    @rubot.on :user_change do |data|
+    @rubot.on :team_join do |data|
       channel_id = @rubot.web_client.im_open(user: data.user.id).channel.id
       @rubot.web_client.chat_postMessage(channel: channel_id, text: @messages[0].text, username: "RuBot")
     end
@@ -56,7 +57,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_message_2
-    
+
   end
 
   def start_rubot

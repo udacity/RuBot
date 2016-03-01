@@ -9,7 +9,7 @@ class Message < ActiveRecord::Base
     message_age = 2
     @users.each do |user|
       #if Time.now - user.created_at < 2 days
-      end
+      #end
     end
   end
 
