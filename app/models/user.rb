@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
     @users.each do |user|
       #user age is in days (86400 seconds).
       user.age = (Time.now - user.created_at) / 86400
-      puts user.age
+      user.save
     end
   end
 
