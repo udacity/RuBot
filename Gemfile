@@ -31,6 +31,8 @@ gem 'figaro'
 #Cron jobs
 # gem 'whenever', :require => false
 gem 'rufus-scheduler'
+# User auth
+gem 'devise'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

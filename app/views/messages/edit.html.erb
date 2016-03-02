@@ -1,6 +1,6 @@
 <h1>Editing Message</h1>
 
-<%= render 'form' %>
+<%= render 'form' if current_admin %>
 
 <%= link_to 'Show', @message %> |
 <%= link_to 'Back', messages_path %>

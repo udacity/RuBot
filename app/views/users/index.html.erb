@@ -1,33 +1,37 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Users</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>User name</th>
-      <th>Real name</th>
-      <th>Slack ID</th>
-      <th>Email</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
+<% if current_admin %>
+  <table>
+    <thead>
       <tr>
-        <td><%= user.user_name %></td>
-        <td><%= user.real_name %></td>
-        <td><%= user.slack_id %></td>
-        <td><%= user.email %></td>
-<!--         <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+        <th>User name</th>
+        <th>Real name</th>
+        <th>Slack ID</th>
+        <th>Email</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.user_name %></td>
+          <td><%= user.real_name %></td>
+          <td><%= user.slack_id %></td>
+          <td><%= user.email %></td>
+  <!--         <td><%= link_to 'Show', user %></td>
+          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+          <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You must be logged in to see user information.</p>
+<% end %>
 <br>
+<br>
+<%= link_to 'Messages', messages_path %>
 
 <%#= link_to 'New User', new_user_path %>
