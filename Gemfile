@@ -29,7 +29,8 @@ gem 'faye-websocket'
 # simple env variable management
 gem 'figaro'
 #Cron jobs
-gem 'whenever', :require => false
+# gem 'whenever', :require => false
+gem 'rufus-scheduler'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

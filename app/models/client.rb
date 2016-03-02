@@ -8,10 +8,6 @@ class Client < ActiveRecord::Base
     @users = User.all
   end
 
-  def get_messages
-    @messages = Message.all
-  end
-
   def say_hello_on_start
     @rubot.on :hello do
       puts "Successfully connected, welcome '#{@rubot.self.name}' to the '#{@rubot.team.name}' team at https://#{@rubot.team.domain}.slack.com."
@@ -46,22 +42,41 @@ class Client < ActiveRecord::Base
   def set_user(data)
     #will work with responses from :team_join and :user_change events
     @user = @users.select { |person| person.slack_id == data.user.id }.first
-    puts @user
   end
 
   def set_user_rubot_channel_id(data)
     #will work with responses from :team_join and :user_change events
-    # @rubot.on :user_change do |data|
-      set_user(data)
-      @user.channel_id = @rubot.web_client.im_open(user: data.user.id).channel.id
-      @user.save
+    set_user(data)
+    @user.channel_id = @rubot.web_client.im_open(user: data.user.id).channel.id
+    @user.save
+  end
+
+  def send_message(channel_id, message_id)
+    @rubot.web_client.chat_postMessage(
+        channel: channel_id, 
+        text: Message.where(id: message_id).first.text, 
+        username: "RuBot")
+  end
+
+  def send_scheduled_messages(user)
+    s = Rufus::Scheduler.new
+    s.in '60s' do
+      send_message(user.channel_id, 2)
+    end
+    s.in '10m' do
+      send_message(user.channel_id, 3)
+    end
+    # s.in '1d' do
+    #   send_message(user.channel_id, 4)
     # end
   end
 
   def send_welcome_message
     @rubot.on :user_change do |data|
-      set_user_rubot_channel_id(data)
-      @rubot.web_client.chat_postMessage(channel: @user.channel_id, text: @messages[0].text, username: "RuBot")
+      set_user(data)
+      #set_user_rubot_channel_id(data)
+      send_message(@user.channel_id, 1)
+      send_scheduled_messages(@user)
     end
   end
 
@@ -69,10 +84,6 @@ class Client < ActiveRecord::Base
     #Needs to be completed
     @rubot.on :user_change do |data|
     end
-  end
-
-  def send_message_2
-
   end
 
   def start_rubot
@@ -83,7 +94,6 @@ class Client < ActiveRecord::Base
     # Need to figure out way to defend against lost connection.
     setup_client
     get_users
-    get_messages
     say_hello_on_start
     log_messages
     add_new_user

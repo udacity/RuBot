@@ -24,9 +24,8 @@ module Rubot
     config.active_record.raise_in_transactional_callbacks = true
 
     config.after_initialize do
-      # User.user_age
-      # @client = Client.new
-      # @client.bot_behavior
+      @client = Client.new
+      @client.bot_behavior
     end
     
   end
