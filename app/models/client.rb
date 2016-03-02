@@ -53,9 +53,10 @@ class Client < ActiveRecord::Base
 
   def send_message(channel_id, message_id)
     @rubot.web_client.chat_postMessage(
-        channel: channel_id, 
-        text: Message.where(id: message_id).first.text, 
-        username: "RuBot")
+      channel: channel_id, 
+      text: Message.where(id: message_id).first.text, 
+      username: "RuBot"
+      )
   end
 
   def send_scheduled_messages(user)
@@ -72,9 +73,9 @@ class Client < ActiveRecord::Base
   end
 
   def send_welcome_message
-    @rubot.on :user_change do |data|
-      set_user(data)
-      #set_user_rubot_channel_id(data)
+    @rubot.on :team_join do |data|
+      #set_user(data)
+      set_user_rubot_channel_id(data)
       send_message(@user.channel_id, 1)
       send_scheduled_messages(@user)
     end
@@ -83,6 +84,13 @@ class Client < ActiveRecord::Base
   def update_user
     #Needs to be completed
     @rubot.on :user_change do |data|
+      set_user(data)
+      puts data
+      @user.user_name = data.user.name
+      @user.real_name = data.user.profile.real_name
+      @user.slack_id =  data.user.id
+      @user.email =     data.user.profile.email
+      @user.save
     end
   end
 
@@ -98,6 +106,7 @@ class Client < ActiveRecord::Base
     log_messages
     add_new_user
     send_welcome_message
+    update_user
     start_rubot
   end
 
