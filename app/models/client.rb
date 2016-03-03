@@ -24,8 +24,6 @@ class Client < ActiveRecord::Base
 
 
   def add_new_user
-    #Need to fix this to work with "data" instead of "member"
-    #Needs to be tested using :team_join instead of :user_change
     @rubot.on :team_join do |data|
       unless @users.any? { |person| person.slack_id == data.user.id }
         @user = User.new(
@@ -67,14 +65,13 @@ class Client < ActiveRecord::Base
     s.in '10m' do
       send_message(user.channel_id, 3)
     end
-    # s.in '1d' do
-    #   send_message(user.channel_id, 4)
-    # end
+    s.in '1d' do
+      send_message(user.channel_id, 4)
+    end
   end
 
   def send_welcome_message
     @rubot.on :team_join do |data|
-      #set_user(data)
       set_user_rubot_channel_id(data)
       send_message(@user.channel_id, 1)
       send_scheduled_messages(@user)
@@ -82,10 +79,8 @@ class Client < ActiveRecord::Base
   end
 
   def update_user
-    #Needs to be completed
     @rubot.on :user_change do |data|
       set_user(data)
-      puts data
       @user.user_name = data.user.name
       @user.real_name = data.user.profile.real_name
       @user.slack_id =  data.user.id
@@ -99,7 +94,7 @@ class Client < ActiveRecord::Base
   end
 
   def bot_behavior
-    # Need to figure out way to defend against lost connection.
+    # Need to figure out way to defend against lost connection?
     setup_client
     get_users
     say_hello_on_start
