@@ -80,6 +80,7 @@ class Client < ActiveRecord::Base
 
   def update_user
     @rubot.on :user_change do |data|
+      puts "A user changed! (And I'm still running. Yay!)"
       set_user(data)
       @user.user_name = data.user.name
       @user.real_name = data.user.profile.real_name
