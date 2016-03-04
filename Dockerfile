@@ -1,6 +1,6 @@
 FROM udacity/ruby:2.2.4
 
-RUN apk-install --no-cache \ 
+RUN apk-install \ 
     build-base \
     gcc \
     libxslt-dev \
