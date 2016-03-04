@@ -24,3 +24,8 @@ a:hover {
   background-color: white;
   color: blue;
 }
+
+td, th {
+  padding: 0 20px 0 0;
+  text-align: left;
+}
