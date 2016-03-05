@@ -22,7 +22,6 @@ class Client < ActiveRecord::Base
     end
   end
 
-
   def add_new_user
     @rubot.on :team_join do |data|
       unless @users.any? { |person| person.slack_id == data.user.id }
@@ -71,7 +70,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_welcome_message
-    @rubot.on :team_join do |data|
+    @rubot.on :user_change do |data|
       set_user_rubot_channel_id(data)
       send_message(@user.channel_id, 1)
       send_scheduled_messages(@user)
@@ -90,6 +89,21 @@ class Client < ActiveRecord::Base
     end
   end
 
+  def respond_to_messages
+  # in the future, could make a model for user input, so that when
+  # statements could be edited through the UI.
+  @rubot.on :message do |data|
+    case data.text.downcase
+      when 'hello rubot' then
+        send_message(data.channel, 3)
+      when 'webcasts' then
+        send_message(data.channel, 8)
+      when '1:1' then
+        send_message(data.channel, 9)
+      end
+    end
+  end
+
   def start_rubot
     @rubot.start!
   end
@@ -103,6 +117,7 @@ class Client < ActiveRecord::Base
     add_new_user
     send_welcome_message
     update_user
+    respond_to_messages
     start_rubot
   end
 
