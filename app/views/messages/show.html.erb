@@ -1,11 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Message number:</strong>
-  <%= @message.id %>
-</p>
-
-<p>
   <strong>Text:</strong>
   <%= @message.text %>
 </p>
@@ -13,6 +8,11 @@
 <p>
   <strong>Summary:</strong>
   <%= @message.project %>
+</p>
+
+<p>
+  <strong>Delay:</strong>
+  <%= @message.delay %>
 </p>
 
 <%= link_to 'Edit', edit_message_path(@message) %> |

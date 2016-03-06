@@ -58,28 +58,40 @@ class Client < ActiveRecord::Base
       )
   end
 
-  def send_scheduled_messages(user)
-    # Add time param to Message so this can be edited in UI
-    s = Rufus::Scheduler.new
-    s.in '60s' do
-      send_message(user.channel_id, 2)
+  def send_scheduled_messages
+    @rubot.on :user_change do |data|
+      sleep(5)
+      s = Rufus::Scheduler.new
+      set_user_rubot_channel_id(data)
+      @messages = Message.all.sort
+      @messages.each do |message|
+        s.in message.delay do
+          send_message(@user.channel_id, message.id)
+        end
+      end
     end
-    s.in '10m' do
-      send_message(user.channel_id, 3)
-    end
-    s.in '1d' do
-      send_message(user.channel_id, 4)
-    end
+
+    # s = Rufus::Scheduler.new
+    # s.in '60s' do
+    #   send_message(user.channel_id, 2)
+    # end
+    # s.in '10m' do
+    #   send_message(user.channel_id, 3)
+    # end
+    # s.in '1d' do
+    #   send_message(user.channel_id, 4)
+    # end
   end
 
-  def send_welcome_message
-    @rubot.on :user_change do |data|
-      puts "send_welcome_message"
-      set_user_rubot_channel_id(data)
-      send_message(@user.channel_id, 1)
-      send_scheduled_messages(@user)
-    end
-  end
+  # def send_welcome_message
+  #   @rubot.on :user_change do |data|
+  #     puts "send_welcome_message"
+  #     @messages = Message.all.sort
+  #     set_user_rubot_channel_id(data)
+  #     # send_message(@user.channel_id, @messages.first.id)
+  #     send_scheduled_messages(@user)
+  #   end
+  # end
 
   def update_user
     @rubot.on :user_change do |data|
@@ -120,7 +132,8 @@ class Client < ActiveRecord::Base
     say_hello_on_start
     log_messages
     add_new_user
-    send_welcome_message
+    send_scheduled_messages
+    #send_welcome_message
     update_user
     respond_to_messages
     start_rubot

@@ -8,6 +8,7 @@
       <th>Message number</th>
       <th>Text</th>
       <th>Summary</th>
+      <th>Delay</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,9 +16,10 @@
   <tbody>
     <% @messages.sort.each do |message| %>
       <tr>
-        <td><%= message.id %></td>
+        <td><%= @messages.index(message) + 1 %></td>
         <td><%= message.text %></td>
         <td><%= message.project %></td>
+        <td><%= message.delay %></td>
         <td><%= link_to 'Show', message %></td>
         <td><%= link_to 'Edit', edit_message_path(message) if current_admin %></td>
         <!-- <td><%= link_to 'Destroy', message, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
