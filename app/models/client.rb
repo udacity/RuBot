@@ -70,28 +70,7 @@ class Client < ActiveRecord::Base
         end
       end
     end
-
-    # s = Rufus::Scheduler.new
-    # s.in '60s' do
-    #   send_message(user.channel_id, 2)
-    # end
-    # s.in '10m' do
-    #   send_message(user.channel_id, 3)
-    # end
-    # s.in '1d' do
-    #   send_message(user.channel_id, 4)
-    # end
   end
-
-  # def send_welcome_message
-  #   @rubot.on :user_change do |data|
-  #     puts "send_welcome_message"
-  #     @messages = Message.all.sort
-  #     set_user_rubot_channel_id(data)
-  #     # send_message(@user.channel_id, @messages.first.id)
-  #     send_scheduled_messages(@user)
-  #   end
-  # end
 
   def update_user
     @rubot.on :user_change do |data|
@@ -133,7 +112,6 @@ class Client < ActiveRecord::Base
     log_messages
     add_new_user
     send_scheduled_messages
-    #send_welcome_message
     update_user
     respond_to_messages
     start_rubot
