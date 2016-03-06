@@ -24,6 +24,7 @@ class Client < ActiveRecord::Base
 
   def add_new_user
     @rubot.on :team_join do |data|
+      get_users
       unless @users.any? { |person| person.slack_id == data.user.id }
         @user = User.new(
           user_name: data.user.name,
@@ -38,6 +39,7 @@ class Client < ActiveRecord::Base
 
   def set_user(data)
     #will work with responses from :team_join and :user_change events
+    get_users
     @user = @users.select { |person| person.slack_id == data.user.id }.first
   end
 
@@ -57,6 +59,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_scheduled_messages(user)
+    # Add time param to Message so this can be edited in UI
     s = Rufus::Scheduler.new
     s.in '60s' do
       send_message(user.channel_id, 2)
@@ -71,6 +74,7 @@ class Client < ActiveRecord::Base
 
   def send_welcome_message
     @rubot.on :user_change do |data|
+      puts "send_welcome_message"
       set_user_rubot_channel_id(data)
       send_message(@user.channel_id, 1)
       send_scheduled_messages(@user)
@@ -90,16 +94,18 @@ class Client < ActiveRecord::Base
   end
 
   def respond_to_messages
-  # in the future, could make a model for user input, so that when
-  # statements could be edited through the UI.
-  @rubot.on :message do |data|
-    case data.text.downcase
-      when 'hello rubot' then
-        send_message(data.channel, 3)
-      when 'webcasts' then
-        send_message(data.channel, 8)
-      when '1:1' then
-        send_message(data.channel, 9)
+    @rubot.on :message do |data|
+      if data.username != "RuBot"
+        @interactions = Interaction.all
+        @interactions.each do |i|
+          if i.user_input == data.text.downcase
+            @rubot.web_client.chat_postMessage(
+              channel: data.channel, 
+              text: i.response, 
+              username:"RuBot"
+            )
+          end
+        end
       end
     end
   end
@@ -111,7 +117,6 @@ class Client < ActiveRecord::Base
   def bot_behavior
     # Need to figure out way to defend against lost connection?
     setup_client
-    get_users
     say_hello_on_start
     log_messages
     add_new_user

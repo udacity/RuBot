@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Interactions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User input</th>
+      <th>Response</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @interactions.sort.each do |interaction| %>
+      <tr>
+        <td><%= interaction.user_input %></td>
+        <td><%= interaction.response %></td>
+        <td><%= link_to 'Show', interaction %></td>
+        <td><%= link_to 'Edit', edit_interaction_path(interaction) %></td>
+        <td><%= link_to 'Destroy', interaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Interaction', new_interaction_path %>

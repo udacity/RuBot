@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User input:</strong>
+  <%= @interaction.user_input %>
+</p>
+
+<p>
+  <strong>Response:</strong>
+  <%= @interaction.response %>
+</p>
+
+<%= link_to 'Edit', edit_interaction_path(@interaction) %> |
+<%= link_to 'Back', interactions_path %>

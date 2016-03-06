@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :interactions
   devise_for :admins
   root to: "messages#index"
   resources :messages
