@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  validates :slack_id, uniqueness: true
 
   def self.user_age
     puts "Running User.user_age."
