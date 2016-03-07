@@ -17,13 +17,11 @@
         <td><%= interaction.user_input %></td>
         <td><%= interaction.response %></td>
         <td><%= link_to 'Show', interaction %></td>
-        <td><%= link_to 'Edit', edit_interaction_path(interaction) %></td>
-        <td><%= link_to 'Destroy', interaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_interaction_path(interaction) if current_admin %></td>
+        <td><%= link_to 'Destroy', interaction, method: :delete, data: { confirm: 'Are you sure?' } if current_admin %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Interaction', new_interaction_path %>

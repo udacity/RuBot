@@ -25,7 +25,79 @@ a:hover {
   color: blue;
 }
 
-td, th {
-  padding: 0 20px 0 0;
-  text-align: left;
+body {
+  margin: 2vw 5vw;
+  padding: 0;
+  color: #333;
+  background-color: #eee;
+  font: 1em/1.2 "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
 }
+
+th, td {
+  padding: .5em 1em;
+  vertical-align: top;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.header h1 {
+  display: inline;
+  padding-right: 50px;
+}
+
+textarea {
+  width: 500px;
+  height: 100px;
+}
+
+input {
+  width: 200px;
+}
+
+#admin_remember_me {
+  width: 10px;
+}
+
+.actions input, .btn {
+  color: #fff !important;
+  background-color: royalblue;
+  border-color: #222;
+  display: inline-block;
+  padding: .5em 1em;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: .2em;
+  text-decoration: none;
+  width: 150px;
+}
+
+#footer a {
+  display: inline-block;
+  margin: 20px 15px 0 0;
+}
+
+/*.header a {
+  float: right;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

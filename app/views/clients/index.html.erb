@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Welcome to RuBot's control panel!</h1>
+<h2>RuBot is an on-boarding bot for the RubyND Slack team.</h2>
+
+<% if !current_admin %>
+  <p>You need to log in to use this site. Please ping @fuzz on Slack for login credentials.</p>
+<% end %>
+
+<% if current_admin %>
+
+  <p>The bot sends messages to new Slack users at specified intervals so that useful information can be dribbled instead of dumped. You can view and manage the list of messages: <%= link_to 'Here', messages_path %></p>
+
+  <p>Users can also interact with RuBot. The bot will respond to specified user input with a corresponding response. To view and manage interactions: <%= link_to 'Click Here', interactions_path %></p>
+
+  <p>You can retrieve information about our current Slack team users: <%= link_to 'Here', users_path %></p>
+
+  <p>This is a brand new project, and feedback is warmly welcomed. Please ping @fuzz or email steven.worley@knowlabs.com with suggestions, problems, advice, etc.</p>
+
+<% end %>

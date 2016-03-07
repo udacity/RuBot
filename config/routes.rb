@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :interactions
   devise_for :admins
-  root to: "messages#index"
+  root to: "clients#index"
   resources :messages
   resources :users
   resources :clients

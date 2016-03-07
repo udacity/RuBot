@@ -15,5 +15,5 @@
   <%= @message.delay %>
 </p>
 
-<%= link_to 'Edit', edit_message_path(@message) %> |
+<%= link_to 'Edit', edit_message_path(@message) if current_admin %> |
 <%= link_to 'Back', messages_path %>
