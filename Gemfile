@@ -33,6 +33,17 @@ gem 'figaro'
 gem 'rufus-scheduler'
 # User auth
 gem 'devise'
+# Default gems shipped with El Capitan
+gem 'bigdecimal'
+gem 'io-console'
+gem 'json'
+gem 'minitest'
+gem 'net-telnet'
+gem 'power_assert'
+gem 'psych'
+gem 'rake'
+gem 'rdoc'
+gem 'test-unit'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
