@@ -14,4 +14,4 @@ RUN bundle install --jobs 20 --retry 5 --without development test
 
 ADD . /app
 
-CMD ["bundle", "exec", "rails", "-s"]
+CMD ["bundle", "exec", "rails", "server"]
