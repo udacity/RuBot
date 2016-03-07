@@ -1,6 +1,10 @@
 <p id="notice"><%= notice %></p>
+<div class="header">
+  <h1>Interactions</h1> 
+  <%= link_to 'Create a New Interaction', new_interaction_path if current_admin %>
+</div>
 
-<h1>Listing Interactions</h1>
+<p><b>Note</b> - User input will automatically be "downcased" and is not case sensitive.</p>
 
 <table>
   <thead>

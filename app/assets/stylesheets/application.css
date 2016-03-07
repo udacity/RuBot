@@ -16,21 +16,31 @@
 
 a { 
   color: blue;
+  text-decoration: none;
 }
 
 a:visited { color: darkblue; }
 
 a:hover { 
-  background-color: white;
+  background-color: inherit;
   color: blue;
+  text-decoration: underline;
 }
 
 body {
-  margin: 2vw 5vw;
+  margin: 2vw 10vw 2vw 7vw;
   padding: 0;
   color: #333;
   background-color: #eee;
-  font: 1em/1.2 "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+  font: 1em/1.2 Georgia, "Comic Sans", Arial, Geneva, sans-serif;
+}
+
+p, td {
+  font: 1em/1.2 Georgia, "Comic Sans", Arial, Geneva, sans-serif;
+}
+
+.destroy a {
+  font-color: red;
 }
 
 th, td {
@@ -40,9 +50,13 @@ th, td {
   border-bottom: 1px solid #ddd;
 }
 
+.header {
+  margin: 30px 0px 25px 0;
+}
+
 .header h1 {
   display: inline;
-  padding-right: 50px;
+  margin-right: 50px;
 }
 
 textarea {
@@ -52,6 +66,10 @@ textarea {
 
 input {
   width: 200px;
+}
+
+#login {
+  float: right;
 }
 
 #admin_remember_me {
@@ -77,9 +95,13 @@ input {
   width: 150px;
 }
 
-#footer a {
+#nav a {
   display: inline-block;
   margin: 20px 15px 0 0;
+}
+
+#nav {
+  margin-bottom: 25px;
 }
 
 /*.header a {

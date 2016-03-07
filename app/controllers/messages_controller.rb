@@ -71,4 +71,5 @@ class MessagesController < ApplicationController
     def message_params
       params.require(:message).permit(:message_number, :text, :project, :delay)
     end
+
 end
