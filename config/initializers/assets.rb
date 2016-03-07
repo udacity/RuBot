@@ -11,5 +11,5 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 Slack.configure do |config|
-  config.token = ENV['slack_token']
+  config.token = ENV['SLACK_TOKEN']
 end
