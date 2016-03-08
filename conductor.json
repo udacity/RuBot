@@ -4,7 +4,7 @@
   "app-json": {
     "id": "/$GROUP/$SERVICE",
     "cpus": 0.1,
-    "mem": 64,
+    "mem": 1024,
     "instances": 1,
     "constraints": [["hostname", "UNIQUE"], ["az", "GROUP_BY", "3"]],
     "env": {
