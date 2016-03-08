@@ -9,6 +9,7 @@
     "constraints": [["hostname", "UNIQUE"], ["az", "GROUP_BY", "3"]],
     "env": {
       "SERVICE_3000_NAME": "rubot",
+      "SERVICE_3000_TAGS": "public",
       "SLACK_TOKEN": "$SLACK_TOKEN",
       "SECRET_KEY_BASE": "$SECRET_KEY_BASE",
       "RAILS_ENV": "$RAILS_ENV",
