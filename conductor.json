@@ -10,6 +10,8 @@
     "env": {
       "SERVICE_3000_NAME": "rubot",
       "SLACK_TOKEN": "$SLACK_TOKEN",
+      "SECRET_KEY_BASE": "$SECRET_KEY_BASE",
+      "RAILS_ENV": "$RAILS_ENV",
       "DB_HOST": "{{ db_host }}",
       "DB_NAME": "{{ db_name }}",
       "DB_PASSWORD": "{{ db_password }}",
