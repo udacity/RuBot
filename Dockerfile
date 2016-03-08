@@ -6,8 +6,8 @@ RUN apk-install \
     libxslt-dev \
     libxml2-dev \
     postgresql-dev \
-    make 
-
+    make \
+    nodejs
 
 RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle install --jobs 20 --retry 5 --without development test
