@@ -26,7 +26,7 @@ module Rubot
     config.after_initialize do
       Thread.new do
         @client = Client.new
-        @client.bot_behavior
+        @client.bot_behavior        
       end
     end
     

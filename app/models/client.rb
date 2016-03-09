@@ -101,6 +101,22 @@ class Client < ActiveRecord::Base
     end
   end
 
+  def update_user_list
+    puts "Updating user list."
+    get_users
+    @rubot.web_client.users_list.members.each do |member|
+      unless @users.any? { |person| person.slack_id == member.id }
+        @user = User.new(
+          user_name: member.name,
+          real_name: member.profile.real_name,
+          slack_id:  member.id,
+          email:     member.profile.email
+        )
+        @user.save
+      end
+    end
+  end
+
   def start_rubot
     @rubot.start!
   end
@@ -114,6 +130,7 @@ class Client < ActiveRecord::Base
     send_scheduled_messages
     update_user
     respond_to_messages
+    update_user_list
     start_rubot
   end
 
