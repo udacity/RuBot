@@ -19,5 +19,5 @@
 # Ignore application configuration
 /config/application.yml
 .env
-
+.env-production
 .DS_Store
