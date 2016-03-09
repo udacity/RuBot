@@ -54,12 +54,13 @@ class Client < ActiveRecord::Base
     @rubot.web_client.chat_postMessage(
       channel: channel_id, 
       text: Message.where(id: message_id).first.text, 
-      username: "RuBot"
+      #username: "RuBot"
+      as_user: true
       )
   end
 
   def send_scheduled_messages
-    @rubot.on :team_join do |data|
+    @rubot.on :user_change do |data|
       sleep(5)
       s = Rufus::Scheduler.new
       set_user_rubot_channel_id(data)
@@ -93,7 +94,7 @@ class Client < ActiveRecord::Base
             @rubot.web_client.chat_postMessage(
               channel: data.channel, 
               text: i.response, 
-              username:"RuBot"
+              as_user: true
             )
           end
         end
