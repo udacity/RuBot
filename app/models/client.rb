@@ -2,6 +2,8 @@ class Client < ActiveRecord::Base
 
   def setup_client
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
+    puts "INSIDE SETUP CLIENT"
+    puts @rubot.inspect
   end
 
   def get_users
