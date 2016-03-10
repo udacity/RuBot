@@ -2,6 +2,11 @@ class Client < ActiveRecord::Base
 
   def setup_client
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
+    # Override the CA_FILE and CA_PATH in the embedded web client if they are set in the environment
+    if ENV['CA_FILE'] and ENV['CA_PATH']    
+        web_client = Slack::Web::Client.new(ca_file: ENV['CA_FILE'], ca_path: ENV['CA_PATH'])
+        @rubot.web_client = web_client
+    end
     puts "INSIDE SETUP CLIENT"
     puts @rubot.inspect
   end

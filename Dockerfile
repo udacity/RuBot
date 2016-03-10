@@ -1,4 +1,4 @@
-FROM udacity/ruby:2.2.4
+fROM udacity/ruby:2.2.4
 
 RUN apk-install \ 
     build-base \
@@ -15,5 +15,8 @@ RUN bundle install --jobs 20 --retry 5 --without development test
 COPY rootfs/ /
 
 ADD . /app
+
+ENV CA_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV CA_PATH=/etc/ssl/certs
 
 CMD ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
