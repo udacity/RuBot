@@ -16,9 +16,7 @@ class Client < ActiveRecord::Base
 
   def log_messages
     @rubot.on :message do |data|
-      if data.username == "RuBot"
         puts "In channel #{data.channel}, at #{Time.now}, #{data.username} says: #{data.text}"
-      end
     end
   end
 

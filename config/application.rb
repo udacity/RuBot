@@ -24,6 +24,7 @@ module Rubot
     config.active_record.raise_in_transactional_callbacks = true
 
     config.after_initialize do
+      puts "INSIDE THE AFTER INITIALIZE!!!!! :)"
       Thread.new do
         @client = Client.new
         @client.bot_behavior        
