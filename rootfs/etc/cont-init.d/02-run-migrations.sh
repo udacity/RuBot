@@ -2,5 +2,4 @@
 
 set -e
 
-pushd /app
-bundle exec rake db:migrate
+cd /app && bundle exec rake db:migrate
