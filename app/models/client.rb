@@ -119,7 +119,9 @@ class Client < ActiveRecord::Base
   end
 
   def start_rubot
+    puts "START RUBOT!!!"
     @rubot.start!
+    puts "AFTER START RUBOT"
     puts @rubot.inspect
   end
 
