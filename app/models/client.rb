@@ -120,6 +120,7 @@ class Client < ActiveRecord::Base
 
   def start_rubot
     @rubot.start!
+    puts @rubot.inspect
   end
 
   def bot_behavior
