@@ -1,6 +1,7 @@
 class Client < ActiveRecord::Base
 
   def setup_client
+    puts "setup rubot!"
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
     # Override the CA_FILE and CA_PATH in the embedded web client if they are set in the environment
     if ENV['CA_FILE'] and ENV['CA_PATH']    
@@ -60,7 +61,9 @@ class Client < ActiveRecord::Base
       channel: channel_id, 
       text: Message.where(id: message_id).first.text, 
       #username: "RuBot"
-      as_user: true
+      as_user: true,
+      unfurl_links: false,
+      unfurl_media: false
       )
   end
 
@@ -99,7 +102,9 @@ class Client < ActiveRecord::Base
             @rubot.web_client.chat_postMessage(
               channel: data.channel, 
               text: i.response, 
-              as_user: true
+              as_user: true,
+              unfurl_links: false,
+              unfurl_media: false
             )
           end
         end
