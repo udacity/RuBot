@@ -7,8 +7,6 @@ class Client < ActiveRecord::Base
         web_client = Slack::Web::Client.new(ca_file: ENV['CA_FILE'], ca_path: ENV['CA_PATH'])
         @rubot.web_client = web_client
     end
-    puts "INSIDE SETUP CLIENT"
-    puts @rubot.inspect
   end
 
   def get_users
@@ -23,7 +21,9 @@ class Client < ActiveRecord::Base
 
   def log_messages
     @rubot.on :message do |data|
-        puts "In channel #{data.channel}, at #{Time.now}, #{data.username} says: #{data.text}"
+      if data.user == "U0RDVBPCH"
+        puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
+      end
     end
   end
 
@@ -92,7 +92,7 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages
     @rubot.on :message do |data|
-      if data.username != "RuBot"
+      if data.user != "U0RDVBPCH"
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
@@ -126,8 +126,6 @@ class Client < ActiveRecord::Base
   def start_rubot
     puts "START RUBOT!!!"
     @rubot.start!
-    puts "AFTER START RUBOT"
-    puts @rubot.inspect
   end
 
   def bot_behavior
