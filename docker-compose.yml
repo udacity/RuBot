@@ -1,0 +1,19 @@
+version: '2'
+services:
+    postgres:
+        image: postgres:9.5
+        ports: 
+            - "5432:5432"
+        environment: 
+            - POSTGRES_USER=rubot
+            - POSTGRES_PASSWORD=rubot
+            - POSTGRES_DB=rubot
+
+    rubot:
+        build: .
+        ports: 
+            - "8080:8080"
+        env_file: .env-development
+        links:
+            - postgres:postgres
+        
