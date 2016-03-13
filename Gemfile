@@ -32,6 +32,9 @@ gem 'figaro'
 gem 'rufus-scheduler'
 # User auth
 gem 'devise'
+gem 'omniauth'
+# Google user auth
+gem "omniauth-google-oauth2"
 # Default gems shipped with El Capitan
 gem 'bigdecimal'
 gem 'io-console'

@@ -1,11 +1,11 @@
 <% if admin_signed_in? %>
   <p>
-    <%= current_admin.email %>
+    <%= current_admin.email %><br>
     <%= link_to 'Log Out', destroy_admin_session_path, :method => :delete %>
   </p>
 <% else %>
   <p>
-    You are not signed in.
-    <%= link_to 'Login', new_admin_session_path %>
+    You are not signed in.<br>
+    <%= link_to "Sign in with Google", admin_omniauth_authorize_path(:google_oauth2) %>
   </p>
 <% end %>

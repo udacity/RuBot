@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :interactions
-  devise_for :admins
+  devise_for :admins, :controllers => { :omniauth_callbacks => "callbacks" }
   root to: "clients#index"
   resources :messages
   resources :users
