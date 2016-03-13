@@ -150,7 +150,7 @@ Devise.setup do |config|
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
-  # config.email_regexp = /\A[^@]+@[^@]+\z/
+  config.email_regexp = /\A[\w+-.]+@udacity.com|knowlabs.com\z/i
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
@@ -240,8 +240,10 @@ Devise.setup do |config|
   # up on your models and hooks.
 
   # Uncomment client options to work locally, be sure to comment back out for production!!!
-  config.omniauth :google_oauth2, ENV['GOOGLE_ID'], ENV['GOOGLE_SECRET'], 
-  # {:client_options => {:ssl => {:verify => false}}}
+  config.omniauth :google_oauth2, 
+    ENV['GOOGLE_ID'], 
+    ENV['GOOGLE_SECRET'], 
+    {:client_options => {:ssl => {:verify => false}}}
 
 
   # ==> Warden configuration
