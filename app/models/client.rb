@@ -68,7 +68,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_scheduled_messages
-    @rubot.on :user_change do |data|
+    @rubot.on :team_join do |data|
       sleep(5)
       s = Rufus::Scheduler.new
       set_user_rubot_channel_id(data)
