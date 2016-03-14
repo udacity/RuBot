@@ -242,13 +242,13 @@ Devise.setup do |config|
   # Conditional solves the problem with Faraday SSL problems locally.
   if Rails.env.development?
     config.omniauth :google_oauth2, 
-      ENV['GOOGLE_ID'], 
-      ENV['GOOGLE_SECRET'], 
+      ENV['CLIENT_ID'], 
+      ENV['CLIENT_SECRET'], 
       {:client_options => {:ssl => {:verify => false}}}
   else
     config.omniauth :google_oauth2, 
-      ENV['GOOGLE_ID'], 
-      ENV['GOOGLE_SECRET']
+      ENV['CLIENT_ID'], 
+      ENV['CLIENT_SECRET']
   end
 
   # ==> Warden configuration
