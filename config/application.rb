@@ -25,6 +25,7 @@ module Rubot
 
     config.after_initialize do
       puts "INSIDE THE AFTER INITIALIZE!!!!! :)"
+      puts "ENV = development? #{Rails.env.development?}"
       Thread.new do
         @client = Client.new
         @client.bot_behavior        
