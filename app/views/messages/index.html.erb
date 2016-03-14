@@ -24,11 +24,9 @@
         <td><%= message.text %></td>
         <td><%= message.project %></td>
         <td><%= "#{message.delay} (#{message.message_number})" %></td>
-        <td><%= link_to 'Show', message %></td>
-        <td><%= link_to 'Edit', edit_message_path(message) if current_admin %></td>
-        <td class="destroy"><%= link_to 'Destroy', message, method: :delete, data: { confirm: "PLEASE DO NOT DELETE messages unless necessary. Editing an existing message is a much better idea if possible. Are you sure you want to delete this message? 
-
-Are you sure you're sure?" } %></td>
+        <td><%= link_to 'Show', message %>
+        <%= link_to 'Edit', edit_message_path(message) if current_admin %>
+        <%= link_to 'Destroy', message, method: :delete, data: { confirm: "Are you sure you want to delete this message? Consider editing instead." } if current_admin %></td>
       </tr>
     <% end %>
   </tbody>

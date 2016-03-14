@@ -17,6 +17,8 @@
 a { 
   color: blue;
   text-decoration: none;
+  margin-bottom: 4px;
+  display: inline-block;
 }
 
 a:visited { color: darkblue; }

@@ -239,12 +239,17 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
 
-  # Uncomment client options to work locally, be sure to comment back out for production!!!
-  config.omniauth :google_oauth2, 
-    ENV['GOOGLE_ID'], 
-    ENV['GOOGLE_SECRET'], 
-    {:client_options => {:ssl => {:verify => false}}}
-
+  # Conditional solves the problem with Faraday SSL problems locally.
+  if Rails.env.development?
+    config.omniauth :google_oauth2, 
+      ENV['GOOGLE_ID'], 
+      ENV['GOOGLE_SECRET'], 
+      {:client_options => {:ssl => {:verify => false}}}
+  else
+    config.omniauth :google_oauth2, 
+      ENV['GOOGLE_ID'], 
+      ENV['GOOGLE_SECRET']
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
