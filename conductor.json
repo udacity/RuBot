@@ -11,8 +11,8 @@
       "SERVICE_3000_NAME": "rubot",
       "SERVICE_3000_TAGS": "public",
       "SLACK_TOKEN": "$SLACK_TOKEN",
-      "CLIENT_ID": "$CLIENT_ID"
-      "CLIENT_SECRET": "$CLIENT_SECRET"
+      "CLIENT_ID": "$CLIENT_ID",
+      "CLIENT_SECRET": "$CLIENT_SECRET",
       "SECRET_KEY_BASE": "$SECRET_KEY_BASE",
       "RAILS_ENV": "$RAILS_ENV",
       "DB_HOST": "{{ db_host }}",
