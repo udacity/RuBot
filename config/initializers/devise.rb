@@ -248,7 +248,9 @@ Devise.setup do |config|
   else
     config.omniauth :google_oauth2, 
       ENV['CLIENT_ID'], 
-      ENV['CLIENT_SECRET']
+      ENV['CLIENT_SECRET'],
+      #This is a temporary solution that needs to be fixed ASAP.
+      {:client_options => {:ssl => {:verify => false}}}
   end
 
   # ==> Warden configuration
