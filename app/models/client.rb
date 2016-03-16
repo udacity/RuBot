@@ -84,8 +84,7 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new
         s.in message.delay do
           send_message(@user.channel_id, message.id)
-          @log = Log.where(message_id: message.id).first
-          @log.delete
+          Log.where(message_id: message.id).first.delete
         end
       end
     end

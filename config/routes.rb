@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get '/logs', to: 'logs#index'
+  resources :logs
   resources :interactions
   devise_for :admins, :controllers => { :omniauth_callbacks => "callbacks" }
   root to: "clients#index"
