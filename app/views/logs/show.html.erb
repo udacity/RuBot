@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Channel:</strong>
+  <%= @log.channel_id %>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @log.message_id %>
+</p>
+
+<p>
+  <strong>Delivery time:</strong>
+  <%= @log.delivery_time %>
+</p>
+
+<%= link_to 'Edit', edit_log_path(@log) %> |
+<%= link_to 'Back', logs_path %>

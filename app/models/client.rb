@@ -68,15 +68,39 @@ class Client < ActiveRecord::Base
   end
 
   def send_scheduled_messages
-    @rubot.on :team_join do |data|
+    @rubot.on :user_change do |data|
       sleep(5)
-      s = Rufus::Scheduler.new
       set_user_rubot_channel_id(data)
       @messages = Message.all.sort
       @messages.each do |message|
+        #message_number is "delay" in seconds.
+        delivery_time = Time.now + message.message_number
+        @log = Log.new(
+          channel_id: @user.channel_id,
+          message_id: message.id,
+          delivery_time: delivery_time
+        )
+        @log.save
+        s = Rufus::Scheduler.new
         s.in message.delay do
           send_message(@user.channel_id, message.id)
+          @log = Log.where(message_id: message.id).first
+          @log.delete
         end
+      end
+    end
+  end
+
+  def reschedule_messages
+    Log.all.each do |log|
+      unless log.scheduled
+        s = Rufus::Scheduler.new
+        s.at log.delivery_time do
+          send_message(log.channel_id, log.message_id)
+          log.delete
+        end
+        log.scheduled = true
+        log.save
       end
     end
   end
@@ -139,6 +163,7 @@ class Client < ActiveRecord::Base
     say_hello_on_start
     log_messages
     add_new_user
+    reschedule_messages
     send_scheduled_messages
     update_user
     respond_to_messages
