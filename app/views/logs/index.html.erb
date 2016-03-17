@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Logs</h1>
-<h3>You can ignore this page if you're not debugging. All logs are deleted after their corresponding messages are sent.</h3>
-<p>This is a list of all messages waiting to be sent.</p> 
+<h3>You can ignore this page if you're not debugging.</h3>
+<p>This is a list of all messages waiting to be sent. All logs are deleted after their corresponding messages are sent.</p> 
 <p>If scheduled = true, then the Slack API connection has restarted and the program has rescheduled a new task to send the message.</p>
 <p>If scheduled = false, then the Slack API connection has not restarted since the tasks were scheduled.</p>
 
@@ -12,7 +12,6 @@
       <th>Channel</th>
       <th>Message</th>
       <th>Delivery time</th>
-      <th>Scheduled?</th>
 
       <th colspan="3"></th>
     </tr>
@@ -24,7 +23,6 @@
         <td><%= log.channel_id %></td>
         <td><%= log.message_id %></td>
         <td><%= log.delivery_time %></td>
-        <td><%= log.scheduled %></td>
         <td><%= link_to 'Show', log %></td>
       </tr>
     <% end %>

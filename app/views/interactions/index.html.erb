@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 <div class="header">
   <h1>Interactions</h1> 
-  <%= link_to 'Create a New Interaction', new_interaction_path if current_admin %>
+  <%= link_to 'Create a New Interaction', new_interaction_path %>
 </div>
 
 <p><b>Note</b> - User input will automatically be "downcased" and is not case sensitive.</p>
@@ -21,8 +21,8 @@
         <td><%= interaction.user_input %></td>
         <td><%= interaction.response %></td>
         <td><%= link_to 'Show', interaction %>
-        <%= link_to 'Edit', edit_interaction_path(interaction) if current_admin %>
-        <%= link_to 'Destroy', interaction, method: :delete, data: { confirm: 'Are you sure?' } if current_admin %></td>
+        <%= link_to 'Edit', edit_interaction_path(interaction) %>
+        <%= link_to 'Destroy', interaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

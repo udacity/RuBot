@@ -68,7 +68,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_scheduled_messages
-    @rubot.on :team_join do |data|
+    @rubot.on :user_change do |data|
       sleep(5)
       set_user_rubot_channel_id(data)
       @messages = Message.all.sort
@@ -92,14 +92,12 @@ class Client < ActiveRecord::Base
 
   def reschedule_messages
     Log.all.each do |log|
-      unless log.scheduled
+      if log.delivery_time > Time.now
         s = Rufus::Scheduler.new
         s.at log.delivery_time do
           send_message(log.channel_id, log.message_id)
           log.delete
         end
-        log.scheduled = true
-        log.save
       end
     end
   end

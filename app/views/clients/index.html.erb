@@ -3,11 +3,9 @@
 <h1>Welcome to RuBot's control panel!</h1>
 <h2>RuBot is an on-boarding bot for the RubyND Slack team.</h2><br>
 
-<% if !current_admin %>
-  <p>You need to log in to use this site. Please ping @fuzz on Slack for login credentials.</p>
-<% end %>
-
-<% if current_admin %>
+<%# if !current_admin %>
+<!--   <p>You need to log in to use this site. Please ping @fuzz on Slack for login credentials.</p> -->
+<%# end %>
   
   <p><%= link_to 'Messages', messages_path %>: The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement. For example, message 1 is sent immediately and introduces the new user to the team and the community, while another message is sent 5 days later telling the student about 1 on 1's in hopes that they'll schedule an appointment instead of quitting before the end of their trial period.</p><br>
 

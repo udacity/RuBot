@@ -15,11 +15,11 @@
 </div>
 
 <div id="nav">
-  <%= link_to 'Home', clients_path if current_admin %>
-  <%= link_to 'Messages', messages_path if current_admin %>
-  <%= link_to 'Interactions', interactions_path if current_admin %>
-  <%= link_to 'User List', users_path if current_admin %>
-  <%= link_to 'Logs', logs_path if current_admin %>
+  <%= link_to 'Home', clients_path %>
+  <%= link_to 'Messages', messages_path %>
+  <%= link_to 'Interactions', interactions_path %>
+  <%= link_to 'User List', users_path %>
+  <%= link_to 'Logs', logs_path %>
 </div>
 
 <%= yield %>
