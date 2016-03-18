@@ -2,9 +2,7 @@
 
 <h1>Logs</h1>
 <h3>You can ignore this page if you're not debugging.</h3>
-<p>This is a list of all messages waiting to be sent. All logs are deleted after their corresponding messages are sent.</p> 
-<p>If scheduled = true, then the Slack API connection has restarted and the program has rescheduled a new task to send the message.</p>
-<p>If scheduled = false, then the Slack API connection has not restarted since the tasks were scheduled.</p>
+<p>This is a list of all messages waiting to be sent. If the server goes down, the tasks to send these messages goes down with it. So, to solve that problem, at startup the program will reschedule any of these outstanding logs. All logs are deleted after their corresponding messages are sent.</p> 
 
 <table>
   <thead>
