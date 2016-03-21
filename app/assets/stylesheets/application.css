@@ -14,27 +14,23 @@
  *= require_self
  */
 
-a { 
+/*a { 
   color: blue;
   text-decoration: none;
   margin-bottom: 4px;
   display: inline-block;
-}
+}*/
 
-a:visited { color: darkblue; }
+/*a:visited { color: darkblue; }
 
 a:hover { 
   background-color: inherit;
   color: blue;
   text-decoration: underline;
 }
-
+*/
 body {
-  margin: 2vw 10vw 2vw 7vw;
-  padding: 0;
-  color: #333;
-  background-color: #eee;
-  font: 1em/1.2 Georgia, "Comic Sans", Arial, Geneva, sans-serif;
+  background-color: rgb(248,248,249);
 }
 
 p, td {
@@ -70,9 +66,9 @@ input {
   width: 200px;
 }
 
-#login {
+/*#login {
   float: right;
-}
+}*/
 
 #admin_remember_me {
   width: 10px;
@@ -97,28 +93,54 @@ input {
   width: 150px;
 }
 
-#nav a {
+/*#nav a {
   display: inline-block;
   margin: 20px 15px 0 0;
-}
+}*/
 
-#nav {
+/*#nav {
   margin-bottom: 25px;
 }
-
+*/
 /*.header a {
   float: right;
 }*/
 
 
 
+.ui.container.blue, .ui.fixed.inverted.menu.blue {
+  background: #2e3d49;
+}
 
 
 
+  .ui.menu .item img.logo {
+    margin-right: 1.5em;
+  }
+  .main.container {
+    margin-top: 5em;
+  }
 
+  i.write.icon {
+    color: white;
+  }
 
+  button.ui.labeled.teal.icon.button {
+    background: #02b3e4;
+  }
 
+  button.ui.labeled.teal.icon.button > a {
+    color: white;
+  }
+ 
+html {
+  font-family: 'Open Sans' !important; 
+}
+/*ui labeled teal icon button*/
 
+.red.button a {
+  color:white;
+}
 
 
 

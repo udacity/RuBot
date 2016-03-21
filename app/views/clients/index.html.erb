@@ -1,12 +1,75 @@
+<div class="ui segment">
+
 <p id="notice"><%= notice %></p>
 
-<h1>Welcome to RuBot's control panel!</h1>
-<h2>RuBot is an on-boarding bot for the RubyND Slack team.</h2><br>
+<!-- <img src="http://i.imgur.com/N4XYGCs.jpg" class="ui small right floated image" alt=""> -->
+
+  <img src="http://i.imgur.com/w4JMgXF.jpg" class="ui floated left image tiny ">
+
+<h1 class="ui header">Welcome to RuBot's control panel!</h1>
+
+
+<h3 class="ui header">RuBot is an on-boarding bot for the RubyND Slack team.</h3><br>
 
 <%# if !current_admin %>
 <!--   <p>You need to log in to use this site. Please ping @fuzz on Slack for login credentials.</p> -->
 <%# end %>
-  
+
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Modal Title
+  </div>
+  <div class="image content">
+    <div class="image">
+      An image can appear on left or an icon
+    </div>
+    <div class="description">
+      A description can appear on the right
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button">Cancel</div>
+    <div class="ui button">OK</div>
+  </div>
+</div>
+
+
+<div class="ui three column grid">
+  <div class="column">
+    <div class="ui raised segment">
+      <a class="ui blue  ribbon label">Messages <i class="icon send"></i> </a>
+      <span>The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement</span>
+      <div class="ui accordion">
+			  <div class="title">
+			    <i class="dropdown icon"></i>
+			    What are messages?
+			  </div>
+			  <div class="content">
+			    <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+			  </div>
+			</div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui raised segment">
+      <a class="ui orange ribbon label">Interactions <i class="icon comment"></i> </a>
+      <span>The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement</span>
+      <p></p>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui raised segment">
+      <a class="ui teal ribbon label">Users <i class="icon "></i> </a>
+      <span>The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement</span>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+
+
+	
   <p><%= link_to 'Messages', messages_path %>: The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement. For example, message 1 is sent immediately and introduces the new user to the team and the community, while another message is sent 5 days later telling the student about 1 on 1's in hopes that they'll schedule an appointment instead of quitting before the end of their trial period.</p><br>
 
   <p><%= link_to 'Interactions', interactions_path %>: Users can also interact with RuBot. The bot will respond to specified user input with a corresponding response.<br>
@@ -21,4 +84,9 @@
 
   <p>This is a brand new project, and feedback is warmly welcomed. Please ping @fuzz or email steven.worley@knowlabs.com with suggestions, problems, advice, etc.</p>
 
-<% end %>
+  </div>
+
+  <script type="text/javascript" charset="utf-8" async defer>
+   $('.ui.accordion').accordion();
+   $('.ui.modal').modal();
+  </script>

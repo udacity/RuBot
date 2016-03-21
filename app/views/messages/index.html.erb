@@ -1,14 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<div class="header">
+<div class="ui segment">
+  <div class="header">
   <h1>Messages</h1>
-  <%= link_to 'Create a New Message', new_message_path %>
+  <button class="ui labeled teal icon small button right floated ">
+  <i class="write icon"></i>
+    <%= link_to 'New Message', new_message_path %>
+</button>
 </div>
 
-<table>
+<table class="ui celled striped table">
   <thead>
     <tr>
-      <th>Number</th>
+      <th>ID</th>
       <th>Text</th>
       <th>Summary</th>
       <th>Delay(seconds)</th>
@@ -18,6 +22,7 @@
 
   <tbody>
     <% sorted_messages = @messages.sort_by(&:message_number) %>
+    <% sorted_messages = [Message.new(id: 1, text: "Hello", project: "NONEaksljdlaskjdl sakjdlsakjdlaskjdlaskj dlaskj", delay: "50m"), Message.new(id: 2, text: "Hello", project: "NONE", delay: "50m")] %>
     <% sorted_messages.each do |message| %>
       <tr>
         <td><%= sorted_messages.index(message) + 1 %></td>
@@ -31,5 +36,5 @@
     <% end %>
   </tbody>
 </table>
-
+</div>
 <br>

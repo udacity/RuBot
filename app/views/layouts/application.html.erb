@@ -2,27 +2,50 @@
 <html>
 <head>
   <title>Rubot</title>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.js" type="text/javascript" charset="utf-8"></script>
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
+
+
 </head>
 <body>
+  <div class="ui fixed inverted menu blue">
+    <div class="ui container blue">
+      <a href="#" class="header item">
+        <img class="logo" src="https://udacity.atlassian.net/wiki/download/attachments/7372916/160-mark-slate.png?version=2&modificationDate=1457991402001&api=v2">
+          Rubot
+      </a>
+    <%= link_to 'Home', clients_path, :class => "item" %>
+    <%= link_to 'Messages', messages_path, :class => "item" %>
+    <%= link_to 'Interactions', interactions_path, :class => "item" %>
+    <%= link_to 'User List', users_path, :class => "item" %>
+    <%= link_to 'Logs', logs_path, :class => "item" %>
 
-<p class="alert"><%= alert %></p>
+      <div class="ui simple right dropdown item">
+        User <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="#">Logout</a>
+          <a class="item" href="#">Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div id="login">
-  <%= render 'layouts/user_widget' %>
-</div>
+  <div class="ui main text container">
+    <p class="alert"><%= alert %></p>
+      <%= render 'layouts/user_widget' %>
+      <%= yield %>
+  </div>
 
-<div id="nav">
-  <%= link_to 'Home', clients_path %>
-  <%= link_to 'Messages', messages_path %>
-  <%= link_to 'Interactions', interactions_path %>
-  <%= link_to 'User List', users_path %>
-  <%= link_to 'Logs', logs_path %>
-</div>
 
-<%= yield %>
 
 </body>
 </html>
