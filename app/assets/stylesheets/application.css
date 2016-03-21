@@ -99,7 +99,8 @@ input {
   .ui.menu .item img.logo {
     margin-right: 1.5em;
   }
-  .main.container, .ui.segment {
+
+  .main.container, #spacer{
     margin-top: 5em;
   }
 

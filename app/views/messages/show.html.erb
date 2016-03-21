@@ -1,24 +1,39 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Message Number:</strong>
-  <%= @message.message_number %>
-</p>
-
-<p>
-  <strong>Text:</strong>
-  <%= @message.text %>
-</p>
-
-<p>
-  <strong>Summary:</strong>
-  <%= @message.project %>
-</p>
-
-<p>
-  <strong>Delay:</strong>
-  <%= @message.delay %>
-</p>
+<div class="ui grid">
+  <div class="five wide column"></div>
+  <div class="six wide column">
+    <div class="ui segment" id="spacer">  
+      <h1 class="ui blue header"><%= @message.project %></h1>
+      <div class="ui colored blue divider"></div>
+        <div>
+            <strong>Message Number:</strong>
+            <%= @message.message_number %>
+        </div>
+        <br>
+        <div>
+          <strong>Text:</strong>
+          <div class="ui secondary segment">
+           <%= @message.text %>
+          </div>
+        </div>
+        <br>
+        <div>
+          <strong>Summary:</strong>
+          <%= @message.project %>
+        </div>
+        <br>
+        <div>
+          <strong>Delay:</strong>
+          <%= @message.delay %>
+        </div>
+        <br>
 
 <%= link_to 'Edit', edit_message_path(@message) if current_admin %> |
 <%= link_to 'Back', messages_path %>
+    </div>
+  </div>
+  <div class="five wide column"></div>
+</div>
+
+
+
