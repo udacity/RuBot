@@ -4,6 +4,7 @@
   <table>
     <thead>
       <tr>
+        <th>Profile Pic</th>
         <th>User name</th>
         <th>Real name</th>
         <th>Slack ID</th>
@@ -16,6 +17,7 @@
     <tbody>
       <% @users.each do |user| %>
         <tr>
+          <td><%= image_tag(user.pic) %></td>
           <td><%= user.user_name %></td>
           <td><%= user.real_name %></td>
           <td><%= user.slack_id %></td>
