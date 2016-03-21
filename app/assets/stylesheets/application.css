@@ -74,24 +74,6 @@ input {
   width: 10px;
 }
 
-.actions input, .btn {
-  color: #fff !important;
-  background-color: royalblue;
-  border-color: #222;
-  display: inline-block;
-  padding: .5em 1em;
-  margin-bottom: 0;
-  font-weight: 400;
-  line-height: 1.2;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: .2em;
-  text-decoration: none;
-  width: 150px;
-}
 
 /*#nav a {
   display: inline-block;
@@ -117,7 +99,7 @@ input {
   .ui.menu .item img.logo {
     margin-right: 1.5em;
   }
-  .main.container {
+  .main.container, .ui.segment {
     margin-top: 5em;
   }
 

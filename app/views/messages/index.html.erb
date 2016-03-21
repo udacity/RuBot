@@ -1,40 +1,48 @@
-<p id="notice"><%= notice %></p>
+<div class="ui grid">
+  <div class="two wide column"></div>
+  <div class="twelve wide column">
+    <p id="notice"><%= notice %></p>
 
-<div class="ui segment">
-  <div class="header">
-  <h1>Messages</h1>
-  <button class="ui labeled teal icon small button right floated ">
-  <i class="write icon"></i>
-    <%= link_to 'New Message', new_message_path %>
-</button>
+    <div class="ui segment">
+      <div class="header">
+        <h1>Messages</h1>
+        <button class="ui labeled teal icon small button right floated ">
+          <i class="write icon"></i>
+          <%= link_to 'New Message', new_message_path %>
+        </button>
+      </div>
+      <div class="ui divider"></div>
+
+    <table class="ui celled striped table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Text</th>
+          <th>Summary</th>
+          <th>Delay(seconds)</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% sorted_messages = @messages.sort_by(&:message_number) %>
+        
+        <% sorted_messages.each do |message| %>
+          <tr>
+            <td><%= sorted_messages.index(message) + 1 %></td>
+            <td><%= message.text %></td>
+            <td><%= message.project %></td>
+            <td><%= "#{message.delay} (#{message.message_number})" %></td>
+            <td>
+            <%= link_to 'Details', message, :class => "ui teal basic label"%>
+            <%= link_to 'Edit', edit_message_path(message), :class => "ui orange basic label" %> 
+            <%= link_to 'Delete', message, method: :delete,  :class => "ui red basic label", data: { confirm: "Are you sure you want to delete this message? Consider editing instead." } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  <div class="two wide column"></div>
 </div>
-
-<table class="ui celled striped table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Text</th>
-      <th>Summary</th>
-      <th>Delay(seconds)</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% sorted_messages = @messages.sort_by(&:message_number) %>
-    <% sorted_messages = [Message.new(id: 1, text: "Hello", project: "NONEaksljdlaskjdl sakjdlsakjdlaskjdlaskj dlaskj", delay: "50m"), Message.new(id: 2, text: "Hello", project: "NONE", delay: "50m")] %>
-    <% sorted_messages.each do |message| %>
-      <tr>
-        <td><%= sorted_messages.index(message) + 1 %></td>
-        <td><%= message.text %></td>
-        <td><%= message.project %></td>
-        <td><%= "#{message.delay} (#{message.message_number})" %></td>
-        <td><%= link_to 'Show', message %>
-        <%= link_to 'Edit', edit_message_path(message) %>
-        <%= link_to 'Destroy', message, method: :delete, data: { confirm: "Are you sure you want to delete this message? Consider editing instead." } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-</div>
-<br>

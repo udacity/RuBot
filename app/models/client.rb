@@ -15,14 +15,23 @@ class Client < ActiveRecord::Base
   end
 
   def say_hello_on_start
-    @rubot.on :hello do
+    @rubot.on :hello do 
       puts "Successfully connected, welcome '#{@rubot.self.name}' to the '#{@rubot.team.name}' team at https://#{@rubot.team.domain}.slack.com."
+    end
+  end
+
+  def get_bot_user_id
+    @rubot.on :hello do
+      get_users
+      puts "Bot name: #{@rubot.self.name}"
+      @@bot_id = @users.select { |bot| bot.user_name == @rubot.self.name }.first.slack_id
+      puts "Bot ID: #{@@bot_id}"
     end
   end
 
   def log_messages
     @rubot.on :message do |data|
-      if data.user == "U0RDVBPCH"
+      if data.user == @@bot_id
         puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
       end
     end
@@ -68,7 +77,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_scheduled_messages
-    @rubot.on :user_change do |data|
+    @rubot.on :team_join do |data|
       sleep(5)
       set_user_rubot_channel_id(data)
       @messages = Message.all.sort
@@ -116,7 +125,7 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages
     @rubot.on :message do |data|
-      if data.user != "U0RDVBPCH"
+      if data.user != @@bot_id
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
@@ -158,13 +167,14 @@ class Client < ActiveRecord::Base
     # Need to figure out way to defend against lost connection?
     setup_client
     say_hello_on_start
+    update_user_list
+    get_bot_user_id
     log_messages
     add_new_user
     reschedule_messages
     send_scheduled_messages
     update_user
     respond_to_messages
-    update_user_list
     start_rubot
   end
 

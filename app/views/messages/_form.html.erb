@@ -1,4 +1,4 @@
-<%= form_for(@message) do |f| %>
+<%= form_for @message, :html => {:class => 'ui form'} do |f| %>
   <% if @message.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@message.errors.count, "error") %> prohibited this message from being saved:</h2>
@@ -17,13 +17,16 @@
   </div>
   <div class="field">
     <%= f.label :summary %><br>
-    <%= f.text_field :project %>
+    <%= f.text_field :project, placeholder: 'Summary' %>
   </div>
   <div class="field">
-    <%= f.label :delay %> <br>(format ex: 15m, 12h, 7d)<br>
-    <%= f.text_field :delay %>
+    <label>
+      Delay <i class="help red inline circular icon link" data-content="Format the message delay using m, h, and d for minutes, hours, and days."></i>
+    </label>
+    <%= f.text_field :delay, placeholder: 'Delay (format ex: 15m, 12h, 7d)' %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= f.submit :class => 'ui teal button' %>
 <% end %>
+
+
+

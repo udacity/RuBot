@@ -1,2 +1,21 @@
-<h1><%= link_to image_tag("signin-google.png"), admin_omniauth_authorize_path(:google_oauth2) %></h1>
-<h2><b>Note:</b> You must log in with a Udacity or Knowlabs email address.</h2>
+
+<div class="ui icon message">
+  <i class="user icon"></i>
+  <div class="content">
+  <% if admin_signed_in? %>
+  	<div class="header">
+      <%= current_admin.email %>
+    </div>
+     <p><%= link_to 'Log Out', destroy_admin_session_path, :method => :delete %> </p>
+	<% else %>
+		<div class="header">
+      You are not signed in.
+          <button class="ui labeled right floated red icon  button">
+      	<i class="google icon"></i>
+      	<%= link_to "Sign in with Google", admin_omniauth_authorize_path(:google_oauth2) %>
+    </button>
+    </div>
+
+	<% end %>
+  </div>
+</div>
