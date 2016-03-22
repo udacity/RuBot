@@ -1,6 +1,20 @@
-<h1>Editing Interaction</h1>
 
-<%= render 'form' %>
+<div class="ui main text container">
+	<div class="ui segment">
+	<h1 class="ui teal header">
+	  <i class="plus icon"></i>
+	  <div class="content">
+	    Edit Interaction
+	  </div>
+	</h1>
+		
+		<%= render 'form' %>
+		<%= link_to 'Show', @interaction %> |
+		<%= link_to 'Back', interactions_path %>
 
-<%= link_to 'Show', @interaction %> |
-<%= link_to 'Back', interactions_path %>
+	</div>
+</div>
+
+
+
+

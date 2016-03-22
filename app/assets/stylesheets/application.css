@@ -52,7 +52,7 @@ th, td {
 
 .header h1 {
   display: inline;
-  margin-right: 50px;
+  margin-right: 5px;
 }
 
 textarea {
@@ -123,8 +123,26 @@ html {
   color:white;
 }
 
+.landing {
+  background: #2e3d49;
+  color: #02ccba;
+}
 
 
+.ui.massive.button {
+  font-size: 3rem;
+  background: #2e3d49;
+  color: #02ccba;
+}
 
+.ui.massive.button:hover {
+  color: #02b3e4;
+}
+
+i.circular.send.icon, i.circular.comments.icon, i.circular.users.icon {
+  color: rgba( 2, 204, 186,1);
+
+  box-shadow: 0em 0em 0em 0.1em rgb(46, 61, 73) inset;
+}
 
 

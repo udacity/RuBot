@@ -32,36 +32,40 @@
 
 
 <div class="ui three column grid">
-  <div class="column">
-    <div class="ui raised segment">
-      <a class="ui blue  ribbon label">Messages <i class="icon send"></i> </a>
-      <span>The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement</span>
-      <div class="ui accordion">
-			  <div class="title">
-			    <i class="dropdown icon"></i>
-			    What are messages?
-			  </div>
-			  <div class="content">
-			    <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
-			  </div>
-			</div>
-    </div>
+  <div class="column center aligned messages" data-content="Format the message delay using m, h, and d for minutes, hours, and days." data-position="bottom center">
+    <button class="circular massive ui icon button landing">
+     <i class="icon send"></i>
+    </button>
+    <h3 class="ui header">Messages</h3>
+    Schedule messages to send to students
   </div>
-  <div class="column">
-    <div class="ui raised segment">
-      <a class="ui orange ribbon label">Interactions <i class="icon comment"></i> </a>
-      <span>The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement</span>
-      <p></p>
-    </div>
+  <div class="column center aligned">
+    <button class="circular massive ui icon button landing">
+  <i class="icon comments"></i>
+</button>
+    <h3 class="ui header">Interactions</h3>
+    Create specific responses to user commands
+
   </div>
-  <div class="column">
-    <div class="ui raised segment">
-      <a class="ui teal ribbon label">Users <i class="icon "></i> </a>
-      <span>The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement</span>
-      <p></p>
-    </div>
+  <div class="column center aligned">
+    <button class="circular massive ui icon button landing">
+  <i class="icon user"></i>
+</button>
+    <h3 class="ui header">Users</h3>
+    View and search the list of slack users
   </div>
 </div>
+
+<script type="text/javascript" charset="utf-8" >
+$('.messages')
+  .popup({
+    inline: true
+  })
+;
+</script>
+
+
+
 
 
 
@@ -86,4 +90,6 @@
    $('.ui.accordion').accordion();
    $('.ui.modal').modal();
   </script>
+
+
 </div>

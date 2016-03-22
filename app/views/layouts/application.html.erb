@@ -23,18 +23,26 @@
         <img class="logo" src="https://udacity.atlassian.net/wiki/download/attachments/7372916/160-mark-slate.png?version=2&modificationDate=1457991402001&api=v2">
           Rubot
       </a>
-    <%= link_to 'Home', clients_path, :class => "item" %>
+    <%= link_to 'Home', root_path, :class => "item" %>
     <%= link_to 'Messages', messages_path, :class => "item" %>
     <%= link_to 'Interactions', interactions_path, :class => "item" %>
     <%= link_to 'User List', users_path, :class => "item" %>
     <%= link_to 'Logs', logs_path, :class => "item" %>
 
       <div class="ui simple right dropdown item">
-        User <i class="dropdown icon"></i>
-        <div class="menu">
-          <a class="item" href="#">Logout</a>
-          <a class="item" href="#">Profile</a>
+      <% if current_admin %>
+        <%= current_admin.email %><i class="dropdown icon"></i>
+          <div class="menu">
+            <%= link_to "Log Out", destroy_admin_session_path, :method => :delete, :class => "item" %>
+
         </div>
+      <% else %>
+          User <i class="dropdown icon"></i>
+          <div class="menu">
+            <%= link_to "Sign In", destroy_admin_session_path, :method => :delete, :class => "item" %>
+        </div>
+      <% end %>
+        
       </div>
     </div>
   </div>

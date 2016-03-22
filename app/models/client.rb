@@ -46,7 +46,7 @@ class Client < ActiveRecord::Base
           real_name: data.user.profile.real_name,
           slack_id:  data.user.id,
           email:     data.user.profile.email,
-          pic:       data.user.profile.image_48
+          pic:       data.user.profile.image_192
         )
         @user.save
       end
@@ -120,7 +120,7 @@ class Client < ActiveRecord::Base
       @user.real_name = data.user.profile.real_name
       @user.slack_id =  data.user.id
       @user.email =     data.user.profile.email
-      @user.pic =       data.user.profile.image_48
+      @user.pic =       data.user.profile.image_192
       @user.save
     end
   end
@@ -154,7 +154,7 @@ class Client < ActiveRecord::Base
           real_name: member.profile.real_name,
           slack_id:  member.id,
           email:     member.profile.email,
-          pic:       member.profile.image_48
+          pic:       member.profile.image_192
         )
         @user.save
       end

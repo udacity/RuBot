@@ -1,14 +1,29 @@
 <p id="notice"><%= notice %></p>
+<div class="ui grid">
+  <div class="five wide column"></div>
+  <div class="six wide column">
+<div class="ui segment" id="spacer">  
+      <h1 class="ui blue header">Interaction <%= @interaction.id %></h1>
+      <div class="ui colored blue divider"></div>
+        <div>
+            <strong>User Input Trigger</strong>
+            <%= @interaction.user_input %>
+        </div>
+        <br>
+        <div>
+          <strong>Response Text:</strong>
+          <div class="ui secondary segment">
+           <%= @interaction.response %>
+          </div>
+        </div>
+        <br>
+	<%= link_to 'Edit', edit_interaction_path(@interaction) %> |
+	<%= link_to 'Back', interactions_path %>
+    </div>
+  </div>
+  <div class="five wide column"></div>
+</div>
 
-<p>
-  <strong>User input:</strong>
-  <%= @interaction.user_input %>
-</p>
 
-<p>
-  <strong>Response:</strong>
-  <%= @interaction.response %>
-</p>
 
-<%= link_to 'Edit', edit_interaction_path(@interaction) %> |
-<%= link_to 'Back', interactions_path %>
+		

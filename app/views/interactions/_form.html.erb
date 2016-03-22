@@ -1,4 +1,4 @@
-<%= form_for(@interaction) do |f| %>
+<%= form_for @interaction, :html => {:class => 'ui form'} do |f| %>
   <% if @interaction.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@interaction.errors.count, "error") %> prohibited this interaction from being saved:</h2>
@@ -11,6 +11,8 @@
     </div>
   <% end %>
 
+
+
   <div class="field">
     <%= f.label :user_input %><br>
     <%= f.text_field :user_input %>
@@ -19,7 +21,6 @@
     <%= f.label :response %><br>
     <%= f.text_area :response %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= f.submit :class => 'ui teal button' %>
 <% end %>
+

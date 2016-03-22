@@ -26,8 +26,8 @@ class Admin < ActiveRecord::Base
           admin.email = auth.info.email
           admin.password = Devise.friendly_token[0,20]
         else
-          puts "ERRRRRROOOOOORRR!!!!!"
-          raise ActionController::InvalidAuthenticityToken.new("You must log in with a Udacity or Knowlabs email.")
+          puts "Auth ERRRRRROOOOOORRR!!!!!"
+          # raise ActionController::InvalidAuthenticityToken.new("You must log in with a Udacity or Knowlabs email.")
         end
       end
   end

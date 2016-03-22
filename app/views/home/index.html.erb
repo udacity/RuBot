@@ -1,17 +1,53 @@
+<div class="ui main text container">
+<div class="ui segment">
+
 <p id="notice"><%= notice %></p>
 
-<h1>Welcome to RuBot's control panel!</h1>
-<h2>RuBot is an on-boarding bot for the RubyND Slack team.</h2><br>
-  
-<p><%= link_to 'Messages', messages_path %>: The bot sends messages to new Slack users at specified intervals so that useful information can be sent out strategically in hopes of improving retention and increasing engagement. For example, message 1 is sent immediately and introduces the new user to the team and the community, while another message is sent 5 days later telling the student about 1 on 1's in hopes that they'll schedule an appointment instead of quitting before the end of their trial period.</p><br>
 
-<p><%= link_to 'Interactions', interactions_path %>: Users can also interact with RuBot. The bot will respond to specified user input with a corresponding response.<br>
+  <img src="http://i.imgur.com/w4JMgXF.jpg" class="ui floated left image tiny ">
 
-  <blockquote>
-    <%= image_tag("rubotspeak.png") %>
-  </blockquote>
-</p><br>
+<h1 class="ui header">Welcome to RuBot's control panel!</h1>
 
-<p><%= link_to 'Users', users_path %>: A list of information about current Slack team members.</p><br>
 
-<p>This is a brand new project, and feedback is warmly welcomed. Please ping @fuzz or email steven.worley@knowlabs.com with suggestions, problems, advice, etc.</p>
+<h3 class="ui header">RuBot is an on-boarding bot for the RubyND Slack team.</h3><br>
+
+<div class="ui three column grid">
+  <div class="column center aligned messages" >
+    <h2 class="ui center aligned icon header">
+  <i class="circular send icon" data-content="The bot sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student or following up 5 days later" data-variation="very wide" data-position="bottom center"></i>
+  Messages
+</h2>
+    Schedule messages to send to students
+
+  </div>
+  <div class="column center aligned">
+   <h2 class="ui center aligned icon header">
+  <i class="circular comments icon" data-content="Users can also interact with RuBot. The bot will respond to specified user input with a corresponding response" data-position="bottom center"></i>
+  Interactions
+</h2>
+Create specific responses to user commands
+  </div>
+  <div class="column center aligned">
+    <h2 class="ui center aligned icon header">
+  <i class="circular users icon" data-content="A list of information about current Slack team members." data-position="bottom center"></i>
+  Users
+</h2>
+View and search the list of slack users
+
+  </div>
+</div>
+
+<div class="ui divider"> </div>
+
+  <p>This is a brand new project, and feedback is warmly welcomed. Please ping @fuzz or @colt. You can also reach us via email at steven.worley@udacity.com and colt@udacity.com with suggestions, problems, advice, etc.</p>
+
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" >
+$('.icon')
+  .popup({
+    inline: true
+  })
+;
+</script>

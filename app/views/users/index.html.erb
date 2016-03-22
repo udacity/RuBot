@@ -21,9 +21,10 @@
     </tr>
   </thead>
   <tbody>
+  
       <% @users.each do |user| %>
         <tr>
-          <td><%= image_tag user.pic, class: "ui mini rounded image"%></td>
+          <td><img src="<%= user.pic %>" class="ui mini rounded image" alt="" data-html="<img src='<%= user.pic %>' class='ui rounded image'>"></td>
           <td><%= user.user_name %></td>
           <td><%= user.real_name %></td>
           <td><%= user.slack_id %></td>
@@ -42,3 +43,9 @@
 
 <p id="notice"><%= notice %></p>
 
+
+  <script type="text/javascript" charset="utf-8" async defer>
+  $(".ui.mini.rounded.image").popup({
+    inline: true
+  });
+  </script>
