@@ -1,27 +1,38 @@
-<p id="notice"><%= notice %></p>
-<p>
-  <strong>User name:</strong>
-  <%= @user.user_name %>
-</p>
+<div class="ui grid">
+  <div class="five wide column"></div>
+  <div class="six wide column">
+    <div class="ui centered card" id="spacer">
+      <div class="image">
+        <%= image_tag @user.pic%>
+      </div>
+      <div class="content">
+        <a class="header"><%= @user.user_name %></a>
+        <div class="meta">
+          <span class="date">Joined <%= @user.created_at.strftime("%F")%></span>
+        </div>
+        <div class="description">
+          <strong>Email</strong> <%= @user.email%>
+          <br>
+          <strong>Slack ID:</strong> <%= @user.slack_id %>
+          <br>
+          <strong>Real Name:</strong>
+            <% if @user.real_name.blank? %>
+              Unspecified
+            <% else %>
+              <%= @user.real_name %>
+            <% end %>
+        </div>
+      </div>
+      <div class="extra content">
+        <a>
+          <i class="user icon"></i>
+          <%= link_to 'Back', users_path %>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="five wide column"></div>
+</div>
 
-<p>
-  <strong>Real name:</strong>
-  <%= @user.real_name %>
-</p>
 
-<p>
-  <strong>Slack:</strong>
-  <%= @user.slack_id %>
-</p>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Member Since:</strong>
-  <%= @user.created_at.strftime("%F") %>
-</p>
-
-<%= link_to 'Back', users_path %>
