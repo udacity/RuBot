@@ -77,6 +77,10 @@ class Client < ActiveRecord::Base
       )
   end
 
+  def call_blasts
+    Blast.blast(@rubot)
+  end
+
   def send_scheduled_messages
     @rubot.on :team_join do |data|
       sleep(5)
@@ -167,6 +171,9 @@ class Client < ActiveRecord::Base
   end
 
   def bot_behavior
+
+    puts Rails.application.config.rubot
+    puts '*' * 20
     # Need to figure out way to defend against lost connection?
     setup_client
     say_hello_on_start

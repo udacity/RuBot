@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :blasts
   resources :logs
   resources :interactions
   devise_for :admins, :controllers => { :omniauth_callbacks => "callbacks" }
