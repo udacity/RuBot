@@ -1,4 +1,4 @@
-fROM udacity/ruby:2.2.4
+FROM udacity/ruby:2.2.4
 
 RUN apk-install \ 
     build-base \
