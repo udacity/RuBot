@@ -1,5 +1,23 @@
-<h1>New Blast</h1>
+<%= link_to 'Back', messages_path %>
 
-<%= render 'form' %>
+<div class="ui main text container">
+  <div class="ui segment">
+  <h1 class="ui teal header">
+    <i class="plus icon"></i>
+    <div class="content">
+      <p><strong>New Blast:</strong><%=" #{Rails.application.config.client.self.name}" %> will message every user on your team when you click create!</p>
+    </div>
+  </h1>
+    
+    <%= render 'form' %>
+  </div>
+</div>
 
-<%= link_to 'Back', blasts_path %>
+
+<script type="text/javascript" charset="utf-8" >
+$('.inline.icon')
+  .popup({
+    inline: true
+  })
+;
+</script>

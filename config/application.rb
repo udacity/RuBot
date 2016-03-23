@@ -27,8 +27,8 @@ module Rubot
       puts "ENV = development? #{Rails.env.development?}"
       Thread.new do
         @client = Client.new
-        Rails.application.config.rubot = @client.setup_client
-        @client.bot_behavior(Rails.application.config.rubot)
+        Rails.application.config.client = @client.setup_client
+        @client.bot_behavior(Rails.application.config.client)
       end
     end
     
