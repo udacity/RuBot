@@ -78,17 +78,9 @@ class Client < ActiveRecord::Base
       )
   end
 
-<<<<<<< Updated upstream
-  def call_blasts
-    Blast.blast(@rubot)
-  end
 
-  def send_scheduled_messages
-    @rubot.on :team_join do |data|
-=======
   def send_scheduled_messages(client)
     client.on :team_join do |data|
->>>>>>> Stashed changes
       sleep(5)
       set_user_rubot_channel_id(data)
       @messages = Message.all.sort
@@ -176,7 +168,7 @@ class Client < ActiveRecord::Base
     client.start!
   end
 
-  def bot_behavior
+  def bot_behavior(client)
     # Need to figure out way to defend against lost connection?
     # setup_client
     say_hello_on_start(client)

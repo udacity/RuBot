@@ -25,6 +25,7 @@ class BlastsController < ApplicationController
   # POST /blasts.json
   def create
     @blast = Blast.new(blast_params)
+    @blast.reach = User.all.length
 
     respond_to do |format|
       if @blast.save

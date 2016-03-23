@@ -20,3 +20,4 @@
 /config/application.yml
 .env*
 .DS_Store
+public/assets/**

@@ -25,6 +25,7 @@
           <td><%= user.created_at.strftime("%F") %></td>
 
           <td><%= link_to 'Show', user %></td>
+          <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: "Please be sure you are deleting the correct user!! There is no way to add them back aside from restarting the program." } %></td>
         </tr>
       <% end %>
     </tbody>
