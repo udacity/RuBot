@@ -8,6 +8,7 @@
 <table>
   <thead>
     <tr>
+      <th>User</th>
       <th>Channel</th>
       <th>Message</th>
       <th>Delivery time</th>
@@ -19,6 +20,7 @@
   <tbody>
     <% @logs.each do |log| %>
       <tr>
+        <td><%= User.where(channel_id: log.channel_id).first.user_name %></td>
         <td><%= log.channel_id %></td>
         <td><%= log.message_id %></td>
         <td><%= log.delivery_time %></td>
