@@ -1,10 +1,21 @@
 class LogsController < ApplicationController
-  # before_action :set_log, only: [:show, :edit, :update, :destroy]
+  before_action :set_log, only: [:show, :destroy]
 
   # GET /logs
   # GET /logs.json
   def index
     @logs = Log.all
+  end
+
+  def show
+  end
+
+  def destroy
+    @log.destroy
+    respond_to do |format|
+      format.html { redirect_to logs_url, notice: 'Log was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   private
