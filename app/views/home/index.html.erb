@@ -11,15 +11,24 @@
 
 <h3 class="ui header">RuBot is an on-boarding bot for the RubyND Slack team.</h3><br>
 
-<div class="ui three column grid">
+<div class="ui four column grid">
   <div class="column center aligned messages" >
     <h2 class="ui center aligned icon header">
-  <i class="circular send icon" data-content="The bot sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student or following up 5 days later" data-variation="very wide" data-position="bottom center"></i>
+  <i class="circular send icon" data-content="The bot sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student and another scheduled to follow up 5 days later" data-variation="very wide" data-position="bottom center"></i>
   Messages
 </h2>
     Schedule messages to send to students
 
   </div>
+
+  <div class="column center aligned">
+   <h2 class="ui center aligned icon header">
+  <i class="circular announcement icon" data-content="Blasts will send a direct message from <%="#{Rails.application.config.client.self.name}" %> to every member of your slack team." data-position="bottom center"></i>
+  Blasts
+</h2>
+  Send a DM from <%="#{Rails.application.config.client.self.name}" %> to all users.
+  </div>
+
   <div class="column center aligned">
    <h2 class="ui center aligned icon header">
   <i class="circular comments icon" data-content="Users can also interact with RuBot. The bot will respond to specified user input with a corresponding response" data-position="bottom center"></i>
