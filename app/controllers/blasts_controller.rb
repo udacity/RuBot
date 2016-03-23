@@ -28,7 +28,7 @@ class BlastsController < ApplicationController
 
     respond_to do |format|
       if @blast.save
-        #Blast.blast
+        Blast.blast(Rails.application.config.rubot)
         format.html { redirect_to @blast, notice: 'Blast was successfully created.' }
         format.json { render :show, status: :created, location: @blast }
       else
