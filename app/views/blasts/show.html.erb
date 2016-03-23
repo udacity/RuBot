@@ -1,14 +1,29 @@
 <p id="notice"><%= notice %></p>
+<div class="ui grid">
+  <div class="five wide column"></div>
+  <div class="six wide column">
+    <div class="ui segment" id="spacer">  
+      <div class="ui colored blue divider"></div>
+        <div>
+          <strong>Text:</strong>
+          <div class="ui secondary segment">
+           <%= @blast.text %>
+          </div>
+        </div>
+        <br>
+        <div>
+          <strong>Reach:</strong>
+          <%= @blast.reach %>
+        </div>
+        <br>
+        <div>
+          <strong>Sent:</strong>
+          <%= @blast.created_at %>
+        </div>
+        <br>
 
-<p>
-  <strong>Text:</strong>
-  <%= @blast.text %>
-</p>
-
-<p>
-  <strong>Reach:</strong>
-  <%= @blast.reach %>
-</p>
-
-<%= link_to 'Edit', edit_blast_path(@blast) %> |
 <%= link_to 'Back', blasts_path %>
+    </div>
+  </div>
+  <div class="five wide column"></div>
+</div>
