@@ -1,0 +1,21 @@
+<%= form_for(@blast) do |f| %>
+  <% if @blast.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@blast.errors.count, "error") %> prohibited this blast from being saved:</h2>
+
+      <ul>
+      <% @blast.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :text %><br>
+    <%= f.text_area :text %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

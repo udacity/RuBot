@@ -24,11 +24,11 @@ module Rubot
     config.active_record.raise_in_transactional_callbacks = true
 
     config.after_initialize do
-      puts "INSIDE THE AFTER INITIALIZE!!!!! :)"
       puts "ENV = development? #{Rails.env.development?}"
       Thread.new do
         @client = Client.new
-        @client.bot_behavior        
+        Rails.application.config.rubot = @client.setup_client
+        @client.bot_behavior(Rails.application.config.rubot)
       end
     end
     
