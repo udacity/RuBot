@@ -8,37 +8,38 @@ class Client < ActiveRecord::Base
         web_client = Slack::Web::Client.new(ca_file: ENV['CA_FILE'], ca_path: ENV['CA_PATH'])
         @rubot.web_client = web_client
     end
+    @rubot
   end
 
   def get_users
     @users = User.all
   end
 
-  def say_hello_on_start
-    @rubot.on :hello do 
-      puts "Successfully connected, welcome '#{@rubot.self.name}' to the '#{@rubot.team.name}' team at https://#{@rubot.team.domain}.slack.com."
+  def say_hello_on_start(client)
+    client.on :hello do 
+      puts "Successfully connected, welcome '#{client.self.name}' to the '#{client.team.name}' team at https://#{client.team.domain}.slack.com."
     end
   end
 
-  def get_bot_user_id
-    @rubot.on :hello do
+  def get_bot_user_id(client)
+    client.on :hello do
       get_users
-      puts "Bot name: #{@rubot.self.name}"
-      @@bot_id = @users.select { |bot| bot.user_name == @rubot.self.name }.first.slack_id
+      puts "Bot name: #{client.self.name}"
+      @@bot_id = @users.select { |bot| bot.user_name == client.self.name }.first.slack_id
       puts "Bot ID: #{@@bot_id}"
     end
   end
 
-  def log_messages
-    @rubot.on :message do |data|
+  def log_messages(client)
+    client.on :message do |data|
       if data.user == @@bot_id
         puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
       end
     end
   end
 
-  def add_new_user
-    @rubot.on :team_join do |data|
+  def add_new_user(client)
+    client.on :team_join do |data|
       get_users
       unless @users.any? { |person| person.slack_id == data.user.id }
         @user = User.new(
@@ -62,24 +63,27 @@ class Client < ActiveRecord::Base
   def set_user_rubot_channel_id(data)
     #will work with responses from :team_join and :user_change events
     set_user(data)
-    @user.channel_id = @rubot.web_client.im_open(user: data.user.id).channel.id
-    @user.save
+    unless @user.channel_id
+      @user.channel_id = client.web_client.im_open(user: data.user.id).channel.id
+      @user.save
+    end
   end
 
-  def send_message(channel_id, message_id)
-    @rubot.web_client.chat_postMessage(
+  def send_message(channel_id, message_id, client)
+    client.web_client.chat_postMessage(
       channel: channel_id, 
-      text: Message.where(id: message_id).first.text, 
-      #username: "RuBot"
+      text: Message.where(id: message_id).first.text,
       as_user: true,
       unfurl_links: false,
       unfurl_media: false
       )
   end
 
-  def send_scheduled_messages
-    @rubot.on :team_join do |data|
-      sleep(5)
+
+  def send_scheduled_messages(client)
+    client.on :team_join do |data|
+      puts "HELLLLLLOOO"
+      sleep(2)
       set_user_rubot_channel_id(data)
       @messages = Message.all.sort
       @messages.each do |message|
@@ -93,27 +97,31 @@ class Client < ActiveRecord::Base
         @log.save
         s = Rufus::Scheduler.new
         s.in message.delay do
-          send_message(@user.channel_id, message.id)
+          send_message(@user.channel_id, message.id, client)
+          message.reach += 1
+          message.save
           Log.where(message_id: message.id).first.delete
         end
       end
     end
   end
 
-  def reschedule_messages
+  def reschedule_messages(client)
     Log.all.each do |log|
       if log.delivery_time > Time.now
         s = Rufus::Scheduler.new
         s.at log.delivery_time do
-          send_message(log.channel_id, log.message_id)
+          send_message(log.channel_id, log.message_id, client)
+          message.reach += 1
+          message.save
           log.delete
         end
       end
     end
   end
 
-  def update_user
-    @rubot.on :user_change do |data|
+  def update_user(client)
+    client.on :user_change do |data|
       puts "A user changed! (And I'm still running. Yay!)"
       set_user(data)
       @user.user_name = data.user.name
@@ -125,29 +133,31 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def respond_to_messages
-    @rubot.on :message do |data|
+  def respond_to_messages(client)
+    client.on :message do |data|
       if data.user != @@bot_id
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
-            @rubot.web_client.chat_postMessage(
+            client.web_client.chat_postMessage(
               channel: data.channel, 
               text: i.response, 
               as_user: true,
               unfurl_links: false,
               unfurl_media: false
             )
+            i.hits += 1
+            i.save
           end
         end
       end
     end
   end
 
-  def update_user_list
+  def update_user_list(client)
     puts "Updating user list."
     get_users
-    @rubot.web_client.users_list.members.each do |member|
+    client.web_client.users_list.members.each do |member|
       unless @users.any? { |person| person.slack_id == member.id }
         @user = User.new(
           user_name: member.name,
@@ -161,24 +171,22 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def start_rubot
+  def start_rubot(client)
     puts "START RUBOT!!!"
-    @rubot.start!
+    client.start!
   end
 
-  def bot_behavior
-    # Need to figure out way to defend against lost connection?
-    setup_client
-    say_hello_on_start
-    update_user_list
-    get_bot_user_id
-    log_messages
-    add_new_user
-    reschedule_messages
-    send_scheduled_messages
-    update_user
-    respond_to_messages
-    start_rubot
+  def bot_behavior(client)
+    say_hello_on_start(client)
+    update_user_list(client)
+    get_bot_user_id(client)
+    log_messages(client)
+    add_new_user(client)
+    reschedule_messages(client)
+    send_scheduled_messages(client)
+    update_user(client)
+    respond_to_messages(client)
+    start_rubot(client)
   end
 
 end

@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
+  resources :blasts
   resources :logs
   resources :interactions
   devise_for :admins, :controllers => { :omniauth_callbacks => "callbacks" }
   root to: "home#index"
   resources :messages
   resources :users
-  resources :clients
+  resources :metrics
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

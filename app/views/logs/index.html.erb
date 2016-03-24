@@ -8,6 +8,7 @@
 <table>
   <thead>
     <tr>
+      <th>User</th>
       <th>Channel</th>
       <th>Message</th>
       <th>Delivery time</th>
@@ -19,10 +20,12 @@
   <tbody>
     <% @logs.each do |log| %>
       <tr>
+        <td><%= User.where(channel_id: log.channel_id).first.user_name %></td>
         <td><%= log.channel_id %></td>
         <td><%= log.message_id %></td>
         <td><%= log.delivery_time %></td>
-        <td><%= link_to 'Show', log %></td>
+        <td><%= link_to 'Delete', log, method: :delete,  :class => "ui red basic label", data: { confirm: "Do not delete unless you are absolutely sure!!" } %>
+        </td>
       </tr>
     <% end %>
   </tbody>

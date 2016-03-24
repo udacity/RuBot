@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rubot</title>
+  <title><%= "#{Rails.application.config.client.self.name}" %></title>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
@@ -19,14 +19,15 @@
 <body>
   <div class="ui fixed inverted menu blue">
     <div class="ui container blue">
-      <a href="#" class="header item">
-        <img class="logo" src="https://udacity.atlassian.net/wiki/download/attachments/7372916/160-mark-slate.png?version=2&modificationDate=1457991402001&api=v2">
-          Rubot
+      <a href="/" class="header item">
+        <%= image_tag("udacity_logo.png", :class => "logo") %>
+          <%= "#{Rails.application.config.client.self.name}" %>
       </a>
-    <%= link_to 'Home', root_path, :class => "item" %>
     <%= link_to 'Messages', messages_path, :class => "item" %>
+    <%= link_to 'Blasts', blasts_path, :class => "item" %>
     <%= link_to 'Interactions', interactions_path, :class => "item" %>
     <%= link_to 'User List', users_path, :class => "item" %>
+    <%= link_to 'Metrics', metrics_path, :class => "item" %>
     <%= link_to 'Logs', logs_path, :class => "item" %>
 
       <div class="ui simple right dropdown item">
@@ -52,7 +53,6 @@
       <%= render 'layouts/user_widget' %>
       <%= yield %>
   <!-- </div> -->
-
 
 
 </body>
