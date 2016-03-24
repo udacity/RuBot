@@ -81,7 +81,7 @@ class Client < ActiveRecord::Base
 
 
   def send_scheduled_messages(client)
-    client.on :user_change do |data|
+    client.on :team_join do |data|
       puts "HELLLLLLOOO"
       sleep(2)
       set_user_rubot_channel_id(data)
