@@ -3,6 +3,8 @@
   <div class="five wide column"></div>
   <div class="six wide column">
     <div class="ui segment" id="spacer">  
+    <h1 class="ui blue header">Blast from <%= @blast.created_at.strftime('%D') %></h1>
+
       <div class="ui colored blue divider"></div>
         <div>
           <strong>Text:</strong>
@@ -18,7 +20,7 @@
         <br>
         <div>
           <strong>Sent:</strong>
-          <%= @blast.created_at %>
+          <%= @blast.created_at   %>
         </div>
         <br>
 
@@ -27,3 +29,6 @@
   </div>
   <div class="five wide column"></div>
 </div>
+
+
+
