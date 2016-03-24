@@ -22,10 +22,11 @@
   
       <% Interaction.all.each do |i| %>
         <tr>
-          <td><%= i.user_input %></td>
+
+          <td><%= link_to i.user_input, i %></td>
           <td><%= i.created_at.strftime("%a %b %e %Y %T") %></td>
           <td><%= i.hits %></td>
-          <td><%= i.hits/((Time.now - i.created_at)/604800) %></td>
+          <td><%= Interaction.hits_per_week(i) %></td>
         </tr>
       <% end %>
     </tbody>

@@ -19,7 +19,6 @@ class Blast < ActiveRecord::Base
         end
         @blast = Blast.last
         send_blast(user.channel_id, @blast, client)
-        sleep(1)
       end
     end
   end

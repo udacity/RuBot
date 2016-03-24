@@ -139,7 +139,7 @@ html {
   color: #02b3e4;
 }
 
-i.circular.send.icon, i.circular.comments.icon, i.circular.users.icon, i.circular.announcement.icon, {
+i.circular.send.icon, i.circular.comments.icon, i.circular.users.icon, i.circular.announcement.icon {
   color: rgba( 2, 204, 186,1);
 
   box-shadow: 0em 0em 0em 0.1em rgb(46, 61, 73) inset;
