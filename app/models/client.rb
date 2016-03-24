@@ -70,8 +70,7 @@ class Client < ActiveRecord::Base
   def send_message(channel_id, message_id, client)
     client.web_client.chat_postMessage(
       channel: channel_id, 
-      text: Message.where(id: message_id).first.text, 
-      #username: "RuBot"
+      text: Message.where(id: message_id).first.text,
       as_user: true,
       unfurl_links: false,
       unfurl_media: false

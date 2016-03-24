@@ -3,8 +3,7 @@ class Blast < ActiveRecord::Base
   def self.send_blast(channel_id, blast, client)
     client.web_client.chat_postMessage(
       channel: channel_id, 
-      text: blast.text, 
-      #username: "RuBot"
+      text: blast.text,
       as_user: true,
       unfurl_links: false,
       unfurl_media: false

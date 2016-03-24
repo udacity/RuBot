@@ -6,15 +6,15 @@
 
   <%= image_tag("rubot_profile_pic.png", :class => "ui floated left image tiny ") %>
 
-<h1 class="ui header">Welcome to RuBot's control panel!</h1>
+<h1 class="ui header">Welcome to <%= "#{Rails.application.config.client.self.name}" %>'s control panel!</h1>
 
 
-<h3 class="ui header">RuBot is an on-boarding bot for the RubyND Slack team.</h3><br>
+<h3 class="ui header"><%= "#{Rails.application.config.client.self.name.capitalize}" %> is an on-boarding bot for the RubyND Slack team.</h3><br>
 
 <div class="ui four column grid">
   <div class="column center aligned messages" >
     <h2 class="ui center aligned icon header">
-  <i class="circular send icon" data-content="The bot sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student while another is scheduled to follow up 5 days later." data-variation="very wide" data-position="bottom center"></i>
+  <i class="circular send icon" data-content="<%="#{Rails.application.config.client.self.name.capitalize}" %> sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student while another is scheduled to follow up 5 days later." data-variation="very wide" data-position="bottom center"></i>
   Messages
 </h2>
     Schedule messages to send to students
@@ -31,7 +31,7 @@
 
   <div class="column center aligned">
    <h2 class="ui center aligned icon header">
-  <i class="circular comments icon" data-content="Users can also interact with RuBot. The bot will respond to specified user input with a corresponding response." data-position="bottom center"></i>
+  <i class="circular comments icon" data-content="Users can also interact with <%="#{Rails.application.config.client.self.name}" %>. The bot will respond to specified user input with a corresponding response." data-position="bottom center"></i>
   Interactions
 </h2>
 Create specific responses to user commands
