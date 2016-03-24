@@ -63,8 +63,10 @@ class Client < ActiveRecord::Base
   def set_user_rubot_channel_id(data)
     #will work with responses from :team_join and :user_change events
     set_user(data)
-    @user.channel_id = client.web_client.im_open(user: data.user.id).channel.id
-    @user.save
+    unless @user.channel_id
+      @user.channel_id = client.web_client.im_open(user: data.user.id).channel.id
+      @user.save
+    end
   end
 
   def send_message(channel_id, message_id, client)
@@ -79,8 +81,9 @@ class Client < ActiveRecord::Base
 
 
   def send_scheduled_messages(client)
-    client.on :team_join do |data|
-      sleep(5)
+    client.on :user_change do |data|
+      puts "HELLLLLLOOO"
+      sleep(2)
       set_user_rubot_channel_id(data)
       @messages = Message.all.sort
       @messages.each do |message|
@@ -95,6 +98,8 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new
         s.in message.delay do
           send_message(@user.channel_id, message.id, client)
+          message.reach += 1
+          message.save
           Log.where(message_id: message.id).first.delete
         end
       end
@@ -107,6 +112,8 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new
         s.at log.delivery_time do
           send_message(log.channel_id, log.message_id, client)
+          message.reach += 1
+          message.save
           log.delete
         end
       end
