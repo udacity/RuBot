@@ -5,7 +5,7 @@
 
     <div class="ui segment" id="spacer">
       <div class="header">
-        <h1>Blasts</h1>
+        <h1 class="blue">Blasts</h1>
         <i class="help teal inline circular icon link" data-html="<div class='header'>Blasts</div><div class='content'> Blasts are sent to <strong>all</strong> members of the Slack team at the time of creation. <br><br>When you click 'create',<%=" #{Rails.application.config.client.self.name}" %> will message every user on your team!</div>">
         </i>
         
@@ -34,7 +34,7 @@
             <td><%= blast.reach %></td>
             <td><%= blast.created_at.strftime("%a %b %e %Y %T") %></td>
             <td>
-            <%= link_to 'Show', blast, :class => "ui teal basic label" %>
+            <%= link_to 'More', blast, :class => "ui teal basic label" %>
             <%= link_to 'Delete', blast, method: :delete,  :class => "ui red basic label", data: { confirm: "Do not destory a blast unless it was for testing purposes only!" } %>
             </td>
           </tr>

@@ -157,14 +157,17 @@ i.circular.send.icon:hover, i.circular.comments.icon:hover, i.circular.users.ico
   color: #ecc81a;
 }
 
-#teal {
+#teal, .teal {
   color: #02ccba;
 }
 
-#blue {
+#blue, .blue {
   color: #02b3e4;
 }
 
+/*margin-top: -25px;
+
+    margin-top: 13px;*/
 
 
 

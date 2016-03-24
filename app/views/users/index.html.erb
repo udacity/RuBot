@@ -5,7 +5,7 @@
 
     <div class="ui segment" id="spacer">
   <div class="ui blue header">
-    <h1>RubyND Slack Users</h1>
+    <h1 class="blue">RubyND Slack Users</h1>
   </div>
 
 <table class="ui celled striped table">
@@ -32,8 +32,8 @@
           <td><%= user.created_at.strftime("%F") %></td>
 
           <td>
-          <%= link_to 'Show', user, :class => "ui teal basic label" %>
-          <%= link_to 'Destroy', user, method: :delete, :class => "ui red basic label", data: { confirm: "Please be sure you are deleting the correct user!! There is no way to add them back aside from restarting the program." } %>
+          <%= link_to 'More', user, :class => "ui teal basic label" %>
+          <%= link_to 'Delete', user, method: :delete, :class => "ui red basic label", data: { confirm: "Please be sure you are deleting the correct user!! There is no way to add them back aside from restarting the program." } %>
           </td>
         </tr>
       <% end %>

@@ -1,8 +1,9 @@
 
 <div class="main ui text container">
   <p id="notice"><%= flash[:error] %></p> 
+  <div>
 <div class="ui icon message">
-  <i class="user icon"></i>
+  <%= image_tag("rubot_profile_pic.png", :class => "ui floated left image tiny") %>
   <div class="content">
   <% if admin_signed_in? %>
     <div class="header">
@@ -11,8 +12,9 @@
      <p><%= link_to 'Log Out', destroy_admin_session_path, :method => :delete %> </p>
   <% else %>
     <div class="header">
-      You are not signed in.
-          <button class="ui labeled right floated red icon  button">
+      Please sign in with your Udacity email
+      <br>
+          <button class="ui labeled left floated red icon button">
         <i class="google icon"></i>
         <%= link_to "Sign in with Google", admin_omniauth_authorize_path(:google_oauth2) %>
     </button>
@@ -21,5 +23,8 @@
   <% end %>
   </div>
 </div>
+ </div>
 
 </div>
+
+
