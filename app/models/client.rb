@@ -111,8 +111,9 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new
         s.at log.delivery_time do
           send_message(log.channel_id, log.message_id, client)
-          message.reach += 1
-          message.save
+          @message = Message.where(id: log.message_id).first
+          @message.reach += 1
+          @message.save
           log.delete
         end
       end
