@@ -177,8 +177,6 @@ class Client < ActiveRecord::Base
   end
 
   def bot_behavior(client)
-    # Need to figure out way to defend against lost connection?
-    # setup_client
     say_hello_on_start(client)
     update_user_list(client)
     get_bot_user_id(client)

@@ -26,9 +26,12 @@ module Rubot
     config.after_initialize do
       puts "ENV = development? #{Rails.env.development?}"
       Thread.new do
-        @client = Client.new
-        Rails.application.config.client = @client.setup_client
-        @client.bot_behavior(Rails.application.config.client)
+        loop do
+          @client = Client.new
+          Rails.application.config.client = @client.setup_client
+          @client.bot_behavior(Rails.application.config.client)
+          puts "RESTARTING CLIENT"
+        end
       end
     end
     
