@@ -139,6 +139,8 @@ class Client < ActiveRecord::Base
               unfurl_links: false,
               unfurl_media: false
             )
+            i.hits += 1
+            i.save
           end
         end
       end
