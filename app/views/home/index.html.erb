@@ -4,6 +4,7 @@
 <p id="notice"><%= notice %></p>
 
 
+
   <%= image_tag("rubot_profile_pic.png", :class => "ui floated left image tiny ") %>
 
 <h1 class="ui header">Welcome to <%= "#{Rails.application.config.client.self.name}" %>'s control panel!</h1>
@@ -11,10 +12,13 @@
 
 <h3 class="ui header"><%= "#{Rails.application.config.client.self.name.capitalize}" %> is an on-boarding bot for the RubyND Slack team.</h3><br>
 
+
 <div class="ui four column grid">
   <div class="column center aligned messages" >
     <h2 class="ui center aligned icon header">
-  <i class="circular send icon" data-content="<%="#{Rails.application.config.client.self.name.capitalize}" %> sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student while another is scheduled to follow up 5 days later." data-variation="very wide" data-position="bottom center"></i>
+    <a href="/messages" title="">
+      <i class="circular send icon" id="yellow" data-content="<%="#{Rails.application.config.client.self.name.capitalize}" %> sends messages to new Slack users at specified intervals. For example, a message can be sent welcoming a student while another is scheduled to follow up 5 days later." data-variation="very wide" data-position="bottom center"></i>
+    </a>
   Messages
 </h2>
     Schedule messages to send to students
@@ -23,7 +27,9 @@
 
   <div class="column center aligned">
    <h2 class="ui center aligned icon header">
-  <i class="circular announcement icon" data-content="Blasts will send a direct message from <%="#{Rails.application.config.client.self.name}" %> to every member of your slack team." data-position="bottom center"></i>
+   <a href="/blasts" title="">
+    <i class="circular announcement icon" id="red" data-content="Blasts will send a direct message from <%="#{Rails.application.config.client.self.name}" %> to every member of your slack team." data-position="bottom center"></i>
+   </a>
   Blasts
 </h2>
   Send a DM from <%="#{Rails.application.config.client.self.name}" %> to all users.
@@ -31,14 +37,18 @@
 
   <div class="column center aligned">
    <h2 class="ui center aligned icon header">
-  <i class="circular comments icon" data-content="Users can also interact with <%="#{Rails.application.config.client.self.name}" %>. The bot will respond to specified user input with a corresponding response." data-position="bottom center"></i>
+   <a href="/interactions" title="">
+    <i class="circular comments icon" id="teal" data-content="Users can also interact with <%="#{Rails.application.config.client.self.name}" %>. The bot will respond to specified user input with a corresponding response." data-position="bottom center"></i>
+  </a>
   Interactions
 </h2>
 Create specific responses to user commands
   </div>
   <div class="column center aligned">
     <h2 class="ui center aligned icon header">
-  <i class="circular users icon" data-content="A list of information about current Slack team members." data-position="bottom center"></i>
+    <a href="/users" title="">
+      <i class="circular users icon" id="blue" data-content="A list of information about current Slack team members." data-position="bottom center"></i>
+    </a>
   Users
 </h2>
 View and search the list of slack users
