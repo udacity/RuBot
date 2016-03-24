@@ -43,11 +43,12 @@ class Client < ActiveRecord::Base
       get_users
       unless @users.any? { |person| person.slack_id == data.user.id }
         @user = User.new(
-          user_name: data.user.name,
-          real_name: data.user.profile.real_name,
-          slack_id:  data.user.id,
-          email:     data.user.profile.email,
-          pic:       data.user.profile.image_192
+          user_name:  data.user.name,
+          real_name:  data.user.profile.real_name,
+          slack_id:   data.user.id,
+          email:      data.user.profile.email,
+          pic:        data.user.profile.image_192,
+          channel_id: client.web_client.im_open(user: data.user.id).channel.id
         )
         @user.save
       end
@@ -60,14 +61,14 @@ class Client < ActiveRecord::Base
     @user = @users.select { |person| person.slack_id == data.user.id }.first
   end
 
-  def set_user_rubot_channel_id(data)
-    #will work with responses from :team_join and :user_change events
-    set_user(data)
-    unless @user.channel_id
-      @user.channel_id = client.web_client.im_open(user: data.user.id).channel.id
-      @user.save
-    end
-  end
+  # def set_user_rubot_channel_id(data)
+  #   #will work with responses from :team_join and :user_change events
+  #   set_user(data)
+  #   unless @user.channel_id
+  #     @user.channel_id = client.web_client.im_open(user: data.user.id).channel.id
+  #     @user.save
+  #   end
+  # end
 
   def send_message(channel_id, message_id, client)
     client.web_client.chat_postMessage(
@@ -83,7 +84,7 @@ class Client < ActiveRecord::Base
   def send_scheduled_messages(client)
     client.on :team_join do |data|
       sleep(2)
-      set_user_rubot_channel_id(data)
+      set_user(data)
       @messages = Message.all.sort
       @messages.each do |message|
         #message_number is "delay" in seconds.
