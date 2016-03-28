@@ -7,6 +7,10 @@ class UsersController < ApplicationController
     @users = User.all.order(:user_name)
   end
 
+  def index2
+    @users = User.all.order(:user_name)
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show

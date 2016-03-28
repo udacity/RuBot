@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :messages
   resources :users
   resources :metrics
+  get 'users2' => 'users#index2'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
