@@ -1,7 +1,7 @@
 RuBot![alt text](http://i.imgur.com/Hs1iwYc.png?1 "RuBot logo")
 =====
 
-An expirement in onboarding for Udacity Rubyists Slack team! If desired, RuBot can be cloned, customized, and deployed to suit the needs of your Slack team. 
+An expirement in onboarding for the Udacity Rubyists Slack team! If desired, RuBot can be cloned, customized, and deployed to suit the needs of your Slack team. 
 
 See [RuBot's UI](https://rubot.udacity.com/).
 
@@ -71,7 +71,7 @@ To set up your own custom version of RuBot, follow these instructions:
     SECRET_KEY_BASE=<secret key base>
     ```
 
-  create a file named '.env-development' in the project root directory containing the following text:
+  create a file named `.env-development` in the project root directory containing the following text:
 
     ```
     RAILS_ENV=development
@@ -92,7 +92,7 @@ To set up your own custom version of RuBot, follow these instructions:
 
 ## Deployment instructions
 
-Deploying to berlioz will requiring assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
+Deploying to berlioz will require assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
 
 export $(cat .env-production | xargs) && make deploy
 
