@@ -19,6 +19,7 @@ class Blast < ActiveRecord::Base
           @blast = Blast.last
           send_blast(user.channel_id, @blast, client)
           sleep(1)
+          # comment
         end
         # @blast = Blast.last
         # send_blast(user.channel_id, @blast, client)
