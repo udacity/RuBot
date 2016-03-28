@@ -35,7 +35,6 @@
             <td><%= blast.created_at.strftime("%a %b %e %Y %T") %></td>
             <td>
             <%= link_to 'More', blast, :class => "ui teal basic label" %>
-            <%= link_to 'Delete', blast, method: :delete,  :class => "ui red basic label", data: { confirm: "Do not destory a blast unless it was for testing purposes only!" } %>
             </td>
           </tr>
           <% end %>
