@@ -16,9 +16,13 @@ class Blast < ActiveRecord::Base
         unless user.channel_id
           user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
           user.save
+          @blast = Blast.last
+          send_blast(user.channel_id, @blast, client)
+          sleep(1)
         end
-        @blast = Blast.last
-        send_blast(user.channel_id, @blast, client)
+        # @blast = Blast.last
+        # send_blast(user.channel_id, @blast, client)
+        # sleep(1)
       end
     end
   end
