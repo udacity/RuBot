@@ -177,21 +177,6 @@ class Client < ActiveRecord::Base
     client.start!
   end
 
-  def self.schedule_blasts(client)
-    blast = Blast.last
-    time = Time.now + 5
-    User.all.each do |user| 
-      if user.channel_id && user.age == 0
-        time += 2
-        s = Rufus::Scheduler.new
-        s.at time do
-          send_blast(user.channel_id, blast, client)
-          puts "Sent BLAST FOR USER #{user.user_name} AT #{Time.now}"
-        end
-      end
-    end
-  end
-
   def set_channel_id(client)
     get_users
     time = Time.now + 5
