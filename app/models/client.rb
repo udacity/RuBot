@@ -185,7 +185,7 @@ class Client < ActiveRecord::Base
           user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
           user.age = 0
           user.save
-          sleep(1)
+          sleep(2)
           puts "Set channel id for user: #{user.user_name}"
         end
       end
