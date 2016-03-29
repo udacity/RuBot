@@ -188,7 +188,6 @@ class Client < ActiveRecord::Base
           s.at time do
             ActiveRecord::Base.connection_pool.with_connection do 
               user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
-              user.age = 0
               user.save
               puts "Set channel id for user: #{user.user_name}"
             end

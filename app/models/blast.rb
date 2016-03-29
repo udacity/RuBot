@@ -14,7 +14,7 @@ class Blast < ActiveRecord::Base
     blast = Blast.last
     time = Time.now + 5
     User.all.each do |user| 
-      if user.channel_id && user.age == 0
+      if user.channel_id
         time += 2
         s = Rufus::Scheduler.new
         s.at time do
