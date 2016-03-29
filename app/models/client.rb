@@ -186,6 +186,7 @@ class Client < ActiveRecord::Base
           user.age = 0
           user.save
           sleep(1)
+          puts "Set channel id for user: #{user.user_name}"
         end
       end
     end
