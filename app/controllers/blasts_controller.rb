@@ -29,7 +29,7 @@ class BlastsController < ApplicationController
 
     respond_to do |format|
       if @blast.save
-        Blast.blast(Rails.application.config.client)
+        Blast.schedule_blasts(Rails.application.config.client)
         format.html { redirect_to @blast, notice: 'Blast was successfully created.' }
         format.json { render :show, status: :created, location: @blast }
       else

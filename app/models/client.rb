@@ -177,9 +177,23 @@ class Client < ActiveRecord::Base
     client.start!
   end
 
+  def set_channel_id(client)
+    get_users
+    @users.each do |user|
+      if user.email
+        unless user.channel_id
+          user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
+          user.save
+          sleep(1)
+        end
+      end
+    end
+  end
+
   def bot_behavior(client)
     say_hello_on_start(client)
     update_user_list(client)
+    set_channel_id(client)
     get_bot_user_id(client)
     log_messages(client)
     add_new_user(client)

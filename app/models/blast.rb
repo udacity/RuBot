@@ -10,22 +10,24 @@ class Blast < ActiveRecord::Base
       )
   end
 
-  def self.blast(client)
-    User.all.each do |user|
-      if user.email
-        unless user.channel_id
-          user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
-          user.save
-          @blast = Blast.last
-          send_blast(user.channel_id, @blast, client)
-          sleep(1)
-          # comment
+  def self.setup_blast(client, user, blast)
+    puts "SENDING BLAST FOR USER #{user.user_name}"
+    send_blast(user.channel_id, blast, client)
+  end
+
+  def self.schedule_blasts(client)
+    blast = Blast.last
+    time = Time.now + 5
+    User.all.each do |user| 
+      puts "SCHEDULING BLAST FOR USER #{user.user_name} AT #{time}"
+      if user.channel_id
+        time += 1
+        s = Rufus::Scheduler.new
+        s.at time do
+          send_blast(user.channel_id, blast, client)
+          puts "Sent BLAST FOR USER #{user.user_name} AT #{Time.now}"
         end
-        # @blast = Blast.last
-        # send_blast(user.channel_id, @blast, client)
-        # sleep(1)
       end
     end
   end
-
 end
