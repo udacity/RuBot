@@ -177,16 +177,37 @@ class Client < ActiveRecord::Base
     client.start!
   end
 
+  def self.schedule_blasts(client)
+    blast = Blast.last
+    time = Time.now + 5
+    User.all.each do |user| 
+      if user.channel_id && user.age == 0
+        time += 2
+        s = Rufus::Scheduler.new
+        s.at time do
+          send_blast(user.channel_id, blast, client)
+          puts "Sent BLAST FOR USER #{user.user_name} AT #{Time.now}"
+        end
+      end
+    end
+  end
+
   def set_channel_id(client)
     get_users
+    time = Time.now + 5
     @users.each do |user|
       unless user.channel_id
         if user.email
-          user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
-          user.age = 0
-          user.save
-          sleep(2)
-          puts "Set channel id for user: #{user.user_name}"
+          time += 2
+          s = Rufus::Scheduler.new
+          s.at time do
+            ActiveRecord::Base.connection_pool.with_connection do 
+              user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
+              user.age = 0
+              user.save
+              puts "Set channel id for user: #{user.user_name}"
+            end
+          end
         end
       end
     end
