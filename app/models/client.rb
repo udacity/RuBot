@@ -183,6 +183,7 @@ class Client < ActiveRecord::Base
       if user.email
         unless user.channel_id
           user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
+          user.age = 0
           user.save
           sleep(1)
         end
@@ -195,7 +196,7 @@ class Client < ActiveRecord::Base
     update_user_list(client)
     set_channel_id(client)
     get_bot_user_id(client)
-    log_messages(client)
+    # log_messages(client)
     add_new_user(client)
     reschedule_messages(client)
     send_scheduled_messages(client)

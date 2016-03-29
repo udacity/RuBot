@@ -20,6 +20,10 @@
     <%= f.text_field :project, placeholder: 'Summary' %>
   </div>
   <div class="field">
+   <%= f.label :reach %><br>
+   <%= f.number_field :reach %>
+ </div>
+  <div class="field">
     <label>
       Delay <i class="help red inline circular icon link" data-html="<div class='header'>Delay</div><div class='content'> Format the message delay using <em>m</em>, <em>h</em>, and <em>d</em> for minutes, hours, and days. <br><br><strong>For Example: </strong> To send a message a week after a student joins, write: <em>7d</em></div>"></i>
     </label>

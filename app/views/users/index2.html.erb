@@ -18,6 +18,7 @@
       <th>Email</th>
       <th>Member since</th>
       <th>Channel ID</th>
+      <th>User age</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -32,6 +33,7 @@
           <td><%= user.email %></td>
           <td><%= user.created_at.strftime("%F") %></td>
           <td><%= user.channel_id %></td>
+          <td><%= user.age %></td>
 
           <td>
           <%= link_to 'More', user, :class => "ui teal basic label" %>
