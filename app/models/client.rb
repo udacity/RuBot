@@ -180,8 +180,8 @@ class Client < ActiveRecord::Base
   def set_channel_id(client)
     get_users
     @users.each do |user|
-      if user.email
-        unless user.channel_id
+      unless user.channel_id
+        if user.email
           user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
           user.age = 0
           user.save
