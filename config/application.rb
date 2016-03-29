@@ -28,6 +28,7 @@ module Rubot
       Thread.new do
         @client = Client.new
         Rails.application.config.client = @client.setup_client
+        Rails.application.config.client_name = "RuBot"
         @client.bot_behavior(Rails.application.config.client)
         puts "CLIENT DOWN"
       end
