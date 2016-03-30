@@ -86,9 +86,10 @@ To set up your own custom version of RuBot, follow these instructions:
 
 4. **Customize**
 
-    You will probably want to replace some of the images in `/app/assets/images/` with your own. 
+    In `/config/application.rb` replace "RuBot" with your bot's name in this line:
+    `Rails.application.config.client_name = "RuBot"`
 
-    The app will automatically pull in your bot's name for the UI.
+    You will probably want to replace some of the images in `/app/assets/images/` with your own. 
 
 ## Deployment instructions
 
