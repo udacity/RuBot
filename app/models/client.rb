@@ -197,6 +197,22 @@ class Client < ActiveRecord::Base
     end
   end
 
+  def kill_client_for_testing(client)
+    s = Rufus::Scheduler.new
+    s.in '5s' do
+      puts "killing connection"
+      client.stop!
+    end
+  end
+
+  def restart_client_if_connection_lost(client)
+    client.on :close do |data|
+      puts 'Connection has been disconnected. Restarting.'
+      Rails.application.config.client = setup_client
+      bot_behavior(Rails.application.config.client)
+    end
+  end
+
   def bot_behavior(client)
     say_hello_on_start(client)
     update_user_list(client)
@@ -208,6 +224,7 @@ class Client < ActiveRecord::Base
     send_scheduled_messages(client)
     update_user(client)
     respond_to_messages(client)
+    restart_client_if_connection_lost(client)
     start_rubot(client)
   end
 

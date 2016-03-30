@@ -33,7 +33,7 @@ module Rubot
         @client.bot_behavior(Rails.application.config.client)
         puts "CLIENT DOWN"
       end
-      
+
     end
     
   end
