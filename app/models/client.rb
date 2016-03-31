@@ -213,6 +213,22 @@ class Client < ActiveRecord::Base
     end
   end
 
+  def argue_with_slackbot(client)
+    client.on :message do |data|
+      puts data
+      puts data.user
+      if data.user == "USLACKBOT"
+        client.web_client.chat_postMessage(
+          channel: data.channel, 
+          text: "slackbot... what a dweeb.", 
+          as_user: true,
+          unfurl_links: false,
+          unfurl_media: false
+        )
+      end
+    end
+  end
+
   def bot_behavior(client)
     say_hello_on_start(client)
     update_user_list(client)
@@ -224,6 +240,7 @@ class Client < ActiveRecord::Base
     send_scheduled_messages(client)
     update_user(client)
     respond_to_messages(client)
+    argue_with_slackbot(client)
     restart_client_if_connection_lost(client)
     start_rubot(client)
   end
