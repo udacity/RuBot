@@ -4,7 +4,7 @@ class LogsController < ApplicationController
   # GET /logs
   # GET /logs.json
   def index
-    @logs = Log.all
+    @logs = Log.all.order(:delivery_time)
   end
 
   def show
