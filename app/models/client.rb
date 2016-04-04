@@ -62,15 +62,6 @@ class Client < ActiveRecord::Base
     @user = @users.select { |person| person.slack_id == data.user.id }.first
   end
 
-  # def set_user_rubot_channel_id(data)
-  #   #will work with responses from :team_join and :user_change events
-  #   set_user(data)
-  #   unless @user.channel_id
-  #     @user.channel_id = client.web_client.im_open(user: data.user.id).channel.id
-  #     @user.save
-  #   end
-  # end
-
   def send_message(channel_id, message_id, client)
     client.web_client.chat_postMessage(
       channel: channel_id, 
