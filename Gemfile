@@ -35,6 +35,8 @@ gem 'devise'
 gem 'omniauth'
 # Google user auth
 gem "omniauth-google-oauth2"
+# Make api calls
+gem 'httparty'
 # Default gems shipped with El Capitan
 gem 'bigdecimal'
 gem 'io-console'

@@ -1,4 +1,5 @@
 class Client < ActiveRecord::Base
+  require 'pp'
 
   def setup_client
     puts "setup rubot!"
@@ -225,6 +226,18 @@ class Client < ActiveRecord::Base
         )
       end
     end
+  end
+
+  def self.test_student_data
+    key = HTTParty.post(
+      "https://registrar-window-api.udacity.com/authenticate", 
+      :body => 
+        {:email =>"steven.worley@udacity.com", 
+        :password => ENV['REGISTRAR_PW']}.to_json, 
+        :headers => {'content-type' => 'application/json'}
+    )
+    data = HTTParty.get("https://registrar-window-api.udacity.com/api/v1/accounts/me@aarondevon.com?projection=full", :headers => {'Authorization' => 'JWT ' + key})
+    pp data["memberships"]["ENROLLED_PAID"][0]["group_key"]
   end
 
   def bot_behavior(client)

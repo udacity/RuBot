@@ -13,6 +13,7 @@
       "SLACK_TOKEN": "$SLACK_TOKEN",
       "CLIENT_ID": "$CLIENT_ID",
       "CLIENT_SECRET": "$CLIENT_SECRET",
+      "REGISTRAR_PW": "$REGISTRAR_PW",
       "SECRET_KEY_BASE": "$SECRET_KEY_BASE",
       "RAILS_ENV": "production",
       "DB_HOST": "{{ db_host }}",
