@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def index2
-    @users = User.all.order(:user_name)
+    @users = User.all
   end
 
   # GET /users/1
