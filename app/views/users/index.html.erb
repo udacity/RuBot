@@ -34,6 +34,7 @@
           <td>
           <%= link_to 'More', user, :class => "ui teal basic label" %>
           <%= link_to 'Delete', user, method: :delete, :class => "ui red basic label", data: { confirm: "Please be sure you are deleting the correct user!! There is no way to add them back aside from restarting the program." } %>
+          <%= link_to 'Check Status', users_status_path(:id => user.id), method: :post %>
           </td>
         </tr>
       <% end %>

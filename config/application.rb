@@ -25,8 +25,8 @@ module Rubot
 
     config.after_initialize do
       puts "ENV = development? #{Rails.env.development?}"
-      Rails.application.config.client_name = "RuBot"
-      Client.test_student_data
+      Rails.application.config.client_name = "Rubot"
+      Rails.application.config.ndkey = "nd010"
 
       Thread.new do
         # @client = Client.new
