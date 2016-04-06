@@ -70,10 +70,10 @@ class Client < ActiveRecord::Base
   #   end
   # end
 
-  def send_message(channel_id, message_id, client)
+  def send_message(channel_id, text, client)
     client.web_client.chat_postMessage(
       channel: channel_id, 
-      text: Message.where(id: message_id).first.text,
+      text: text,
       as_user: true,
       unfurl_links: false,
       unfurl_media: false
@@ -82,7 +82,7 @@ class Client < ActiveRecord::Base
 
 
   def send_scheduled_messages(client)
-    client.on :team_join do |data|
+    client.on :user_change do |data|
       sleep(2)
       set_user(data)
       @messages = Message.all.sort
@@ -97,10 +97,12 @@ class Client < ActiveRecord::Base
         @log.save
         s = Rufus::Scheduler.new
         s.in message.delay do
-          send_message(@user.channel_id, message.id, client)
-          message.reach += 1
-          message.save
-          Log.where(message_id: message.id).first.delete
+          ActiveRecord::Base.connection_pool.with_connection do 
+            send_message(@user.channel_id, Message.find(message.id).text, client)
+            message.reach += 1
+            message.save
+            Log.where(message_id: message.id).first.delete
+          end
         end
       end
     end
@@ -111,11 +113,13 @@ class Client < ActiveRecord::Base
       if log.delivery_time > Time.now
         s = Rufus::Scheduler.new
         s.at log.delivery_time do
-          send_message(log.channel_id, log.message_id, client)
-          @message = Message.where(id: log.message_id).first
-          @message.reach += 1
-          @message.save
-          log.delete
+          ActiveRecord::Base.connection_pool.with_connection do 
+            send_message(log.channel_id, Message.find(log.message_id).text, client)
+            @message = Message.where(id: log.message_id).first
+            @message.reach += 1
+            @message.save
+            log.delete
+          end
         end
       end
     end
@@ -140,15 +144,12 @@ class Client < ActiveRecord::Base
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
-            client.web_client.chat_postMessage(
-              channel: data.channel, 
-              text: i.response, 
-              as_user: true,
-              unfurl_links: false,
-              unfurl_media: false
-            )
+            send_message(data.channel, i.response, client)
             i.hits += 1
             i.save
+            break
+          elsif i == @interactions.last
+            send_message(data.channel, Rails.application.config.standard_response, client)
           end
         end
       end
