@@ -87,7 +87,7 @@ class Client < ActiveRecord::Base
           delivery_time: delivery_time
         )
         @log.save
-        s = Rufus::Scheduler.new
+        s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.in message.delay do
           ActiveRecord::Base.connection_pool.with_connection do 
             send_message(@user.channel_id, Message.find(message.id).text, client)
@@ -103,7 +103,7 @@ class Client < ActiveRecord::Base
   def reschedule_messages(client)
     Log.all.each do |log|
       if log.delivery_time > Time.now
-        s = Rufus::Scheduler.new
+        s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.at log.delivery_time do
           ActiveRecord::Base.connection_pool.with_connection do 
             send_message(log.channel_id, Message.find(log.message_id).text, client)
@@ -177,7 +177,7 @@ class Client < ActiveRecord::Base
       unless user.channel_id
         if user.email
           time += 2
-          s = Rufus::Scheduler.new
+          s = Rufus::Scheduler.new(:max_work_threads => 200)
           s.at time do
             ActiveRecord::Base.connection_pool.with_connection do 
               user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
