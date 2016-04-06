@@ -28,6 +28,15 @@ class User < ActiveRecord::Base
     return data
   end
 
+  def check_auth(data)
+    auth_err = false
+    if data.include?("NotAuthorizedError")
+      puts "NotAuthorizedError, usually because slack email doesn't match udacity email."
+      auth_err = true
+      puts 'user.enrolled = email mismatch'
+    end
+  end
+
   def memberships_nil?(data)
     if data["memberships"] == nil
       puts "NO MEMBERSHIPS as of: #{Time.now.strftime('%D')}"
@@ -42,9 +51,9 @@ class User < ActiveRecord::Base
       if object["group_key"] == Rails.application.config.ndkey
         puts "#{type}: #{object["group_key"]}"
         # user.enrolled = "#{type} as of: #{Time.now.strftime('%D')}"
+        puts "USERSAVE"
+        # user.save
       end
-      puts "USERSAVE"
-      # user.save
     end
   end
 
@@ -58,12 +67,15 @@ class User < ActiveRecord::Base
 
   def check_enrollment_status(user)
     data = get_student_data(user)
+    auth_err = check_auth(data)
     pp data
-    no_memberships = memberships_nil?(data)
-    unless no_memberships == true
-      @@membership_types.each do |type|
-        if data["memberships"][type]
-          set_subscriptions(type, data)
+    unless auth_err == true
+      no_memberships = memberships_nil?(data)
+      unless no_memberships == true
+        @@membership_types.each do |type|
+          if data["memberships"][type]
+            set_subscriptions(type, data)
+          end
         end
       end
     end
