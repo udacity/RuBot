@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 
   def status
     @user.check_enrollment_status(@user)
-    redirect_to @user
+    redirect_to users_path
   end
 
   # # GET /users/1/edit

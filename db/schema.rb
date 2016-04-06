@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324061429) do
+ActiveRecord::Schema.define(version: 20160406221000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20160324061429) do
     t.float    "age"
     t.string   "channel_id"
     t.text     "pic"
+    t.string   "enrolled"
   end
 
 end
