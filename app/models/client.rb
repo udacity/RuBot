@@ -74,7 +74,7 @@ class Client < ActiveRecord::Base
 
 
   def send_scheduled_messages(client)
-    client.on :user_change do |data|
+    client.on :team_join do |data|
       sleep(2)
       set_user(data)
       @messages = Message.all.sort
@@ -141,7 +141,7 @@ class Client < ActiveRecord::Base
             i.save
             break
           elsif i == @interactions.last
-            send_message(data.channel, Rails.application.config.standard_response, client)
+            send_message(data.channel, Rails.application.config.standard_responses.sample, client)
           end
         end
       end

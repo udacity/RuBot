@@ -40,8 +40,7 @@ class User < ActiveRecord::Base
 
   def memberships_nil?(data, user)
     if data["memberships"] == nil
-      puts "NO MEMBERSHIPS as of: #{Time.now.strftime('%D')}"
-      user.enrolled = "NO MEMBERSHIPS as of: #{Time.now.strftime('%D')}"
+      user.enrolled = "As of #{Time.now.strftime('%D')}: NO MEMBERSHIPS"
       user.save
       return true
     end
@@ -51,14 +50,12 @@ class User < ActiveRecord::Base
     #Case of user with free and paid?
     data["memberships"][type].each do |object|
       if object["group_key"] == Rails.application.config.ndkey
-        puts "#{type}: #{object["group_key"]}"
-        user.enrolled = "#{type} as of: #{Time.now.strftime('%D')}"
-        puts "USERSAVE"
+        user.enrolled = "As of #{Time.now.strftime('%D')}: #{type}"
         user.save
       end
     end
     if user.enrolled == nil
-      user.enrolled = "NOT ENROLLED as of: #{Time.now.strftime('%D')}"
+      user.enrolled = "As of #{Time.now.strftime('%D')}: NOT ENROLLED"
       user.save
     end
   end
