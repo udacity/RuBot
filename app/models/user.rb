@@ -15,15 +15,17 @@ class User < ActiveRecord::Base
   def get_student_data(user)
     puts user
     key = HTTParty.post(
-      "https://registrar-window-api.udacity.com/authenticate", 
+      "https://registrar-window-api.udacity.com/authenticate",
       :body => 
         {:email =>"steven.worley@udacity.com", 
         :password => ENV['REGISTRAR_PW']}.to_json, 
-        :headers => {'content-type' => 'application/json'}
+        :headers => {'content-type' => 'application/json'},
+      :verify => false
     )
     data = HTTParty.get(
       "https://registrar-window-api.udacity.com/api/v1/accounts/#{user.email}?projection=full", 
-      :headers => {'Authorization' => 'JWT ' + key}
+      :headers => {'Authorization' => 'JWT ' + key},
+      :verify => false
       )
     return data
   end
