@@ -1,6 +1,70 @@
 class Client < ActiveRecord::Base
   require 'pp'
 
+  @@analytics = Segment::Analytics.new({
+    write_key: ENV['SEGMENT_WRITE_KEY']
+  })
+
+  def identify(user)
+    @@analytics.identify(
+      {
+        user_id: user.id,
+        traits: {
+          email:      user.email,
+          real_name:  user.real_name,
+          user_name:  user.user_name,
+          channel_id: user.channel_id,
+          pic:        user.pic,
+          enrolled:   user.enrolled
+        }
+      }
+    )
+    puts "Identifying!"
+  end
+
+  # def identify_interaction(interaction)
+  #   @@analytics.identify(
+  #     {
+  #       interaction_id: interaction.id,
+  #       traits: {
+  #         user_input: interaction.user_input,
+  #         response:   interaction.response
+  #       }
+  #     }
+  #   )
+  # end
+
+  event = "Signed up"
+
+  def track(user, event, options = {})
+    #optional arguments: text, event, interaction, blast and message
+    @@analytics.track(
+      {
+        user_id:    user.id,
+        event:      event,
+        properties: {
+          text:         text,
+          interaction:  interaction.id,
+          message:      message.id,
+          blast:        blast.id,
+          enrolled:     user.enrolled
+        }
+      }
+    )
+  end
+
+  # def track_interaction(interaction, event)
+  #   @@analytics.track(
+  #     {
+  #       interaction_id: interaction.id,
+  #       event:          event,
+  #       properties: {
+  #         text:         text
+  #       }
+  #     }
+  #   )
+  # end
+
   def setup_client
     puts "setup rubot!"
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
@@ -31,11 +95,13 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def log_messages(client)
+  detrack_messages(client)
     client.on :message do |data|
-      if data.user == @@bot_id
-        puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
-      end
+      track(data.user, "Sent message")
+      puts "Tracked"
+      # if data.user == @@bot_id
+      #   puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
+      # end
     end
   end
 
@@ -127,6 +193,7 @@ class Client < ActiveRecord::Base
       @user.email =     data.user.profile.email
       @user.pic =       data.user.profile.image_192
       @user.save
+      identify(@user)
     end
   end
 
@@ -227,7 +294,7 @@ class Client < ActiveRecord::Base
     update_user_list(client)
     set_channel_id(client)
     get_bot_user_id(client)
-    # log_messages(client)
+    track_messages(client)
     add_new_user(client)
     reschedule_messages(client)
     send_scheduled_messages(client)

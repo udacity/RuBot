@@ -37,6 +37,8 @@ gem 'omniauth'
 gem "omniauth-google-oauth2"
 # Make api calls
 gem 'httparty'
+# Segment Analytics library
+gem 'analytics-ruby', :require => "segment"
 # Default gems shipped with El Capitan
 gem 'bigdecimal'
 gem 'io-console'
