@@ -132,6 +132,7 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages(client)
     client.on :message do |data|
+      # puts data.user
       if data.user != @@bot_id
         @interactions = Interaction.all
         @interactions.each do |i|
