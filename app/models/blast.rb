@@ -14,8 +14,7 @@ class Blast < ActiveRecord::Base
     blast = Blast.last
     time = Time.now + 5
     User.all.each do |user|
-      if user.user_name == "fuzzworley" 
-      # if user.channel_id
+      if user.channel_id
         time += 2
         s = Rufus::Scheduler.new(:max_work_threads => 1000)
         s.at time do

@@ -132,16 +132,19 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages(client)
     client.on :message do |data|
-      puts "data.user: #{data.user}"
-      puts "@@bot_id: #{@@bot_id}"
-      if data.user != @@bot_id
+      if @@bot_id && data.user != @@bot_id
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
+            # if data.text.downcase == "debug"
+            #   send_message(data.channel, eval(i.response), client)
+            #   break
+            # else
             send_message(data.channel, i.response, client)
             i.hits += 1
             i.save
             break
+            # end
           elsif i == @interactions.last
             send_message(data.channel, Rails.application.config.standard_responses.sample, client)
           end
