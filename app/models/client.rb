@@ -22,18 +22,6 @@ class Client < ActiveRecord::Base
     puts "Identifying!"
   end
 
-  # def identify_interaction(interaction)
-  #   @@analytics.identify(
-  #     {
-  #       interaction_id: interaction.id,
-  #       traits: {
-  #         user_input: interaction.user_input,
-  #         response:   interaction.response
-  #       }
-  #     }
-  #   )
-  # end
-
   def track(user, event, options = {})
     #optional arguments: text, event, interaction id, blast id and message id
     @@analytics.track(
@@ -48,23 +36,12 @@ class Client < ActiveRecord::Base
           message_text:         options[:message_text],
           blast:                options[:blast_id],
           blast_text:           options[:blast_text],
+          datetime:             options[:datetime],
           enrolled:             user.enrolled
         }
       }
     )
   end
-
-  # def track_interaction(interaction, event)
-  #   @@analytics.track(
-  #     {
-  #       interaction_id: interaction.id,
-  #       event:          event,
-  #       properties: {
-  #         text:         text
-  #       }
-  #     }
-  #   )
-  # end
 
   def setup_client
     puts "setup rubot!"
@@ -139,9 +116,19 @@ class Client < ActiveRecord::Base
       )
   end
 
+  def track_scheduled_message(user, message_id, message_text)
+    track(
+      user,
+      "Scheduled Message",
+      :message_id => message_id,
+      :message_text => message_text,
+      :datetime => Time.now.strftime("%a %b %e %Y %T")
+    )
+  end
+
 
   def send_scheduled_messages(client)
-    client.on :team_join do |data|
+    client.on :user_change do |data|
       sleep(2)
       set_user(data)
       @messages = Message.all.sort
@@ -157,7 +144,9 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.in message.delay do
           ActiveRecord::Base.connection_pool.with_connection do 
-            send_message(@user.channel_id, Message.find(message.id).text, client)
+            message = Message.find(message.id)
+            send_message(@user.channel_id, message.text, client)
+            track_scheduled_message(@user, message.id, message.text)
             message.reach += 1
             message.save
             Log.where(message_id: message.id).first.delete
@@ -205,7 +194,8 @@ class Client < ActiveRecord::Base
       "Interaction", 
       :text => data.text, 
       :interaction_id => id,
-      :interaction_response => response
+      :interaction_response => response,
+      :datetime => Time.now.strftime("%a %b %e %Y %T")
     )
   end
 
