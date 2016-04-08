@@ -34,20 +34,21 @@ class Client < ActiveRecord::Base
   #   )
   # end
 
-  event = "Signed up"
-
   def track(user, event, options = {})
-    #optional arguments: text, event, interaction, blast and message
+    #optional arguments: text, event, interaction id, blast id and message id
     @@analytics.track(
       {
         user_id:    user.id,
         event:      event,
         properties: {
-          text:         text,
-          interaction:  interaction.id,
-          message:      message.id,
-          blast:        blast.id,
-          enrolled:     user.enrolled
+          text:                 options[:text],
+          interaction_id:       options[:interaction_id],
+          interaction_response: options[:interaction_response],
+          message:              options[:message_id],
+          message_text:         options[:message_text],
+          blast:                options[:blast_id],
+          blast_text:           options[:blast_text],
+          enrolled:             user.enrolled
         }
       }
     )
@@ -95,10 +96,10 @@ class Client < ActiveRecord::Base
     end
   end
 
-  detrack_messages(client)
+  def track_messages(client)
     client.on :message do |data|
-      track(data.user, "Sent message")
-      puts "Tracked"
+      # track(data.user, "Sent message")
+      # puts "Tracked"
       # if data.user == @@bot_id
       #   puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
       # end
@@ -197,20 +198,31 @@ class Client < ActiveRecord::Base
     end
   end
 
+  def track_interactions(data, id, response)
+    user = User.all.select {|user| user.slack_id == data.user}.first
+    track(
+      user, 
+      "Interaction", 
+      :text => data.text, 
+      :interaction_id => id,
+      :interaction_response => response
+    )
+  end
+
   def respond_to_messages(client)
     client.on :message do |data|
-      puts "data.user: #{data.user}"
-      puts "@@bot_id: #{@@bot_id}"
-      if data.user != @@bot_id
+      if @@bot_id && data.user != @@bot_id
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
             send_message(data.channel, i.response, client)
+            track_interactions(data, i.id, i.response)
             i.hits += 1
             i.save
             break
           elsif i == @interactions.last
             send_message(data.channel, Rails.application.config.standard_responses.sample, client)
+            track_interactions(data, 0, "standard_response")
           end
         end
       end
@@ -294,7 +306,7 @@ class Client < ActiveRecord::Base
     update_user_list(client)
     set_channel_id(client)
     get_bot_user_id(client)
-    track_messages(client)
+    #track_messages(client)
     add_new_user(client)
     reschedule_messages(client)
     send_scheduled_messages(client)
