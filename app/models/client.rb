@@ -1,5 +1,86 @@
 class Client < ActiveRecord::Base
   require 'pp'
+  # include Segment
+
+  ### Segment tracking methods ###
+
+  @@analytics = Segment::Analytics.new({
+    write_key: ENV['SEGMENT_WRITE_KEY']
+  })
+
+  def identify(user)
+    @@analytics.identify(
+      {
+        user_id: user.id,
+        traits: {
+          email:      user.email,
+          real_name:  user.real_name,
+          user_name:  user.user_name,
+          channel_id: user.channel_id,
+          pic:        user.pic,
+          enrolled:   user.enrolled
+        }
+      }
+    )
+    puts "Identifying!"
+  end
+
+  def track(user, event, options = {})
+    #optional arguments: text, event, interaction id, blast id and message id
+    @@analytics.track(
+      {
+        user_id:    user.id,
+        event:      event,
+        properties: {
+          text:                 options[:text],
+          interaction_id:       options[:interaction_id],
+          interaction_response: options[:interaction_response],
+          message:              options[:message_id],
+          message_text:         options[:message_text],
+          blast:                options[:blast_id],
+          blast_text:           options[:blast_text],
+          datetime:             options[:datetime],
+          enrolled:             user.enrolled
+        }
+      }
+    )
+  end
+
+  def track_scheduled_message(user, message_id, message_text)
+    track(
+      user,
+      "Scheduled Message",
+      :message_id => message_id,
+      :message_text => message_text,
+      :datetime => Time.now.strftime("%a %b %e %Y %T")
+    )
+  end
+
+  def track_rescheduled_message(log, message_id, message_text)
+    user = User.all.select {|user| user.channel_id == log.channel_id}.first
+    track(
+      user,
+      "Scheduled Message",
+      :message_id => message_id,
+      :message_text => message_text,
+      :datetime => Time.now.strftime("%a %b %e %Y %T")
+    )
+  end
+
+  def track_interactions(data, id, response)
+    puts "tracking working!"
+    user = User.all.select {|user| user.slack_id == data.user}.first
+    track(
+      user, 
+      "Interaction", 
+      :text => data.text, 
+      :interaction_id => id,
+      :interaction_response => response,
+      :datetime => Time.now.strftime("%a %b %e %Y %T")
+    )
+  end
+
+  ### End Segment methods ###
 
   def setup_client
     puts "setup rubot!"
@@ -31,13 +112,13 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def log_messages(client)
-    client.on :message do |data|
-      if data.user == @@bot_id
-        puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
-      end
-    end
-  end
+  # def track_messages(client)
+  #   client.on :message do |data|
+  #     if data.user == @@bot_id
+  #       puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
+  #     end
+  #   end
+  # end
 
   def add_new_user(client)
     client.on :team_join do |data|
@@ -52,6 +133,7 @@ class Client < ActiveRecord::Base
           channel_id: client.web_client.im_open(user: data.user.id).channel.id
         )
         @user.save
+        identify(@user)
       end
     end
   end
@@ -72,7 +154,6 @@ class Client < ActiveRecord::Base
       )
   end
 
-
   def send_scheduled_messages(client)
     client.on :team_join do |data|
       sleep(2)
@@ -90,7 +171,9 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.in message.delay do
           ActiveRecord::Base.connection_pool.with_connection do 
-            send_message(@user.channel_id, Message.find(message.id).text, client)
+            message = Message.find(message.id)
+            send_message(@user.channel_id, message.text, client)
+            track_scheduled_message(@user, message.id, message.text)
             message.reach += 1
             message.save
             Log.where(message_id: message.id).first.delete
@@ -105,8 +188,10 @@ class Client < ActiveRecord::Base
       if log.delivery_time > Time.now
         s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.at log.delivery_time do
-          ActiveRecord::Base.connection_pool.with_connection do 
-            send_message(log.channel_id, Message.find(log.message_id).text, client)
+          ActiveRecord::Base.connection_pool.with_connection do
+            message = Message.find(log.message_id) 
+            send_message(log.channel_id, message.text, client)
+            track_rescheduled_message(log, log.message_id, message.text)
             @message = Message.where(id: log.message_id).first
             @message.reach += 1
             @message.save
@@ -127,6 +212,7 @@ class Client < ActiveRecord::Base
       @user.email =     data.user.profile.email
       @user.pic =       data.user.profile.image_192
       @user.save
+      identify(@user)
     end
   end
 
@@ -141,12 +227,14 @@ class Client < ActiveRecord::Base
             #   break
             # else
             send_message(data.channel, i.response, client)
+            track_interactions(data, i.id, i.response)
             i.hits += 1
             i.save
             break
             # end
           elsif i == @interactions.last
             send_message(data.channel, Rails.application.config.standard_responses.sample, client)
+            track_interactions(data, 0, "standard_response")
           end
         end
       end
@@ -166,6 +254,7 @@ class Client < ActiveRecord::Base
           pic:       member.profile.image_192
         )
         @user.save
+        identify(@user)
       end
     end
   end
@@ -230,7 +319,6 @@ class Client < ActiveRecord::Base
     update_user_list(client)
     set_channel_id(client)
     get_bot_user_id(client)
-    # log_messages(client)
     add_new_user(client)
     reschedule_messages(client)
     send_scheduled_messages(client)
