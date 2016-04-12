@@ -54,8 +54,7 @@ class Client < ActiveRecord::Base
       user,
       "Message",
       :text => data.text,
-      :channel => data.channel,
-      :datetime => Time.now.strftime("%a %b %e %Y %T")
+      :channel => data.channel
     )
     puts "tracked"
   end
@@ -65,8 +64,7 @@ class Client < ActiveRecord::Base
       user,
       "Scheduled Message",
       :message_id => message_id,
-      :message_text => message_text,
-      :datetime => Time.now.strftime("%a %b %e %Y %T")
+      :message_text => message_text
     )
   end
 
@@ -76,8 +74,7 @@ class Client < ActiveRecord::Base
       user,
       "Scheduled Message",
       :message_id => message_id,
-      :message_text => message_text,
-      :datetime => Time.now.strftime("%a %b %e %Y %T")
+      :message_text => message_text
     )
   end
 
@@ -89,8 +86,7 @@ class Client < ActiveRecord::Base
       "Interaction", 
       :text => data.text, 
       :interaction_id => id,
-      :interaction_response => response,
-      :datetime => Time.now.strftime("%a %b %e %Y %T")
+      :interaction_response => response
     )
   end
 
