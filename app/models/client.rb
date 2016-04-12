@@ -33,6 +33,7 @@ class Client < ActiveRecord::Base
         event:      event,
         properties: {
           text:                 options[:text],
+          channel:              options[:channel],
           interaction_id:       options[:interaction_id],
           interaction_response: options[:interaction_response],
           message:              options[:message_id],
@@ -44,6 +45,19 @@ class Client < ActiveRecord::Base
         }
       }
     )
+  end
+
+  def track_message(data)
+    user = User.all.select {|user| user.slack_id == data.user}.first
+    puts user
+    track(
+      user,
+      "Message",
+      :text => data.text,
+      :channel => data.channel,
+      :datetime => Time.now.strftime("%a %b %e %Y %T")
+    )
+    puts "tracked"
   end
 
   def track_scheduled_message(user, message_id, message_text)
@@ -112,13 +126,11 @@ class Client < ActiveRecord::Base
     end
   end
 
-  # def track_messages(client)
-  #   client.on :message do |data|
-  #     if data.user == @@bot_id
-  #       puts "In channel #{data.channel}, at #{Time.now}, #{data.user} says: #{data.text}"
-  #     end
-  #   end
-  # end
+  def track_messages(client)
+    client.on :message do |data|
+      track_message(data)
+    end
+  end
 
   def add_new_user(client)
     client.on :team_join do |data|
@@ -218,7 +230,7 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages(client)
     client.on :message do |data|
-      if @@bot_id && data.user != @@bot_id
+      if @@bot_id && data.user != @@bot_id && data.channel[0] == "D"
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
@@ -316,6 +328,7 @@ class Client < ActiveRecord::Base
 
   def bot_behavior(client)
     say_hello_on_start(client)
+    track_messages(client)
     update_user_list(client)
     set_channel_id(client)
     get_bot_user_id(client)
