@@ -11,7 +11,7 @@ class Client < ActiveRecord::Base
   def set_channel_info(client)
     @@channel_list = client.web_client.channels_list.channels
     s = Rufus::Scheduler.new
-    s.every '5s' do
+    s.every '15m' do
       @@channel_list = client.web_client.channels_list.channels || @@channel_list
     end
   end
