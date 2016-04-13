@@ -56,6 +56,8 @@ To set up your own custom version of RuBot, follow these instructions:
     SLACK_TOKEN: "<put your token here>"
     CLIENT_ID: "<your google oauth client id>"
     CLIENT_SECRET: "<your google oauth client secret>"
+    REGISTRAR_PW: "<your registrar key"
+    SEGMENT_WRITE_KEY: "your segment key"
     ```
 
   SKIP to the next step unless you're deploying to berlioz:
@@ -95,7 +97,7 @@ To set up your own custom version of RuBot, follow these instructions:
 
 ## Deployment instructions
 
-Deploying to berlioz will require assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
+Deploying to berlioz and getting Segment / Chartio integration will require assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
 
 export $(cat .env-production | xargs) && make deploy
 
