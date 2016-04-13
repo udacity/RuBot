@@ -17,8 +17,7 @@ class Client < ActiveRecord::Base
           real_name:  user.real_name,
           user_name:  user.user_name,
           channel_id: user.channel_id,
-          pic:        user.pic,
-          enrolled:   user.enrolled
+          pic:        user.pic
         }
       }
     )
@@ -39,8 +38,7 @@ class Client < ActiveRecord::Base
           message_id:           options[:message_id],
           message_text:         options[:message_text],
           blast:                options[:blast_id],
-          blast_text:           options[:blast_text],
-          enrolled:             user.enrolled
+          blast_text:           options[:blast_text]
         }
       }
     )
