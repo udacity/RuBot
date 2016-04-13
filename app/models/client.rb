@@ -8,6 +8,22 @@ class Client < ActiveRecord::Base
     write_key: ENV['SEGMENT_WRITE_KEY']
   })
 
+  def set_channel_info(client)
+    @@channel_list = client.web_client.channels_list.channels
+    s = Rufus::Scheduler.new
+    s.every '5s' do
+      @@channel_list = client.web_client.channels_list.channels || @@channel_list
+    end
+  end
+
+  def channel_id_to_name(data)
+    channel = nil
+    if @@channel_list
+      channel = @@channel_list.select {|channel| channel.id == data.channel}.first
+    end
+    channel_name = channel != nil ? channel.name : "nil"
+  end
+
   def identify(user)
     @@analytics.identify(
       {
@@ -21,7 +37,6 @@ class Client < ActiveRecord::Base
         }
       }
     )
-    puts "Identifying!"
   end
 
   def track(user, event, options = {})
@@ -33,6 +48,7 @@ class Client < ActiveRecord::Base
         properties: {
           text:                 options[:text],
           channel_id:           options[:channel_id],
+          channel_name:         options[:channel_name],
           interaction_id:       options[:interaction_id],
           interaction_response: options[:interaction_response],
           message_id:           options[:message_id],
@@ -45,15 +61,15 @@ class Client < ActiveRecord::Base
   end
 
   def track_message(data)
+    channel_name = channel_id_to_name(data)
     user = User.all.select {|user| user.slack_id == data.user}.first
-    puts user
     track(
       user,
       "Message",
-      :text =>        data.text,
-      :channel_id =>  data.channel
+      :text =>          data.text,
+      :channel_id =>    data.channel,
+      :channel_name =>  channel_name
     )
-    puts "tracked"
   end
 
   def track_scheduled_message(user, message_id, message_text)
@@ -76,7 +92,6 @@ class Client < ActiveRecord::Base
   end
 
   def track_interactions(data, id, response)
-    puts "tracking working!"
     user = User.all.select {|user| user.slack_id == data.user}.first
     track(
       user, 
@@ -318,6 +333,7 @@ class Client < ActiveRecord::Base
 
   def bot_behavior(client)
     say_hello_on_start(client)
+    set_channel_info(client)
     track_messages(client)
     update_user_list(client)
     set_channel_id(client)
