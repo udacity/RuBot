@@ -33,10 +33,10 @@ class Client < ActiveRecord::Base
         event:      event,
         properties: {
           text:                 options[:text],
-          channel:              options[:channel],
+          channel_id:           options[:channel_id],
           interaction_id:       options[:interaction_id],
           interaction_response: options[:interaction_response],
-          message:              options[:message_id],
+          message_id:           options[:message_id],
           message_text:         options[:message_text],
           blast:                options[:blast_id],
           blast_text:           options[:blast_text],
@@ -53,8 +53,8 @@ class Client < ActiveRecord::Base
     track(
       user,
       "Message",
-      :text => data.text,
-      :channel => data.channel
+      :text =>        data.text,
+      :channel_id =>  data.channel
     )
     puts "tracked"
   end
@@ -63,8 +63,8 @@ class Client < ActiveRecord::Base
     track(
       user,
       "Scheduled Message",
-      :message_id => message_id,
-      :message_text => message_text
+      :message_id =>    message_id,
+      :message_text =>  message_text
     )
   end
 
@@ -73,8 +73,8 @@ class Client < ActiveRecord::Base
     track(
       user,
       "Scheduled Message",
-      :message_id => message_id,
-      :message_text => message_text
+      :message_id =>    message_id,
+      :message_text =>  message_text
     )
   end
 
@@ -84,9 +84,9 @@ class Client < ActiveRecord::Base
     track(
       user, 
       "Interaction", 
-      :text => data.text, 
-      :interaction_id => id,
-      :interaction_response => response
+      :text =>                  data.text, 
+      :interaction_id =>        id,
+      :interaction_response =>  response
     )
   end
 
@@ -162,24 +162,27 @@ class Client < ActiveRecord::Base
       )
   end
 
+  def create_log(user, message)
+    #message_number is "delay" in seconds.
+    delivery_time = Time.now + message.message_number
+    @log = Log.new(
+      channel_id: user.channel_id,
+      message_id: message.id,
+      delivery_time: delivery_time
+    )
+    @log.save
+  end
+
   def send_scheduled_messages(client)
     client.on :team_join do |data|
       sleep(2)
       set_user(data)
       @messages = Message.all.sort
       @messages.each do |message|
-        #message_number is "delay" in seconds.
-        delivery_time = Time.now + message.message_number
-        @log = Log.new(
-          channel_id: @user.channel_id,
-          message_id: message.id,
-          delivery_time: delivery_time
-        )
-        @log.save
+        create_log(@user, message)
         s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.in message.delay do
           ActiveRecord::Base.connection_pool.with_connection do 
-            message = Message.find(message.id)
             send_message(@user.channel_id, message.text, client)
             track_scheduled_message(@user, message.id, message.text)
             message.reach += 1
@@ -200,9 +203,8 @@ class Client < ActiveRecord::Base
             message = Message.find(log.message_id) 
             send_message(log.channel_id, message.text, client)
             track_rescheduled_message(log, log.message_id, message.text)
-            @message = Message.where(id: log.message_id).first
-            @message.reach += 1
-            @message.save
+            message.reach += 1
+            message.save
             log.delete
           end
         end
@@ -230,16 +232,11 @@ class Client < ActiveRecord::Base
         @interactions = Interaction.all
         @interactions.each do |i|
           if i.user_input == data.text.downcase
-            # if data.text.downcase == "debug"
-            #   send_message(data.channel, eval(i.response), client)
-            #   break
-            # else
             send_message(data.channel, i.response, client)
             track_interactions(data, i.id, i.response)
             i.hits += 1
             i.save
             break
-            # end
           elsif i == @interactions.last
             send_message(data.channel, Rails.application.config.standard_responses.sample, client)
             track_interactions(data, 0, "standard_response")
