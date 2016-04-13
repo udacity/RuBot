@@ -40,7 +40,6 @@ class Client < ActiveRecord::Base
           message_text:         options[:message_text],
           blast:                options[:blast_id],
           blast_text:           options[:blast_text],
-          datetime:             options[:datetime],
           enrolled:             user.enrolled
         }
       }
@@ -63,7 +62,7 @@ class Client < ActiveRecord::Base
     track(
       user,
       "Scheduled Message",
-      :message_id =>    message_id,
+      :message_id =>    message_id.to_s,
       :message_text =>  message_text
     )
   end
@@ -73,7 +72,7 @@ class Client < ActiveRecord::Base
     track(
       user,
       "Scheduled Message",
-      :message_id =>    message_id,
+      :message_id =>    message_id.to_s,
       :message_text =>  message_text
     )
   end
@@ -85,7 +84,7 @@ class Client < ActiveRecord::Base
       user, 
       "Interaction", 
       :text =>                  data.text, 
-      :interaction_id =>        id,
+      :interaction_id =>        id.to_s,
       :interaction_response =>  response
     )
   end
