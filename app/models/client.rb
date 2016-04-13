@@ -63,6 +63,7 @@ class Client < ActiveRecord::Base
   def track_message(data)
     channel_name = channel_id_to_name(data)
     user = User.all.select {|user| user.slack_id == data.user}.first
+    identify(user)
     track(
       user,
       "Message",
