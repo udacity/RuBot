@@ -4,10 +4,6 @@ class Client < ActiveRecord::Base
 
   ### Segment tracking methods ###
 
-  @@analytics = Segment::Analytics.new({
-    write_key: ENV['SEGMENT_WRITE_KEY']
-  })
-
   def set_channel_info(client)
     @@channel_list = client.web_client.channels_list.channels
     s = Rufus::Scheduler.new
@@ -25,9 +21,9 @@ class Client < ActiveRecord::Base
   end
 
   def identify(user)
-    @@analytics.identify(
+    Analytics.identify(
       {
-        user_id: user.id,
+        user_id: user.id.to_s,
         traits: {
           email:      user.email,
           real_name:  user.real_name,
@@ -41,9 +37,9 @@ class Client < ActiveRecord::Base
 
   def track(user, event, options = {})
     #optional arguments: text, event, interaction id, blast id and message id
-    @@analytics.track(
+    Analytics.track(
       {
-        user_id:    user.id,
+        user_id:    user.id.to_s,
         event:      event,
         properties: {
           text:                 options[:text],
