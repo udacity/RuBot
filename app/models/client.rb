@@ -307,7 +307,7 @@ class Client < ActiveRecord::Base
     client.on :close do |data|
       puts 'Connection has been disconnected. Restarting.'
       Rails.application.config.client = setup_client
-      bot_behavior(Rails.application.config.client)
+      initialize_bot(Rails.application.config.client)
     end
   end
 
@@ -325,7 +325,7 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def bot_behavior(client)
+  def initialize_bot(client)
     say_hello_on_start(client)
     set_channel_info(client)
     track_messages(client)
