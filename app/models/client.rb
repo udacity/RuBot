@@ -59,7 +59,7 @@ class Client < ActiveRecord::Base
   def track_message(data)
     channel_name = channel_id_to_name(data)
     user = User.all.select {|user| user.slack_id == data.user}.first
-    identify(user)
+    # identify(user)
     track(
       user,
       "Message",
@@ -238,18 +238,15 @@ class Client < ActiveRecord::Base
   def respond_to_messages(client)
     client.on :message do |data|
       if @@bot_id && data.user != @@bot_id && data.channel[0] == "D"
-        @interactions = Interaction.all
-        @interactions.each do |i|
-          if i.user_input == data.text.downcase
-            send_message(data.channel, i.response, client)
-            track_interactions(data, i.id, i.response)
-            i.hits += 1
-            i.save
-            break
-          elsif i == @interactions.last
-            send_message(data.channel, Rails.application.config.standard_responses.sample, client)
-            track_interactions(data, 0, "standard_response")
-          end
+        interaction = Interaction.where(user_input: data.text.downcase).first
+        if interaction
+          send_message(data.channel, interaction.response, client)
+          track_interactions(data, interaction.id, interaction.response)
+          interaction.hits += 1
+          interaction.save
+        else
+          send_message(data.channel, Rails.application.config.standard_responses.sample, client)
+          track_interactions(data, 0, "standard_response")
         end
       end
     end
@@ -268,7 +265,6 @@ class Client < ActiveRecord::Base
           pic:       member.profile.image_192
         )
         @user.save
-        identify(@user)
       end
     end
   end
@@ -282,6 +278,7 @@ class Client < ActiveRecord::Base
     get_users
     time = Time.now + 5
     @users.each do |user|
+      identify(@user)
       unless user.channel_id
         if user.email
           time += 2
