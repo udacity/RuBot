@@ -58,7 +58,7 @@ class Client < ActiveRecord::Base
 
   def track_message(data)
     channel_name = channel_id_to_name(data)
-    user = User.all.select {|user| user.slack_id == data.user}.first
+    user = User.where(slack_id: data.user).first
     # identify(user)
     track(
       user,
@@ -79,7 +79,7 @@ class Client < ActiveRecord::Base
   end
 
   def track_rescheduled_message(log, message_id, message_text)
-    user = User.all.select {|user| user.channel_id == log.channel_id}.first
+    user = User.where(channel_id: log.channel_id).first
     track(
       user,
       "Scheduled Message",
@@ -89,7 +89,7 @@ class Client < ActiveRecord::Base
   end
 
   def track_interactions(data, id, response)
-    user = User.all.select {|user| user.slack_id == data.user}.first
+    user = User.where(slack_id: data.user).first
     track(
       user, 
       "Interaction", 
@@ -278,7 +278,7 @@ class Client < ActiveRecord::Base
     get_users
     time = Time.now + 5
     @users.each do |user|
-      identify(@user)
+      identify(user)
       unless user.channel_id
         if user.email
           time += 2
