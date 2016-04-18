@@ -16,7 +16,4 @@ COPY rootfs/ /
 
 ADD . /app
 
-ENV CA_FILE=/etc/ssl/certs/ca-certificates.crt
-ENV CA_PATH=/etc/ssl/certs
-
 CMD ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
