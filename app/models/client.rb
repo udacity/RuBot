@@ -1,6 +1,7 @@
 class Client < ActiveRecord::Base
   require 'pp'
   # include Segment
+  include ClientUser
 
   ### Segment tracking methods ###
 
@@ -112,10 +113,6 @@ class Client < ActiveRecord::Base
     @rubot
   end
 
-  def get_users
-    @users = User.all
-  end
-
   def say_hello_on_start(client)
     client.on :hello do 
       puts "Successfully connected, welcome '#{client.self.name}' to the '#{client.team.name}' team at https://#{client.team.domain}.slack.com."
@@ -135,30 +132,6 @@ class Client < ActiveRecord::Base
     client.on :message do |data|
       track_message(data)
     end
-  end
-
-  def add_new_user(client)
-    client.on :team_join do |data|
-      get_users
-      unless @users.any? { |person| person.slack_id == data.user.id }
-        @user = User.new(
-          user_name:  data.user.name,
-          real_name:  data.user.profile.real_name,
-          slack_id:   data.user.id,
-          email:      data.user.profile.email,
-          pic:        data.user.profile.image_192,
-          channel_id: client.web_client.im_open(user: data.user.id).channel.id
-        )
-        @user.save
-        identify(@user)
-      end
-    end
-  end
-
-  def set_user(data)
-    #will work with responses from :team_join and :user_change events
-    get_users
-    @user = @users.select { |person| person.slack_id == data.user.id }.first
   end
 
   def send_message(channel_id, text, client)
@@ -221,20 +194,6 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def update_user(client)
-    client.on :user_change do |data|
-      puts "A user changed! (And I'm still running. Yay!)"
-      set_user(data)
-      @user.user_name = data.user.name
-      @user.real_name = data.user.profile.real_name
-      @user.slack_id =  data.user.id
-      @user.email =     data.user.profile.email
-      @user.pic =       data.user.profile.image_192
-      @user.save
-      identify(@user)
-    end
-  end
-
   def respond_to_messages(client)
     client.on :message do |data|
       if @@bot_id && data.user != @@bot_id && data.channel[0] == "D"
@@ -252,47 +211,9 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def update_user_list(client)
-    puts "Updating user list."
-    get_users
-    client.web_client.users_list.members.each do |member|
-      unless @users.any? { |person| person.slack_id == member.id }
-        @user = User.new(
-          user_name: member.name,
-          real_name: member.profile.real_name,
-          slack_id:  member.id,
-          email:     member.profile.email,
-          pic:       member.profile.image_192
-        )
-        @user.save
-      end
-    end
-  end
-
   def start_rubot(client)
     puts "START RUBOT!!!"
     client.start!
-  end
-
-  def set_channel_id(client)
-    get_users
-    time = Time.now + 5
-    @users.each do |user|
-      identify(user)
-      unless user.channel_id
-        if user.email
-          time += 2
-          s = Rufus::Scheduler.new(:max_work_threads => 200)
-          s.at time do
-            ActiveRecord::Base.connection_pool.with_connection do 
-              user.channel_id = client.web_client.im_open(user: user.slack_id).channel.id
-              user.save
-              puts "Set channel id for user: #{user.user_name}"
-            end
-          end
-        end
-      end
-    end
   end
 
   def kill_client_for_testing(client)
