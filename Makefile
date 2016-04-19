@@ -22,7 +22,7 @@ coveralls: test
 docker: build
 	docker build -t $(GROUP)/$(NAME) --no-cache .
 	docker tag -f $(NAME) $(GROUP)/$(NAME):$(VERSION)
-	docker push $(GROUP)/$(NAME)
+	docker push $(GROUP)/$(NAME):$(VERSION)
 
 deploy: docker
 	eval echo `sed 's/"/\\\\"/g' conductor.json` | curl -i -s \
