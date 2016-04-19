@@ -106,7 +106,7 @@ class Client < ActiveRecord::Base
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
     # Override the CA_FILE and CA_PATH in the embedded web client if they are set in the environment
     if ENV['CA_FILE'] and ENV['CA_PATH']    
-        web_client = Slack::Web::Client.new(ca_file: ENV['CA_FILE'], ca_path: ENV['CA_PATH'])
+        web_client = Slack::Web::Client.new(ca_file: ENV['CA_FILE'], ca_path: ENV['CA_PATH'], websocket_ping: 40)
         @rubot.web_client = web_client
     end
     @rubot
@@ -298,11 +298,11 @@ class Client < ActiveRecord::Base
   def kill_client_for_testing(client)
     s = Rufus::Scheduler.new
     s.in '5s' do
-      puts "Client before #{client.web_client.api_test}"
+      # puts "Client before #{client.web_client.channels_list.channels}"
       puts "killing connection"
       client.stop!
-      sleep(5)
-      puts "Client after #{client.web_client.api_test}"
+      # sleep(3)
+      # puts "Client after #{client.web_client.channels_list.channels}"
     end
   end
 
