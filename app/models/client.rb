@@ -298,12 +298,16 @@ class Client < ActiveRecord::Base
   def kill_client_for_testing(client)
     s = Rufus::Scheduler.new
     s.in '5s' do
+      puts "Client before #{client.web_client.api_test}"
       puts "killing connection"
       client.stop!
+      sleep(5)
+      puts "Client after #{client.web_client.api_test}"
     end
   end
 
   def restart_client_if_connection_lost(client)
+    # kill_client_for_testing(client)
     client.on :close do |data|
       puts 'Connection has been disconnected. Restarting.'
       Rails.application.config.client = setup_client
