@@ -20,6 +20,7 @@ coveralls: test
 	
 
 docker: build
+	docker pull udacity/ruby:2.2.4
 	docker build -t $(GROUP)/$(NAME) --no-cache .
 	docker tag -f $(NAME) $(GROUP)/$(NAME):$(VERSION)
 	docker push $(GROUP)/$(NAME):$(VERSION)
