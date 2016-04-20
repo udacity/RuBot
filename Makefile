@@ -11,7 +11,7 @@ export
 all: build
 
 test:
-	
+	@echo "Running tests..."
 
 build: test
 	
@@ -21,9 +21,9 @@ coveralls: test
 
 docker: build
 	docker pull udacity/ruby:2.2.4
-	docker build -t $(GROUP)/$(NAME) .
-	docker tag -f $(NAME) $(GROUP)/$(NAME):$(VERSION)
-	docker push $(GROUP)/$(NAME):$(VERSION)
+	docker build -t $(ORG)/$(NAME) .
+	docker tag -f $(ORG)/$(NAME) $(ORG)/$(NAME):$(VERSION)
+	docker push $(ORG)/$(NAME):$(VERSION)
 
 deploy: docker
 	eval echo `sed 's/"/\\\\"/g' conductor.json` | curl -i -s \
