@@ -123,7 +123,8 @@ class Client < ActiveRecord::Base
     client.on :hello do
       get_users
       puts "Bot name: #{client.self.name}"
-      @@bot_id = @users.select { |bot| bot.user_name == client.self.name }.first.slack_id
+      bot = @users.select { |bot| bot.user_name == client.self.name }.first
+      @@bot_id = bot.slack_id
       puts "Bot ID: #{@@bot_id}"
     end
   end
@@ -222,18 +223,18 @@ class Client < ActiveRecord::Base
       # puts "Client before #{client.web_client.channels_list.channels}"
       puts "killing connection"
       client.stop!
-      # sleep(3)
+      # sleep(15)
       # puts "Client after #{client.web_client.channels_list.channels}"
     end
   end
 
   def restart_client_if_connection_lost(client)
-    # kill_client_for_testing(client)
-    client.on :close do |data|
-      puts 'Connection has been disconnected. Restarting.'
-      Rails.application.config.client = setup_client
-      initialize_bot(Rails.application.config.client)
-    end
+    kill_client_for_testing(client)
+    # client.on :close do |data|
+    #   puts 'Connection has been disconnected. Restarting.'
+    #   Rails.application.config.client = setup_client
+    #   initialize_bot(Rails.application.config.client)
+    # end
   end
 
   def argue_with_slackbot(client)
