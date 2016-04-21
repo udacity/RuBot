@@ -7,8 +7,14 @@ module ClientUser
   def update_user_list(client)
     puts "Updating user list."
     get_users
-    client.web_client.users_list.members.each do |member|
-      unless @users.any? { |person| person.slack_id == member.id }
+    api_members = client.web_client.users_list.members
+    save_user_on_update_list(api_members, @users)
+    delete_user_on_update_list(api_members)
+  end
+
+  def save_user_on_update_list(api_members, users)
+    api_members.each do |member|
+      unless users.any? { |person| person.slack_id == member.id } || member.deleted
         @user = User.new(
           user_name: member.name,
           real_name: member.profile.real_name,
@@ -17,6 +23,18 @@ module ClientUser
           pic:       member.profile.image_192
         )
         @user.save
+      end
+    end
+  end
+
+  def delete_user_on_update_list(api_members)
+    to_delete = api_members.select { |member| member.deleted  == true }
+    puts "to_delete: #{to_delete}"
+    if to_delete
+      get_users
+      to_delete.each do |departed|
+        user_to_delete = @users.select {|user| user.slack_id == departed.id}.first
+        user_to_delete.delete if user_to_delete
       end
     end
   end
@@ -64,7 +82,7 @@ module ClientUser
     time = Time.now + 5
     @users.each do |user|
       identify(user)
-      unless user.channel_id
+      # unless user.channel_id
         if user.email
           time += 2
           s = Rufus::Scheduler.new(:max_work_threads => 200)
@@ -75,7 +93,7 @@ module ClientUser
               puts "Set channel id for user: #{user.user_name}"
             end
           end
-        end
+        #end
       end
     end
   end
