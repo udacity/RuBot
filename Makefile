@@ -11,7 +11,7 @@ export
 all: build
 
 test:
-	@echo "Running tests..."
+	@echo "[Running tests...]"
 
 build: test
 	
