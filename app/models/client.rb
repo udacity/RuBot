@@ -124,8 +124,8 @@ class Client < ActiveRecord::Base
       get_users
       puts "Bot name: #{client.self.name}"
       bot = @users.select { |bot| bot.user_name == client.self.name }.first
-      @@bot_id = bot.slack_id
-      puts "Bot ID: #{@@bot_id}"
+      Rails.application.config.bot_id = bot.slack_id
+      puts "Bot ID: #{Rails.application.config.bot_id}"
     end
   end
 
@@ -197,7 +197,7 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages(client)
     client.on :message do |data|
-      if @@bot_id && data.user != @@bot_id && data.channel[0] == "D"
+      if Rails.application.config.bot_id && data.user != Rails.application.config.bot_id && data.channel[0] == "D"
         interaction = Interaction.where(user_input: data.text.downcase).first
         if interaction
           send_message(data.channel, interaction.response, client)
