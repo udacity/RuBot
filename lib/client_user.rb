@@ -29,7 +29,6 @@ module ClientUser
 
   def delete_user_on_update_list(api_members)
     to_delete = api_members.select { |member| member.deleted  == true }
-    puts "to_delete: #{to_delete}"
     if to_delete
       get_users
       to_delete.each do |departed|
