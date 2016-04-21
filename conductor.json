@@ -54,7 +54,7 @@
       {
         "path": "/healthcheck",
         "protocol": "HTTP",
-        "gracePeriodSeconds": 5,
+        "gracePeriodSeconds": 30,
         "intervalSeconds": 20,
         "timeoutSeconds": 10,
         "maxConsecutiveFailures": 3
