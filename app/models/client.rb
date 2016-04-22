@@ -57,6 +57,7 @@ class Client < ActiveRecord::Base
           channel_id:           options[:channel_id],
           channel_name:         options[:channel_name],
           interaction_id:       options[:interaction_id],
+          interaction_trigger:  options[:interaction_trigger],
           interaction_response: options[:interaction_response],
           message_id:           options[:message_id],
           message_text:         options[:message_text],
@@ -100,13 +101,14 @@ class Client < ActiveRecord::Base
     )
   end
 
-  def track_interactions(data, id, response)
+  def track_interactions(data, id, trigger, response)
     user = User.where(slack_id: data.user).first
     track(
       user, 
       "Interaction", 
-      :text =>                  data.text, 
+      :text =>                  data.text,  
       :interaction_id =>        id.to_s,
+      :interaction_trigger =>   trigger,
       :interaction_response =>  response
     )
   end
@@ -213,12 +215,12 @@ class Client < ActiveRecord::Base
         interaction = Interaction.where(user_input: data.text.downcase).first
         if interaction
           send_message(data.channel, interaction.response, client)
-          track_interactions(data, interaction.id, interaction.response)
+          track_interactions(data, interaction.id, interaction.user_input, interaction.response)
           interaction.hits += 1
           interaction.save
         else
           send_message(data.channel, Rails.application.config.standard_responses.sample, client)
-          track_interactions(data, 0, "standard_response")
+          track_interactions(data, 0, "no trigger", "standard_response")
         end
       end
     end
