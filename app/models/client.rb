@@ -10,25 +10,18 @@ class Client < ActiveRecord::Base
     s.in '5s' do
       @@channel_list = client.web_client.channels_list.channels
     end
-    # @@channel_list = client.web_client.channels_list.channels
     s = Rufus::Scheduler.new
     s.every '10m' do
       @@channel_list = client.web_client.channels_list.channels || @@channel_list
-      # pp @@channel_list
     end
   end
 
   def channel_id_to_name(data)
     channel = nil
-    # pp data
-    # pp data.name
     if @@channel_list
       channel = @@channel_list.select {|channel| channel.id == data.channel}.first
     end
-    # pp "channel: #{channel}"
-    # puts "data.channel: #{data.channel}"
     channel_name = channel != nil ? channel.name : "nil"
-    puts "channel_name: #{channel_name}"
   end
 
   def identify(user)
@@ -69,10 +62,8 @@ class Client < ActiveRecord::Base
   end
 
   def track_message(data)
-    puts "tracking"
     channel_name = channel_id_to_name(data)
     user = User.where(slack_id: data.user).first
-    # identify(user)
     track(
       user,
       "Message",
@@ -144,7 +135,6 @@ class Client < ActiveRecord::Base
 
   def track_messages(client)
     client.on :message do |data|
-      puts "message event"
       track_message(data)
     end
   end
@@ -244,11 +234,11 @@ class Client < ActiveRecord::Base
 
   def restart_client_if_connection_lost(client)
     # kill_client_for_testing(client)
-    # client.on :close do |data|
-    #   puts 'Connection has been disconnected. Restarting.'
-    #   Rails.application.config.client = setup_client
-    #   initialize_bot(Rails.application.config.client)
-    # end
+    client.on :close do |data|
+      puts 'Connection has been disconnected. Restarting.'
+      Rails.application.config.client = setup_client
+      initialize_bot(Rails.application.config.client)
+    end
   end
 
   def argue_with_slackbot(client)
