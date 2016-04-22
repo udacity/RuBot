@@ -52,7 +52,7 @@
     ],
     "healthChecks": [
       {
-        "path": "/",
+        "path": "/healthcheck",
         "protocol": "HTTP",
         "gracePeriodSeconds": 30,
         "intervalSeconds": 20,
