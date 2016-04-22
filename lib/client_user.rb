@@ -81,7 +81,7 @@ module ClientUser
     time = Time.now + 5
     @users.each do |user|
       identify(user)
-      # unless user.channel_id
+      unless user.channel_id
         if user.email
           time += 2
           s = Rufus::Scheduler.new(:max_work_threads => 200)
@@ -92,7 +92,7 @@ module ClientUser
               puts "Set channel id for user: #{user.user_name}"
             end
           end
-        #end
+        end
       end
     end
   end
