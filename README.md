@@ -70,6 +70,8 @@ To set up your own custom version of RuBot, follow these instructions:
     SLACK_TOKEN=<put your slack token here>
     CLIENT_ID=<your google oauth client id>
     CLIENT_SECRET=<your google oauth client secret>
+    REGISTRAR_PW: "<your registrar key"
+    SEGMENT_WRITE_KEY: "your segment key"
     SECRET_KEY_BASE=<secret key base>
     ```
 
@@ -80,6 +82,8 @@ To set up your own custom version of RuBot, follow these instructions:
     SLACK_TOKEN=<put your slack token here>
     CLIENT_ID=<your google oauth client id>
     CLIENT_SECRET=<your google oauth client secret>
+    REGISTRAR_PW: "<your registrar key"
+    SEGMENT_WRITE_KEY: "your segment key"
     DB_HOST=<your docker machine ip or blank>
     DB_PORT=<your docker machine port or blank>
     DB_PASSWORD=<your postgress db password>
@@ -100,6 +104,10 @@ To set up your own custom version of RuBot, follow these instructions:
 Deploying to berlioz and getting Segment / Chartio integration will require assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
 
 export $(cat .env-production | xargs) && make deploy
+
+## Known issues
+
+URL previews kill the API connection.
 
 ## Contributors
 

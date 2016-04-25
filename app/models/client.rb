@@ -3,25 +3,6 @@ class Client < ActiveRecord::Base
   include SegmentAnalytics
   include ClientUser
 
-  def set_channel_info(client)
-    s = Rufus::Scheduler.new
-    s.in '5s' do
-      @@channel_list = client.web_client.channels_list.channels
-    end
-    s = Rufus::Scheduler.new
-    s.every '10m' do
-      @@channel_list = client.web_client.channels_list.channels || @@channel_list
-    end
-  end
-
-  def channel_id_to_name(data)
-    channel = nil
-    if @@channel_list
-      channel = @@channel_list.select {|channel| channel.id == data.channel}.first
-    end
-    channel_name = channel != nil ? channel.name : "nil"
-  end
-
   def setup_client
     puts "setup rubot!"
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
@@ -44,6 +25,7 @@ class Client < ActiveRecord::Base
       get_users
       puts "Bot name: #{client.self.name}"
       bot = @users.select { |bot| bot.user_name == client.self.name }.first
+      #Set global to be used for health check and "respond_to_messages"
       Rails.application.config.bot_id = bot.slack_id
       puts "Bot ID: #{Rails.application.config.bot_id}"
     end
@@ -117,7 +99,8 @@ class Client < ActiveRecord::Base
 
   def respond_to_messages(client)
     client.on :message do |data|
-      if Rails.application.config.bot_id && data.user != Rails.application.config.bot_id && data.channel[0] == "D"
+      #make sure bot only responds to other users and only in DM channels
+      if data.user != Rails.application.config.bot_id && data.channel[0] == "D"
         interaction = Interaction.where(user_input: data.text.downcase).first
         if interaction
           send_message(data.channel, interaction.response, client)
@@ -125,6 +108,7 @@ class Client < ActiveRecord::Base
           interaction.hits += 1
           interaction.save
         else
+          #if no matching interaction, send from a standard response set in "application.rb"
           send_message(data.channel, Rails.application.config.standard_responses.sample, client)
           track_interactions(data, 0, "no trigger", "standard_response")
         end
@@ -157,6 +141,7 @@ class Client < ActiveRecord::Base
     end
   end
 
+  # This method is just for fun.
   def argue_with_slackbot(client)
     client.on :message do |data|
       if data.user == "USLACKBOT"
@@ -169,6 +154,29 @@ class Client < ActiveRecord::Base
         )
       end
     end
+  end
+
+  #Grabs the channel data from slack's api 
+  #to be used by "channel_id_to_name" method
+  def set_channel_info(client)
+    s = Rufus::Scheduler.new
+    #Wait 5s so that the client is setup before trying to run.
+    s.in '5s' do
+      @@channel_list = client.web_client.channels_list.channels
+    end
+    s = Rufus::Scheduler.new
+    s.every '15m' do
+      @@channel_list = client.web_client.channels_list.channels || @@channel_list
+    end
+  end
+
+  #Set channel names for "track_message" method in segment_analytics.rb
+  def channel_id_to_name(data)
+    channel = nil
+    if @@channel_list
+      channel = @@channel_list.select {|channel| channel.id == data.channel}.first
+    end
+    channel_name = channel != nil ? channel.name : "nil"
   end
 
   def initialize_bot(client)
