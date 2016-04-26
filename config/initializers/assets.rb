@@ -12,6 +12,6 @@ Rails.application.config.assets.version = '1.0'
 
 Slack.configure do |config|
   config.token = ENV['SLACK_TOKEN']
-  # config.logger = Logger.new(STDOUT)
-  # config.logger.level = Logger::WARN
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger::WARN
 end
