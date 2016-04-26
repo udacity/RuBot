@@ -133,7 +133,7 @@ class Client < ActiveRecord::Base
   end
 
   def restart_client_if_connection_lost(client)
-    kill_client_for_testing(client)
+    # kill_client_for_testing(client)
     client.on :close do |data|
       puts 'Connection has been disconnected. Restarting.'
       Rails.application.config.client = setup_client
