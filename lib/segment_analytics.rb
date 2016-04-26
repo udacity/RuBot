@@ -38,15 +38,17 @@ module SegmentAnalytics
   end
 
   def track_message(data)
-    channel_name = channel_id_to_name(data)
-    user = User.where(slack_id: data.user).first
-    track(
-      user,
-      "Message",
-      :text =>          data.text,
-      :channel_id =>    data.channel,
-      :channel_name =>  channel_name
-    )
+    if data.text
+      channel_name = channel_id_to_name(data)
+      user = User.where(slack_id: data.user).first
+      track(
+        user,
+        "Message",
+        :text =>          data.text,
+        :channel_id =>    data.channel,
+        :channel_name =>  channel_name
+      )
+    end
   end
 
   def track_scheduled_message(user, message_id, message_text)
@@ -69,15 +71,17 @@ module SegmentAnalytics
   end
 
   def track_interactions(data, id, trigger, response)
-    user = User.where(slack_id: data.user).first
-    track(
-      user, 
-      "Interaction", 
-      :text =>                  data.text,  
-      :interaction_id =>        id.to_s,
-      :interaction_trigger =>   trigger,
-      :interaction_response =>  response
-    )
+    if data.text
+      user = User.where(slack_id: data.user).first
+      track(
+        user, 
+        "Interaction", 
+        :text =>                  data.text,  
+        :interaction_id =>        id.to_s,
+        :interaction_trigger =>   trigger,
+        :interaction_response =>  response
+      )
+    end
   end
 
 end
