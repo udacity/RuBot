@@ -100,7 +100,7 @@ class Client < ActiveRecord::Base
   def respond_to_messages(client)
     client.on :message do |data|
       #make sure bot only responds to other users and only in DM channels
-      if data.user != Rails.application.config.bot_id && data.channel[0] == "D"
+      if data.user != Rails.application.config.bot_id && data.channel[0] == "D" && data.text
         interaction = Interaction.where(user_input: data.text.downcase).first
         if interaction
           send_message(data.channel, interaction.response, client)
