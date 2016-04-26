@@ -123,7 +123,7 @@ class Client < ActiveRecord::Base
 
   def kill_client_for_testing(client)
     s = Rufus::Scheduler.new
-    s.in '5s' do
+    s.in '15s' do
       # puts "Client before #{client.web_client.channels_list.channels}"
       puts "killing connection"
       client.stop!
@@ -133,11 +133,11 @@ class Client < ActiveRecord::Base
   end
 
   def restart_client_if_connection_lost(client)
-    # kill_client_for_testing(client)
+    kill_client_for_testing(client)
     client.on :close do |data|
       puts 'Connection has been disconnected. Restarting.'
       Rails.application.config.client = setup_client
-      initialize_bot(Rails.application.config.client)
+      restart_bot(Rails.application.config.client)
     end
   end
 
@@ -159,12 +159,12 @@ class Client < ActiveRecord::Base
   #Grabs the channel data from slack's api 
   #to be used by "channel_id_to_name" method
   def set_channel_info(client)
-    s = Rufus::Scheduler.new
+    s = Rufus::Scheduler.new(:max_work_threads => 200)
     #Wait 5s so that the client is setup before trying to run.
     s.in '5s' do
       @@channel_list = client.web_client.channels_list.channels
     end
-    s = Rufus::Scheduler.new
+    s = Rufus::Scheduler.new(:max_work_threads => 200)
     s.every '15m' do
       @@channel_list = client.web_client.channels_list.channels || @@channel_list
     end
@@ -192,6 +192,17 @@ class Client < ActiveRecord::Base
     update_user(client)
     respond_to_messages(client)
     # argue_with_slackbot(client)
+    restart_client_if_connection_lost(client)
+    start_rubot(client)
+  end
+
+  def restart_bot(client)
+    say_hello_on_start(client)
+    track_messages(client)
+    add_new_user(client)
+    send_scheduled_messages(client)
+    update_user(client)
+    respond_to_messages(client)
     restart_client_if_connection_lost(client)
     start_rubot(client)
   end
