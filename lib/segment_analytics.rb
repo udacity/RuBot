@@ -3,8 +3,9 @@ module SegmentAnalytics
   def identify(user)
     Analytics.identify(
       {
-        user_id: user.id.to_s,
+        user_id:  user.id.to_s,
         traits: {
+          ndkey:      Rails.application.config.ndkey,
           email:      user.email,
           real_name:  user.real_name,
           user_name:  user.user_name,
@@ -22,6 +23,7 @@ module SegmentAnalytics
         user_id:    user.id.to_s,
         event:      event,
         properties: {
+          ndkey:                Rails.application.config.ndkey,
           text:                 options[:text],
           channel_id:           options[:channel_id],
           channel_name:         options[:channel_name],
@@ -75,7 +77,7 @@ module SegmentAnalytics
       user = User.where(slack_id: data.user).first
       track(
         user, 
-        "Interaction", 
+        "Interaction",
         :text =>                  data.text,  
         :interaction_id =>        id.to_s,
         :interaction_trigger =>   trigger,
