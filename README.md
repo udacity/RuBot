@@ -107,7 +107,7 @@ export $(cat .env-production | xargs) && make deploy
 
 ## Known issues
 
-URL previews sent directly to the bot kill the API connection.
+None currently.
 
 ## Contributors
 
