@@ -1,7 +1,6 @@
-require 'test_helper'
+require 'minitest'
 
-class ClientTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class ClientTest < MiniTest::Test
+
+
 end
