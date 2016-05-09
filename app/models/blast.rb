@@ -13,8 +13,9 @@ class Blast < ActiveRecord::Base
   def self.schedule_blasts(client)
     blast = Blast.last
     time = Time.now + 5
+    api_members = client.web_client.users_list.members
     User.all.each do |user|
-      if user.channel_id
+      if api_members.any? { |member| member.id == user.slack_id } && user.channel_id
         time += 2
         s = Rufus::Scheduler.new(:max_work_threads => 1000)
         s.at time do
