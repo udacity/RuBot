@@ -9,7 +9,11 @@ module ClientUser
     get_users
     api_members = client.web_client.users_list.members
     save_user_on_update_list(api_members, @users)
-    delete_user_on_update_list(api_members)
+    s = Rufus::Scheduler.new(:max_work_threads => 200)
+    s.every '10m' do
+      api_members = client.web_client.users_list.members
+      delete_user_on_update_list(api_members)
+    end
   end
 
   def save_user_on_update_list(api_members, users)
