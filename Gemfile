@@ -32,6 +32,7 @@ gem 'figaro'
 gem 'rufus-scheduler'
 # User auth
 gem 'devise'
+gem 'rspec'
 gem 'omniauth'
 # Google user auth
 gem "omniauth-google-oauth2"

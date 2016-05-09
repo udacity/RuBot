@@ -101,8 +101,7 @@ class Client < ActiveRecord::Base
     client.on :message do |data|
       #make sure bot only responds to other users and only in DM channels
       if data.user != Rails.application.config.bot_id && data.channel[0] == "D" && data.text
-        interaction = Interaction.where(user_input: data.text.downcase).first
-        if interaction
+        if interaction = Interaction.where(user_input: data.text.downcase).first
           send_message(data.channel, interaction.response, client)
           track_interactions(data, interaction.id, interaction.user_input, interaction.response)
           interaction.hits += 1
