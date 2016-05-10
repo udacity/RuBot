@@ -13,14 +13,9 @@ all: build
 test:
 	@echo "[Running tests...]"
 
-build: test
-	
-
 coveralls: test
-	
 
-docker: build
-	docker pull udacity/ruby:2.2.4
+docker:
 	docker build -t $(ORG)/$(NAME) .
 	docker tag -f $(ORG)/$(NAME) $(ORG)/$(NAME):$(VERSION)
 	docker push $(ORG)/$(NAME):$(VERSION)

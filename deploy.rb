@@ -8,6 +8,8 @@ ENV.each do |k,v|
   if k.start_with?(ENV['CIRCLE_BRANCH'].upcase)
     _, key = k.split('_')
     ENV[key] = v
-    Process.spawn(ENV, 'make deploy')
   end
 end
+
+# Run make deploy with modified ENV
+Process.spawn(ENV, 'make deploy')
