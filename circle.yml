@@ -15,6 +15,10 @@ dependencies:
     - make docker
     - mkdir -p ~/docker; docker save udacity/rubot > ~/docker/image.tar
 
+database:
+  override:
+    - echo "NOOP"
+
 test:
   override:
     - make test
