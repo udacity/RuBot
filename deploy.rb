@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# A simple script for namespacing configs in CircleCI
 
 ENV['SERVICE'] = ENV['CIRCLE_BRANCH']
 ENV['SERVICE_NAME'] = ENV['CIRCLE_BRANCH']
