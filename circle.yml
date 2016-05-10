@@ -15,6 +15,10 @@ dependencies:
     - make docker
     - mkdir -p ~/docker; docker save udacity/rubot > ~/docker/image.tar
 
+database:
+  override:
+    - echo "NOOP"
+
 test:
   override:
     - make test
@@ -22,16 +26,6 @@ test:
 deployment:
   rubot:
     branch: "rubot"
-    commands:
-      - ./deploy.rb
-
-  swiftbot:
-    branch: "swiftbot"
-    commands:
-      - ./deploy.rb
-
-  introbot:
-    branch: "introbot"
     commands:
       - ./deploy.rb
 
