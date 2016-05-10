@@ -23,15 +23,15 @@ deployment:
   rubot:
     branch: "rubot"
     commands:
-      - make deploy
+      - ./deploy.rb
 
   swiftbot:
     branch: "swiftbot"
     commands:
-      - make deploy
+      - ./deploy.rb
 
   introbot:
     branch: "introbot"
     commands:
-      - make deploy
+      - ./deploy.rb
 
