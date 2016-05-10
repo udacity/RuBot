@@ -6,8 +6,9 @@ ENV['SERVICE_NAME'] = ENV['CIRCLE_BRANCH']
 
 ENV.each do |k,v| 
   if k.start_with?(ENV['CIRCLE_BRANCH'].upcase)
-    _, key = k.split('_')
+    key = k.split('_').slice(1..-1).join('_')
     ENV[key] = v
+    puts key
   end
 end
 
