@@ -12,4 +12,4 @@ ENV.each do |k,v|
 end
 
 # Run make deploy with modified ENV
-Process.spawn(ENV, 'make deploy')
+system(ENV, 'make deploy')
