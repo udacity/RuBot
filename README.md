@@ -32,7 +32,7 @@ See [RuBot's UI](https://rubot.udacity.com/).
 
 ## Customize the bot for your own team.
 
-RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. If you want to deploy to berlioz you will also need to have docker installed and a dockerhub account. You will need to email steven.worley@udacity.com for more information.
+RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. 
 
 To set up your own custom version of RuBot, follow these instructions:
 
@@ -66,11 +66,7 @@ To set up your own custom version of RuBot, follow these instructions:
 
   Production: Go to https://circleci.com/gh/udacity/rubot/edit#env-vars and set your ENV vars with the following format:
 
-    ```
-    YOURBOTNAME_SLACK_TOKEN
-    YOURBOTNAME_CLIENT_ID
-    YOURBOTNAME_CLIENT_SECRET
-    ```
+    `YOURBOTNAME_SLACK_TOKEN`
 
     Replacing YOURBOTNAME with your bot's name, which is the same as your branch name.
 
@@ -79,7 +75,6 @@ To set up your own custom version of RuBot, follow these instructions:
   Open `circle.yml` and add the following to the bottom of the file:
 
     ```
-    deployment:
       yourbotname:
         branch: "yourbotname"
         commands:
