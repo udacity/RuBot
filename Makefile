@@ -1,7 +1,7 @@
 GROUP := udacity
 NAME := rubot
 ORG := $(GROUP)
-SERVICE := $(NAME)
+SERVICE ?= $(NAME)
 VERSION ?= $(shell git rev-parse --short HEAD)
 CONDUCTOR_API_KEY := $(shell echo $$CONDUCTOR_API_KEY)
 export
@@ -13,14 +13,11 @@ all: build
 test:
 	@echo "[Running tests...]"
 
-build: test
-	
-
 coveralls: test
-	
 
-docker: build
-	docker pull udacity/ruby:2.2.4
+build: docker
+
+docker: 
 	docker build -t $(ORG)/$(NAME) .
 	docker tag -f $(ORG)/$(NAME) $(ORG)/$(NAME):$(VERSION)
 	docker push $(ORG)/$(NAME):$(VERSION)

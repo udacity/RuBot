@@ -1,4 +1,3 @@
-Dockerfile
 Makefile
 conductor.json
 .env*
