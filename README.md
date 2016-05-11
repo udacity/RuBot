@@ -1,5 +1,5 @@
-RuBot![alt text](http://i.imgur.com/Hs1iwYc.png?1 "RuBot logo")
-=====
+RuBot!<img src="app/assets/images/rubot_profile_pic.png" alt="RuBot logo" width= "250"/>
+======
 
 An expirement in onboarding for the Udacity Rubyists Slack team! If desired, RuBot can be cloned, customized, and deployed to suit the needs of your Slack team. 
 
@@ -32,7 +32,7 @@ See [RuBot's UI](https://rubot.udacity.com/).
 
 ## Customize the bot for your own team.
 
-RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. If you want to deploy to berlioz you will also need to have docker installed and a dockerhub account. You will need to email steven.worley@udacity.com for more information.
+RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. 
 
 To set up your own custom version of RuBot, follow these instructions:
 
@@ -48,69 +48,59 @@ To set up your own custom version of RuBot, follow these instructions:
 
   `git clone https://github.com/udacity/RuBot.git`
 
-3. **Set ENV variables**
+3. **Create a branch for your bot**
 
-  create a file named `application.yml` in the project root directory containing the following text:
+  Your branch name should be your bot name. Ex for Rubot: `git checkout -b rubot`. It will serve as your master branch. Please DO NOT PUSH TO MASTER, unless you've made a change that should propagate to all bots.
+
+4. **Set ENV variables**
+
+  Testing: Create a file named `application.yml` in the project root directory containing the following text:
 
     ```
-    SLACK_TOKEN: "<put your token here>"
+    SLACK_TOKEN: "<put your testing team token here>"
     CLIENT_ID: "<your google oauth client id>"
     CLIENT_SECRET: "<your google oauth client secret>"
     REGISTRAR_PW: "<your registrar key"
     SEGMENT_WRITE_KEY: "your segment key"
     ```
 
-  SKIP to the next step unless you're deploying to berlioz:
+  Production: Go to https://circleci.com/gh/udacity/rubot/edit#env-vars and set your ENV vars with the following format:
 
-  create a file named `.env-production` in the project root directory containing the following text:
+    `YOURBOTNAME_SLACK_TOKEN`
 
-    ```
-    CONDUCTOR_API_KEY=<conductor api key>
-    RAILS_ENV=production
-    SLACK_TOKEN=<put your slack token here>
-    CLIENT_ID=<your google oauth client id>
-    CLIENT_SECRET=<your google oauth client secret>
-    REGISTRAR_PW: "<your registrar key"
-    SEGMENT_WRITE_KEY: "your segment key"
-    SECRET_KEY_BASE=<secret key base>
-    ```
+    Replacing YOURBOTNAME with your bot's name, which is the same as your branch name.
 
-  create a file named `.env-development` in the project root directory containing the following text:
+5. **Create branch for Circle CI**
+
+  Open `circle.yml` and add the following to the bottom of the file:
 
     ```
-    RAILS_ENV=development
-    SLACK_TOKEN=<put your slack token here>
-    CLIENT_ID=<your google oauth client id>
-    CLIENT_SECRET=<your google oauth client secret>
-    REGISTRAR_PW: "<your registrar key"
-    SEGMENT_WRITE_KEY: "your segment key"
-    DB_HOST=<your docker machine ip or blank>
-    DB_PORT=<your docker machine port or blank>
-    DB_PASSWORD=<your postgress db password>
-    DB_USER=<your postgress db user>
+      yourbotname:
+        branch: "yourbotname"
+        commands:
+          - ./deploy.rb
     ```
+    replacing yourbotname with your bot's name.
 
-4. **Customize**
+6. **Customize**
 
     In `/config/application.rb` set the following variables to fit your needs:
-    `Rails.application.config.client_name =`
-    `Rails.application.config.ndkey =`
-    `Rails.application.config.standard_responses =`
+    ```
+    Rails.application.config.client_name =
+    Rails.application.config.ndkey =
+    Rails.application.config.standard_responses =
+    ```
 
-    You will probably want to replace some of the images in `/app/assets/images/` with your own. 
+    Replace `rubot_profile_pic.png` in `/app/assets/images/` with your bot's logo. Be sure to leave the file name the same OR change the image tags throughout the project. 
 
 ## Deployment instructions
 
-Deploying to berlioz and getting Segment / Chartio integration will require assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
-
-export $(cat .env-production | xargs) && make deploy
+When you push to your bot's branch, it will automatically build and deploy through CircleCI! If you want to push to your branch without deploying include `[ci skip]` in the commit message.
 
 ## Known issues
 
 None currently.
 
 ## Contributors
-
-The project was created by Fuzz Worley at the suggestion of Walter Latimer after hearing about 18F's [Dolores Landingham bot](https://18f.gsa.gov/2015/12/15/how-bot-named-dolores-landingham-transformed-18fs-onboarding/).
 
 Contributors include Fuzz Worley, Colt Steele, and Angel Perez.
