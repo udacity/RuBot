@@ -29,3 +29,8 @@ deployment:
     commands:
       - ./deploy.rb
 
+deployment:
+  swiftbot:
+    branch: "swiftbot"
+    commands:
+      - ./deploy.rb
