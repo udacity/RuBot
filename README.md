@@ -23,7 +23,11 @@ See [RuBot's UI](https://rubot.udacity.com/).
 
   Send a direct message from the bot to every user on your team.
 
-4. **Etc.**
+4. **Data!**
+
+  The application is configured to send data to Segment and integrate with Chartio automatically!
+
+5. **Etc.**
 
   The UI also contains information about every user on your team and some metrics about bot usage.
 
@@ -97,9 +101,11 @@ To set up your own custom version of RuBot, follow these instructions:
 
 When you push to your bot's branch, it will automatically build and deploy through CircleCI! If you want to push to your branch without deploying include `[ci skip]` in the commit message.
 
-## Known issues
+## Analytics
 
-None currently.
+The program is already setup to be tracking your teams metrics via segment / chartio integration. You will however need to invite your bot user into each channel that you want to run analytics on.
+
+Your teams separating factor is the `ndkey` value in the tracks and indentifies sent to segment. This is automatically configured for you in the Customize step above.
 
 ## Contributors
 
