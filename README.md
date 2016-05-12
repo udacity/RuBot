@@ -80,7 +80,9 @@ To set up your own custom version of RuBot, follow these instructions:
     YOURBOTNAME_SLACK_TOKEN
     YOURBOTNAME_CLIENT_ID
     YOURBOTNAME_CLIENT_SECRET
+    YOURBOTNAME_SECRET_KEY_BASE
     ```
+    To get `YOURBOTNAME_SECRET_KEY_BASE` token, navigate to your project's root directory in terminal, and execute this command: `RAILS_ENV=production rake secret`.
 
 6. **Create branch for Circle CI**
 
