@@ -48,15 +48,24 @@ To set up your own custom version of RuBot, follow these instructions:
 
   Copy the API token and keep in a safe place.
 
-2. **Clone the repository**
+2. **Obtain Google Oauth credentials**
+
+  Visit: https://console.developers.google.com/ and get a client_id and client_secret from the Google+ API to use for authentication.
+
+  Setup your Authorized redirect URIs using this format:
+  http://yourbotname.udacity.com/admins/sign_in
+
+  replacing yourbotname with your bot's name.
+
+3. **Clone the repository**
 
   `git clone https://github.com/udacity/RuBot.git`
 
-3. **Create a branch for your bot**
+4. **Create a branch for your bot**
 
-  Your branch name should be your bot name. Ex for Rubot: `git checkout -b rubot`. It will serve as your master branch. Please DO NOT PUSH TO MASTER, unless you've made a change that should propagate to all bots.
+  Your branch name should be your bot name. Ex: `git checkout -b yourbotname`. It will serve as your master branch. Please DO NOT PUSH TO MASTER, unless you've made a change that should propagate to all bots.
 
-4. **Set ENV variables**
+5. **Set ENV variables**
 
   Testing: Create a file named `application.yml` in the project root directory containing the following text:
 
@@ -64,17 +73,16 @@ To set up your own custom version of RuBot, follow these instructions:
     SLACK_TOKEN: "<put your testing team token here>"
     CLIENT_ID: "<your google oauth client id>"
     CLIENT_SECRET: "<your google oauth client secret>"
-    REGISTRAR_PW: "<your registrar key"
-    SEGMENT_WRITE_KEY: "your segment key"
     ```
 
   Production: Go to https://circleci.com/gh/udacity/rubot/edit#env-vars and set your ENV vars with the following format:
+    ```
+    YOURBOTNAME_SLACK_TOKEN
+    YOURBOTNAME_CLIENT_ID
+    YOURBOTNAME_CLIENT_SECRET
+    ```
 
-    `YOURBOTNAME_SLACK_TOKEN`
-
-    Replacing YOURBOTNAME with your bot's name, which is the same as your branch name.
-
-5. **Create branch for Circle CI**
+6. **Create branch for Circle CI**
 
   Open `circle.yml` and add the following to the bottom of the file:
 
@@ -86,7 +94,7 @@ To set up your own custom version of RuBot, follow these instructions:
     ```
     replacing yourbotname with your bot's name.
 
-6. **Customize**
+7. **Customize**
 
     In `/config/application.rb` set the following variables to fit your needs:
     ```
