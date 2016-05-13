@@ -53,7 +53,7 @@ To set up your own custom version of RuBot, follow these instructions:
   Visit: https://console.developers.google.com/ and get a client_id and client_secret from the Google+ API to use for authentication.
 
   Setup your Authorized redirect URIs using this format:
-  http://yourbotname.udacity.com/admins/sign_in
+  https://yourbotname.udacity.com/admins/auth/google_oauth2/callback
 
   replacing yourbotname with your bot's name.
 
