@@ -1,5 +1,5 @@
-RuBot![alt text](http://i.imgur.com/Hs1iwYc.png?1 "RuBot logo")
-=====
+RuBot!<img src="app/assets/images/rubot_profile_pic.png" alt="RuBot logo" width= "250"/>
+======
 
 An expirement in onboarding for the Udacity Rubyists Slack team! If desired, RuBot can be cloned, customized, and deployed to suit the needs of your Slack team. 
 
@@ -23,7 +23,11 @@ See [RuBot's UI](https://rubot.udacity.com/).
 
   Send a direct message from the bot to every user on your team.
 
-4. **Etc.**
+4. **Data!**
+
+  The application is configured to send data to Segment and integrate with Chartio automatically!
+
+5. **Etc.**
 
   The UI also contains information about every user on your team and some metrics about bot usage.
 
@@ -32,7 +36,7 @@ See [RuBot's UI](https://rubot.udacity.com/).
 
 ## Customize the bot for your own team.
 
-RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. If you want to deploy to berlioz you will also need to have docker installed and a dockerhub account. You will need to email steven.worley@udacity.com for more information.
+RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. 
 
 To set up your own custom version of RuBot, follow these instructions:
 
@@ -44,73 +48,75 @@ To set up your own custom version of RuBot, follow these instructions:
 
   Copy the API token and keep in a safe place.
 
-2. **Clone the repository**
+2. **Obtain Google Oauth credentials**
+
+  Visit: https://console.developers.google.com/ and get a client_id and client_secret from the Google+ API to use for authentication.
+
+  Setup your Authorized redirect URIs using this format:
+  https://yourbotname.udacity.com/admins/auth/google_oauth2/callback
+
+  replacing yourbotname with your bot's name.
+
+3. **Clone the repository**
 
   `git clone https://github.com/udacity/RuBot.git`
 
-3. **Set ENV variables**
+4. **Create a branch for your bot**
 
-  create a file named `application.yml` in the project root directory containing the following text:
+  Your branch name should be your bot name. Ex: `git checkout -b yourbotname`. It will serve as your master branch. Please DO NOT PUSH TO MASTER, unless you've made a change that should propagate to all bots.
+
+5. **Set ENV variables**
+
+  Testing: Create a file named `application.yml` in the project root directory containing the following text:
 
     ```
-    SLACK_TOKEN: "<put your token here>"
+    SLACK_TOKEN: "<put your testing team token here>"
     CLIENT_ID: "<your google oauth client id>"
     CLIENT_SECRET: "<your google oauth client secret>"
-    REGISTRAR_PW: "<your registrar key"
-    SEGMENT_WRITE_KEY: "your segment key"
     ```
 
-  SKIP to the next step unless you're deploying to berlioz:
+  Production: Go to https://circleci.com/gh/udacity/rubot/edit#env-vars and set your ENV vars with the following format:
+    ```
+    YOURBOTNAME_SLACK_TOKEN
+    YOURBOTNAME_CLIENT_ID
+    YOURBOTNAME_CLIENT_SECRET
+    YOURBOTNAME_SECRET_KEY_BASE
+    ```
+    To get `YOURBOTNAME_SECRET_KEY_BASE` token, navigate to your project's root directory in terminal, and execute this command: `RAILS_ENV=production rake secret`.
 
-  create a file named `.env-production` in the project root directory containing the following text:
+6. **Create branch for Circle CI**
+
+  Open `circle.yml` and add the following to the bottom of the file:
 
     ```
-    CONDUCTOR_API_KEY=<conductor api key>
-    RAILS_ENV=production
-    SLACK_TOKEN=<put your slack token here>
-    CLIENT_ID=<your google oauth client id>
-    CLIENT_SECRET=<your google oauth client secret>
-    REGISTRAR_PW: "<your registrar key"
-    SEGMENT_WRITE_KEY: "your segment key"
-    SECRET_KEY_BASE=<secret key base>
+      yourbotname:
+        branch: "yourbotname"
+        commands:
+          - ./deploy.rb
     ```
+    replacing yourbotname with your bot's name.
 
-  create a file named `.env-development` in the project root directory containing the following text:
-
-    ```
-    RAILS_ENV=development
-    SLACK_TOKEN=<put your slack token here>
-    CLIENT_ID=<your google oauth client id>
-    CLIENT_SECRET=<your google oauth client secret>
-    REGISTRAR_PW: "<your registrar key"
-    SEGMENT_WRITE_KEY: "your segment key"
-    DB_HOST=<your docker machine ip or blank>
-    DB_PORT=<your docker machine port or blank>
-    DB_PASSWORD=<your postgress db password>
-    DB_USER=<your postgress db user>
-    ```
-
-4. **Customize**
+7. **Customize**
 
     In `/config/application.rb` set the following variables to fit your needs:
-    `Rails.application.config.client_name =`
-    `Rails.application.config.ndkey =`
-    `Rails.application.config.standard_responses =`
+    ```
+    Rails.application.config.client_name =
+    Rails.application.config.ndkey =
+    Rails.application.config.standard_responses =
+    ```
 
-    You will probably want to replace some of the images in `/app/assets/images/` with your own. 
+    Replace `rubot_profile_pic.png` in `/app/assets/images/` with your bot's logo. Be sure to leave the file name the same OR change the image tags throughout the project. 
 
 ## Deployment instructions
 
-Deploying to berlioz and getting Segment / Chartio integration will require assistance from our friendly engineering team. Please email me and / or somebody on the engineering team for help.
+When you push to your bot's branch, it will automatically build and deploy through CircleCI! If you want to push to your branch without deploying include `[ci skip]` in the commit message.
 
-export $(cat .env-production | xargs) && make deploy
+## Analytics
 
-## Known issues
+The program is already setup to be tracking your teams metrics via segment / chartio integration. You will however need to invite your bot user into each channel that you want to run analytics on.
 
-None currently.
+Your teams separating factor is the `ndkey` value in the tracks and indentifies sent to segment. This is automatically configured for you in the Customize step above.
 
 ## Contributors
-
-The project was created by Fuzz Worley at the suggestion of Walter Latimer after hearing about 18F's [Dolores Landingham bot](https://18f.gsa.gov/2015/12/15/how-bot-named-dolores-landingham-transformed-18fs-onboarding/).
 
 Contributors include Fuzz Worley, Colt Steele, and Angel Perez.
