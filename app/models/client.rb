@@ -33,8 +33,6 @@ class Client < ActiveRecord::Base
 
   def track_messages(client)
     client.on :message do |data|
-      user = User.where(slack_id: data.user).first
-      identify(user)
       track_message(data, user)
     end
   end
