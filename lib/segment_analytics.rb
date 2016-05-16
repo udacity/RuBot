@@ -77,7 +77,7 @@ module SegmentAnalytics
       track(
         user, 
         "Interaction",
-        :text =>                  data.text,  
+        :text =>                  data.text.downcase,  
         :interaction_id =>        id.to_s,
         :interaction_trigger =>   trigger,
         :interaction_response =>  response
