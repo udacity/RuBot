@@ -33,7 +33,7 @@ class Client < ActiveRecord::Base
 
   def track_messages(client)
     client.on :message do |data|
-      track_message(data, user)
+      track_message(data)
     end
   end
 
