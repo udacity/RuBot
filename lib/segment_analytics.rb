@@ -40,9 +40,9 @@ module SegmentAnalytics
   end
 
   def track_message(data, user)
-    user = User.where(slack_id: data.user).first
     if data.text
       channel_name = channel_id_to_name(data)
+      user = User.where(slack_id: data.user).first
       track(
         user,
         "Message",
