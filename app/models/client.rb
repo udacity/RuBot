@@ -158,6 +158,7 @@ class Client < ActiveRecord::Base
   #Grabs the channel data from slack's api 
   #to be used by "channel_id_to_name" method
   def set_channel_info(client)
+    @@channel_list = nil
     s = Rufus::Scheduler.new(:max_work_threads => 200)
     #Wait 5s so that the client is setup before trying to run.
     s.in '5s' do
