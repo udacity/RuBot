@@ -36,9 +36,7 @@ See [RuBot's UI](https://rubot.udacity.com/).
 
 ## Customize the bot for your own team.
 
-RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To work on the application, you will need to have Ruby, Rails, and Postgres installed. 
-
-To set up your own custom version of RuBot, follow these instructions:
+RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To set up your own custom version of RuBot, follow these instructions:
 
 1. **Create your bot user on Slack**
 
@@ -50,7 +48,7 @@ To set up your own custom version of RuBot, follow these instructions:
 
 2. **Obtain Google Oauth credentials**
 
-  Visit: https://console.developers.google.com/ and get a client_id and client_secret from the Google+ API to use for authentication.
+  Visit: https://console.developers.google.com/ and get a client_id and client_secret from the Google+ API to use for authentication OR you can use my keys if you want to skip this step.
 
   Setup your Authorized redirect URIs using this format:
   https://yourbotname.udacity.com/admins/auth/google_oauth2/callback
@@ -115,7 +113,7 @@ When you push to your bot's branch, it will automatically build and deploy throu
 
 The program is already setup to be tracking your teams metrics via segment / chartio integration. You will however need to invite your bot user into each channel that you want to run analytics on.
 
-Your teams separating factor is the `ndkey` value in the tracks and indentifies sent to segment. This is automatically configured for you in the Customize step above.
+Your teams separating factor is the `ndkey` value in the tracks and indentifies sent to segment. This is automatically configured in the Customize step above.
 
 ## Contributors
 
