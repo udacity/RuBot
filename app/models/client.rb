@@ -59,7 +59,7 @@ class Client < ActiveRecord::Base
   end
 
   def send_scheduled_messages(client)
-    client.on :team_join do |data|
+    client.on :user_change do |data|
       sleep(2)
       set_user(data)
       @messages = Message.all.sort
