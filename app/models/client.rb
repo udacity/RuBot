@@ -37,83 +37,83 @@ class Client < ActiveRecord::Base
     end
   end
 
-  def send_message(channel_id, text, client)
-    client.web_client.chat_postMessage(
-      channel: channel_id, 
-      text: text,
-      as_user: true,
-      unfurl_links: false,
-      unfurl_media: false
-      )
-  end
+  # def send_message(channel_id, text, client)
+  #   client.web_client.chat_postMessage(
+  #     channel: channel_id, 
+  #     text: text,
+  #     as_user: true,
+  #     unfurl_links: false,
+  #     unfurl_media: false
+  #     )
+  # end
 
-  def create_log(user, message)
-    #message_number is "delay" in seconds.
-    delivery_time = Time.now + message.message_number
-    @log = Log.new(
-      channel_id: user.channel_id,
-      message_id: message.id,
-      delivery_time: delivery_time
-    )
-    @log.save
-  end
+  # def create_log(user, message)
+  #   #message_number is "delay" in seconds.
+  #   delivery_time = Time.now + message.message_number
+  #   @log = Log.new(
+  #     channel_id: user.channel_id,
+  #     message_id: message.id,
+  #     delivery_time: delivery_time
+  #   )
+  #   @log.save
+  # end
 
-  def send_scheduled_messages(client)
-    client.on :user_change do |data|
-      sleep(2)
-      set_user(data)
-      @messages = Message.all.sort
-      @messages.each do |message|
-        create_log(@user, message)
-        s = Rufus::Scheduler.new(:max_work_threads => 200)
-        s.in message.delay do
-          ActiveRecord::Base.connection_pool.with_connection do 
-            send_message(@user.channel_id, message.text, client)
-            track_scheduled_message(@user, message.id, message.text)
-            message.reach += 1
-            message.save
-            Log.where(message_id: message.id).first.delete
-          end
-        end
-      end
-    end
-  end
+  # def send_scheduled_messages(client)
+  #   client.on :team_join do |data|
+  #     sleep(2)
+  #     set_user(data)
+  #     @messages = Message.all.sort
+  #     @messages.each do |message|
+  #       create_log(@user, message)
+  #       s = Rufus::Scheduler.new(:max_work_threads => 200)
+  #       s.in message.delay do
+  #         ActiveRecord::Base.connection_pool.with_connection do 
+  #           send_message(@user.channel_id, message.text, client)
+  #           track_scheduled_message(@user, message.id, message.text)
+  #           message.reach += 1
+  #           message.save
+  #           Log.where(message_id: message.id).first.delete
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
 
-  def reschedule_messages(client)
-    Log.all.each do |log|
-      if log.delivery_time > Time.now
-        s = Rufus::Scheduler.new(:max_work_threads => 200)
-        s.at log.delivery_time do
-          ActiveRecord::Base.connection_pool.with_connection do
-            message = Message.find(log.message_id) 
-            send_message(log.channel_id, message.text, client)
-            track_rescheduled_message(log, log.message_id, message.text)
-            message.reach += 1
-            message.save
-            log.delete
-          end
-        end
-      end
-    end
-  end
+  # def reschedule_messages(client)
+  #   Log.all.each do |log|
+  #     if log.delivery_time > Time.now
+  #       s = Rufus::Scheduler.new(:max_work_threads => 200)
+  #       s.at log.delivery_time do
+  #         ActiveRecord::Base.connection_pool.with_connection do
+  #           message = Message.find(log.message_id) 
+  #           send_message(log.channel_id, message.text, client)
+  #           track_rescheduled_message(log, log.message_id, message.text)
+  #           message.reach += 1
+  #           message.save
+  #           log.delete
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
 
-  def respond_to_messages(client)
-    client.on :message do |data|
-      #make sure bot only responds to other users and only in DM channels
-      if data.user != Rails.application.config.bot_id && data.channel[0] == "D" && data.text
-        if interaction = Interaction.where(user_input: data.text.downcase).first
-          send_message(data.channel, interaction.response, client)
-          track_interactions(data, interaction.id, interaction.user_input, interaction.response)
-          interaction.hits += 1
-          interaction.save
-        else
-          #if no matching interaction, send from a standard response set in "application.rb"
-          send_message(data.channel, Rails.application.config.standard_responses.sample, client)
-          track_interactions(data, 0, "no trigger", "standard_response")
-        end
-      end
-    end
-  end
+  # def respond_to_messages(client)
+  #   client.on :message do |data|
+  #     #make sure bot only responds to other users and only in DM channels
+  #     if data.user != Rails.application.config.bot_id && data.channel[0] == "D" && data.text
+  #       if interaction = Interaction.where(user_input: data.text.downcase).first
+  #         send_message(data.channel, interaction.response, client)
+  #         track_interactions(data, interaction.id, interaction.user_input, interaction.response)
+  #         interaction.hits += 1
+  #         interaction.save
+  #       else
+  #         #if no matching interaction, send from a standard response set in "application.rb"
+  #         send_message(data.channel, Rails.application.config.standard_responses.sample, client)
+  #         track_interactions(data, 0, "no trigger", "standard_response")
+  #       end
+  #     end
+  #   end
+  # end
 
   def start_rubot(client)
     puts "START RUBOT!!!"
@@ -141,23 +141,24 @@ class Client < ActiveRecord::Base
   end
 
   # This method is just for fun.
-  def argue_with_slackbot(client)
-    client.on :message do |data|
-      if data.user == "USLACKBOT"
-        client.web_client.chat_postMessage(
-          channel: data.channel, 
-          text: "slackbot... what a dweeb.", 
-          as_user: true,
-          unfurl_links: false,
-          unfurl_media: false
-        )
-      end
-    end
-  end
+  # def argue_with_slackbot(client)
+  #   client.on :message do |data|
+  #     if data.user == "USLACKBOT"
+  #       client.web_client.chat_postMessage(
+  #         channel: data.channel, 
+  #         text: "slackbot... what a dweeb.", 
+  #         as_user: true,
+  #         unfurl_links: false,
+  #         unfurl_media: false
+  #       )
+  #     end
+  #   end
+  # end
 
   #Grabs the channel data from slack's api 
   #to be used by "channel_id_to_name" method
   def set_channel_info(client)
+    @@channel_list = nil
     s = Rufus::Scheduler.new(:max_work_threads => 200)
     #Wait 5s so that the client is setup before trying to run.
     s.in '5s' do
@@ -183,13 +184,13 @@ class Client < ActiveRecord::Base
     set_channel_info(client)
     track_messages(client)
     update_user_list(client)
-    set_channel_id(client)
+    #set_channel_id(client)
     get_bot_user_id(client)
     add_new_user(client)
-    reschedule_messages(client)
-    send_scheduled_messages(client)
+    # reschedule_messages(client)
+    # send_scheduled_messages(client)
     update_user(client)
-    respond_to_messages(client)
+    # respond_to_messages(client)
     # argue_with_slackbot(client)
     restart_client_if_connection_lost(client)
     start_rubot(client)
@@ -199,9 +200,9 @@ class Client < ActiveRecord::Base
     say_hello_on_start(client)
     track_messages(client)
     add_new_user(client)
-    send_scheduled_messages(client)
+    # send_scheduled_messages(client)
     update_user(client)
-    respond_to_messages(client)
+    # respond_to_messages(client)
     restart_client_if_connection_lost(client)
     start_rubot(client)
   end

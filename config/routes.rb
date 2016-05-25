@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  resources :blasts
-  resources :logs
-  resources :interactions
+  # resources :blasts
+  # resources :logs
+  # resources :interactions
   devise_for :admins, :controllers => { :omniauth_callbacks => "callbacks" }
   root to: "home#index"
-  resources :messages
+  # resources :messages
   resources :users
-  resources :metrics
+  # resources :metrics
   get 'users2' => 'users#index2'
   post 'users/status'
   get 'healthcheck' => 'healthchecks#check'
