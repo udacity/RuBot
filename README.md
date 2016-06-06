@@ -80,7 +80,7 @@ RuBot is a Rails app built to be (somewhat) easily reproduced and customized. To
     YOURBOTNAME_CLIENT_SECRET
     YOURBOTNAME_SECRET_KEY_BASE
     ```
-    To get `YOURBOTNAME_SECRET_KEY_BASE` token, navigate to your project's root directory in terminal, and execute this command: `RAILS_ENV=production rake secret`.
+    To get `YOURBOTNAME_SECRET_KEY_BASE` token, navigate to your project's root directory in terminal, and execute this command: `RAILS_ENV=production rake secret`. You will need to have Rails installed for this command to work. If you don't have Rails installed and don't want to install it, ping @fuzz, and I can get this key for you.
 
 6. **Create branch for Circle CI**
 
