@@ -28,8 +28,8 @@ module Rubot
     config.after_initialize do
       puts "ENV = development? #{Rails.env.development?}"
       
-      Rails.application.config.client_name = "introbot"
-      Rails.application.config.ndkey = "nd000"
+      Rails.application.config.client_name = "pwabot"
+      Rails.application.config.ndkey = "nd802"
       Rails.application.config.standard_responses = 
         [
           "I'm sorry, I didn't understand that. For a list of commands, type `help`.",

@@ -38,3 +38,8 @@ deployment:
     branch: "introbot"
     commands:
       - ./deploy.rb
+
+  pwabot:
+    branch: "pwabot"
+    commands:
+      - ./deploy.rb
