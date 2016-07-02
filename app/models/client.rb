@@ -107,12 +107,12 @@ class Client < ActiveRecord::Base
           interaction.hits += 1
           interaction.save
         # added by Rahul
-        elsif data.text.downcase.start_with?("goal:")
-          set_user
-          @user.goal = data.text.slice!("goal:")
-          @user.save
-          received_goal = "Thanks! Remember to keep this goal in mind as you progress through the nanodegree"
-          send_message(data.channel, received_goal, client)
+        # elsif data.text.downcase.start_with?("goal:")
+        #   set_user
+        #   @user.goal = data.text.slice!("goal:")
+        #   @user.save
+        #   received_goal = "Thanks! Remember to keep this goal in mind as you progress through the nanodegree"
+        #   send_message(data.channel, received_goal, client)
         else
           #if no matching interaction, send from a standard response set in "application.rb"
           send_message(data.channel, Rails.application.config.standard_responses.sample, client)
