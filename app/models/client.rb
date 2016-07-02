@@ -7,7 +7,7 @@ class Client < ActiveRecord::Base
     puts "setup rubot!"
     @rubot = Slack::RealTime::Client.new(websocket_ping: 40)
     # Override the CA_FILE and CA_PATH in the embedded web client if they are set in the environment
-    if ENV['CA_FILE'] and ENV['CA_PATH']    
+    if ENV['CA_FILE'] and ENV['CA_PATH']
         web_client = Slack::Web::Client.new(ca_file: ENV['CA_FILE'], ca_path: ENV['CA_PATH'], websocket_ping: 40)
         @rubot.web_client = web_client
     end
@@ -15,8 +15,21 @@ class Client < ActiveRecord::Base
   end
 
   def say_hello_on_start(client)
-    client.on :hello do 
+    client.on :hello do
       puts "Successfully connected, welcome '#{client.self.name}' to the '#{client.team.name}' team at https://#{client.team.domain}.slack.com."
+    end
+  end
+
+  # added by Rahul
+  def get_goal(client):
+    client.on :message do |data|
+      if data.user != Rails.application.config.bot_id && data.channel[0] == "D" && data.text
+        if data.text.downcase.start_with?("goal:")
+          set_user
+          @user.goal = data.text
+          @user.save
+        end
+      end
     end
   end
 
@@ -39,7 +52,7 @@ class Client < ActiveRecord::Base
 
   def send_message(channel_id, text, client)
     client.web_client.chat_postMessage(
-      channel: channel_id, 
+      channel: channel_id,
       text: text,
       as_user: true,
       unfurl_links: false,
@@ -67,7 +80,7 @@ class Client < ActiveRecord::Base
         create_log(@user, message)
         s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.in message.delay do
-          ActiveRecord::Base.connection_pool.with_connection do 
+          ActiveRecord::Base.connection_pool.with_connection do
             send_message(@user.channel_id, message.text, client)
             track_scheduled_message(@user, message.id, message.text)
             message.reach += 1
@@ -85,7 +98,7 @@ class Client < ActiveRecord::Base
         s = Rufus::Scheduler.new(:max_work_threads => 200)
         s.at log.delivery_time do
           ActiveRecord::Base.connection_pool.with_connection do
-            message = Message.find(log.message_id) 
+            message = Message.find(log.message_id)
             send_message(log.channel_id, message.text, client)
             track_rescheduled_message(log, log.message_id, message.text)
             message.reach += 1
@@ -145,8 +158,8 @@ class Client < ActiveRecord::Base
     client.on :message do |data|
       if data.user == "USLACKBOT"
         client.web_client.chat_postMessage(
-          channel: data.channel, 
-          text: "slackbot... what a dweeb.", 
+          channel: data.channel,
+          text: "slackbot... what a dweeb.",
           as_user: true,
           unfurl_links: false,
           unfurl_media: false
@@ -155,7 +168,7 @@ class Client < ActiveRecord::Base
     end
   end
 
-  #Grabs the channel data from slack's api 
+  #Grabs the channel data from slack's api
   #to be used by "channel_id_to_name" method
   def set_channel_info(client)
     @@channel_list = nil
@@ -181,6 +194,7 @@ class Client < ActiveRecord::Base
 
   def initialize_bot(client)
     say_hello_on_start(client)
+    get_goal_on_start(client)
     set_channel_info(client)
     track_messages(client)
     update_user_list(client)
