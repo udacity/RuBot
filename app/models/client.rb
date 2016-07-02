@@ -20,19 +20,6 @@ class Client < ActiveRecord::Base
     end
   end
 
-  # added by Rahul
-  def get_goal(client):
-    client.on :message do |data|
-      if data.user != Rails.application.config.bot_id && data.channel[0] == "D" && data.text
-        if data.text.downcase.start_with?("goal:")
-          set_user
-          @user.goal = data.text
-          @user.save
-        end
-      end
-    end
-  end
-
   def get_bot_user_id(client)
     client.on :hello do
       get_users
@@ -119,6 +106,13 @@ class Client < ActiveRecord::Base
           track_interactions(data, interaction.id, interaction.user_input, interaction.response)
           interaction.hits += 1
           interaction.save
+        # added by Rahul
+        elsif data.text.downcase.start_with?("goal:")
+          set_user
+          @user.goal = data.text.slice!("goal:")
+          @user.save
+          received_goal = "Thanks! Remember to keep this goal in mind as you progress through the nanodegree"
+          send_message(data.channel, received_goal, client)
         else
           #if no matching interaction, send from a standard response set in "application.rb"
           send_message(data.channel, Rails.application.config.standard_responses.sample, client)
