@@ -38,3 +38,8 @@ deployment:
     branch: "introbot"
     commands:
       - ./deploy.rb
+
+  yourbotname:
+    branch: "carndbot"
+    commands:
+      - ./deploy.rb
