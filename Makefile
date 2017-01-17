@@ -1,5 +1,5 @@
 GROUP := udacity
-NAME := rubot
+NAME := rubot-production
 ORG := $(GROUP)
 SERVICE ?= $(NAME)
 VERSION ?= $(shell git rev-parse --short HEAD)
