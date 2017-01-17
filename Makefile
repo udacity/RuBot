@@ -1,7 +1,8 @@
 GROUP := udacity
-NAME := rubot-production
+NAME := rubot
 ORG := $(GROUP)
 SERVICE ?= $(NAME)
+SERVICE_NAME := rubot-production
 VERSION ?= $(shell git rev-parse --short HEAD)
 CONDUCTOR_API_KEY := $(shell echo $$CONDUCTOR_API_KEY)
 export
