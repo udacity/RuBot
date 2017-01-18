@@ -1,8 +1,9 @@
 {
   "api-key": "$CONDUCTOR_API_KEY",
   "enable-db": true,
+  "use_db_from": "introbot",
   "app-json": {
-    "id": "/$GROUP/$SERVICE",
+    "id": "/$GROUP/$SERVICE-production",
     "cpus": 0.1,
     "mem": 512,
     "instances": 1,
