@@ -6,7 +6,6 @@ machine:
     - docker
   ruby: 
     version: 2.2.4
-
   post:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
