@@ -16,7 +16,7 @@ test:
 
 docker:
 	docker build -t $(SERVICE_NAME) .
-	docker tag $(SERVICE_NAME) $(DOCKER_REPO):$(VERSION)
+	docker tag -f $(SERVICE_NAME) $(DOCKER_REPO):$(VERSION)
 	docker push $(DOCKER_REPO)
 
 _deploy:
