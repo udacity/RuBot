@@ -4,6 +4,9 @@ machine:
     - sudo chmod 0755 /usr/bin/docker
   services:
     - docker
+  ruby: 
+    version: 2.2.4
+
   post:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
