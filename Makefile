@@ -5,7 +5,7 @@ BERLIOZ_NAME      := rubot
 DOCKER_REPO       := $(BERLIOZ_GROUP)/$(BERLIOZ_NAME)
 SERVICE_NAME      := $(BERLIOZ_NAME)
 VERSION           ?= $(shell git rev-parse --short HEAD)
-CONDUCTOR_APP_ID  := 9da0114c-d759-11e6-bd0e-3b5e86c8088e
+CONDUCTOR_APP_ID  := $(CONDUCTOR_APP_ID)
 export
 
 .PHONY: all deploy docker test 
