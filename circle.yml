@@ -27,9 +27,9 @@ deployment:
   rubot:
     branch: "rubot"
     commands:
-      - ./deploy.rb
+      - make deploy
 
   swiftbot:
     branch: "swiftbot"
     commands:
-      - ./deploy.rb
+      - make deploy
